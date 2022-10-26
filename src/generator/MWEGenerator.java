@@ -1,12 +1,9 @@
 package generator;
 
-import extractor.IExtractor;
-import extractor.IExtractorOptions;
-import extractor.NullExtractor;
-import slice.ICodeSlice;
+import testexecutor.CodeLineTestExecutor;
+import testexecutor.CodeLineTestExecutorOptions;
 import testexecutor.ITestExecutor;
-import testexecutor.ITestExecutorOptions;
-import testexecutor.NullTestExecutor;
+import slice.ICodeSlice;
 import utility.ListUtility;
 
 import java.util.ArrayList;
@@ -17,11 +14,8 @@ public class MWEGenerator {
     public static void main(String[] args) {
 
         // extract code slices
-        IExtractor extractor = getExtractor(null);
-        List<ICodeSlice> slices = new ArrayList<>(extractor.extractSlices());
-
-        // prepare test executor
-        ITestExecutor executor = getTestExecutor(null);
+        ITestExecutor executor = getTestExecutor();
+        List<ICodeSlice> slices = new ArrayList<>(executor.extractSlices());
 
         // ddmin algorithm
         int granularity = 2;
@@ -33,7 +27,7 @@ public class MWEGenerator {
             for(List<ICodeSlice> subset : subsets) {
                 List<ICodeSlice> complement = ListUtility.listMinus(slices, subset);
 
-                if(executor.test(complement) == ITestExecutor.ETestState.FAIL) {
+                if(executor.test(complement) == ITestExecutor.ETestResult.FAILED) {
                     slices = complement;
                     granularity = Math.max(granularity - 1, 2);
                     someComplementIsFailing = true;
@@ -53,11 +47,9 @@ public class MWEGenerator {
         // log to console / write to file(s)
     }
 
-    public static IExtractor getExtractor(IExtractorOptions options) {
-        return new NullExtractor();
-    }
-
-    public static ITestExecutor getTestExecutor(ITestExecutorOptions options) {
-        return new NullTestExecutor();
+    public static ITestExecutor getTestExecutor() {
+        CodeLineTestExecutorOptions options = new CodeLineTestExecutorOptions()
+                .withModulePath("C:\\Users\\lubo9\\Desktop\\Workspace\\ddminj\\CalculatorExample");
+        return new CodeLineTestExecutor(options);
     }
 }

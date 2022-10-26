@@ -5,12 +5,13 @@ import slice.ICodeSlice;
 import java.util.List;
 
 public interface ITestExecutor {
-
-    enum ETestState {
+    enum ETestResult {
         OK,
-        FAIL,
+        FAILED,
         ERROR
     }
 
-    ETestState test(List<ICodeSlice> slices);
+    List<ICodeSlice> extractSlices();
+
+    ETestResult test(List<ICodeSlice> slices);
 }
