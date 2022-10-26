@@ -8,7 +8,8 @@ public interface ITestExecutor {
     enum ETestResult {
         OK,
         FAILED,
-        ERROR
+        ERROR_COMPILATION,
+        ERROR_RUNTIME
     }
 
     List<ICodeSlice> extractSlices();

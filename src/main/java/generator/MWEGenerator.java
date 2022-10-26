@@ -17,6 +17,8 @@ public class MWEGenerator {
         ITestExecutor executor = getTestExecutor();
         List<ICodeSlice> slices = new ArrayList<>(executor.extractSlices());
 
+        assert executor.test(slices) == ITestExecutor.ETestResult.FAILED;
+
         // ddmin algorithm
         int granularity = 2;
         while(slices.size() >= 2) {
@@ -49,7 +51,8 @@ public class MWEGenerator {
 
     public static ITestExecutor getTestExecutor() {
         CodeLineTestExecutorOptions options = new CodeLineTestExecutorOptions()
-                .withModulePath("C:\\Users\\lubo9\\Desktop\\Workspace\\ddminj\\CalculatorExample");
+                .withModulePath(System.getProperty("user.dir") + "\\CalculatorExample")
+                .withUnitTestFilePath("test\\calculator\\CalculatorTest.java");
         return new CodeLineTestExecutor(options);
     }
 }
