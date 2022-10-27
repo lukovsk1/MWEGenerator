@@ -52,7 +52,8 @@ public class MWEGenerator {
     public static ITestExecutor getTestExecutor() {
         CodeLineTestExecutorOptions options = new CodeLineTestExecutorOptions()
                 .withModulePath(System.getProperty("user.dir") + "\\CalculatorExample")
-                .withUnitTestFilePath("test\\calculator\\CalculatorTest.java");
+                .withUnitTestFilePath("test\\calculator\\CalculatorTest.java")
+                .withExpectedResult("org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>");
         return new CodeLineTestExecutor(options);
     }
 }
