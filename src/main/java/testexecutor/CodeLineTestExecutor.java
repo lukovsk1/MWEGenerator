@@ -41,12 +41,13 @@ public class CodeLineTestExecutor implements ITestExecutor {
 
         List<ICodeSlice> slices = new ArrayList<>();
 
+        int sliceNr = 0;
         for(Path filePath : filePaths) {
             try {
                 String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
                 List<String> lines = Files.readAllLines(filePath);
                 for(int i = 0; i < lines.size(); i++) {
-                    slices.add(new CodeLineSlice(relativeFileName, lines.get(i), i));
+                    slices.add(new CodeLineSlice(relativeFileName, lines.get(i), i, sliceNr++));
                 }
 
             } catch (IOException e) {
@@ -88,9 +89,8 @@ public class CodeLineTestExecutor implements ITestExecutor {
                 Path.of(testFolderPath + "\\" + unitTestFilePath));
 
         // write files to testing folder
-        String filesForClassPath;
         try {
-            filesForClassPath = writeSlicesToTestingFolder(slices, testFolderPath.toString());
+            writeSlicesToTestingFolder(slices, testFolderPath.toString());
         } catch (IOException e) {
             throw new TestingException("Unable to write slices to testing folder", e);
         }
@@ -110,12 +110,17 @@ public class CodeLineTestExecutor implements ITestExecutor {
         commands.add("& dir /s /B *.java > testingsources.txt");
         commands.add("& " + javaHome + "/bin/javac -d ../testingbuild -cp " + classPath + " @testingsources.txt");
         commands.add("& cd ../testingbuild");
-        commands.add("& jar cvf TestingBuild.jar *");
+        //commands.add("& jar cvf TestingBuild.jar *");
         ProcessBuilder pb = new ProcessBuilder(commands);
         Process p;
         try {
-            p = pb.start();p.waitFor(1, TimeUnit.MINUTES);
+            p = pb.start();
+            if(!p.waitFor(1, TimeUnit.MINUTES)) {
+                throw new TestingException("Timed out while compiling java code");
+            }
             if(p.exitValue() > 0) {
+                String input = IOUtils.toString(p.getInputStream(), StandardCharsets.UTF_8);
+                String error = IOUtils.toString(p.getErrorStream(), StandardCharsets.UTF_8);
                 return ETestResult.ERROR_COMPILATION;
             }
         }
@@ -135,10 +140,12 @@ public class CodeLineTestExecutor implements ITestExecutor {
         Process p2;
         try {
             p2 = pb2.start();
-            String input = IOUtils.toString(p2.getInputStream(), StandardCharsets.UTF_8);
-            String error = IOUtils.toString(p2.getErrorStream(), StandardCharsets.UTF_8);
-            p2.waitFor(1, TimeUnit.MINUTES);
+            if(!p2.waitFor(1, TimeUnit.MINUTES)) {
+                throw new TestingException("Timed out while running testing code");
+            }
             if(p2.exitValue() > 0) {
+                String input = IOUtils.toString(p2.getInputStream(), StandardCharsets.UTF_8);
+                String error = IOUtils.toString(p2.getErrorStream(), StandardCharsets.UTF_8);
                 if(error != null && error.length() > 0) {
                     return ETestResult.ERROR_RUNTIME;
                 }
@@ -169,7 +176,7 @@ public class CodeLineTestExecutor implements ITestExecutor {
 
     private Path getTestBuildPath() {
         String dir = System.getProperty("user.dir");
-        return Path.of(dir + "/testbuild");
+        return Path.of(dir + "/testingbuild");
     }
 
     public void deleteFolder(Path folder) throws IOException {

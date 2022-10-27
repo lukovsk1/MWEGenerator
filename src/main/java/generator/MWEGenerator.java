@@ -7,7 +7,10 @@ import slice.ICodeSlice;
 import utility.ListUtility;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MWEGenerator {
 
@@ -17,7 +20,10 @@ public class MWEGenerator {
         ITestExecutor executor = getTestExecutor();
         List<ICodeSlice> slices = new ArrayList<>(executor.extractSlices());
 
-        assert executor.test(slices) == ITestExecutor.ETestResult.FAILED;
+        int totalSlices = slices.size();
+
+        assert executeTest(executor, Collections.emptyList(), totalSlices) != ITestExecutor.ETestResult.FAILED;
+        assert executeTest(executor, slices, totalSlices) == ITestExecutor.ETestResult.FAILED;
 
         // ddmin algorithm
         int granularity = 2;
@@ -29,7 +35,7 @@ public class MWEGenerator {
             for(List<ICodeSlice> subset : subsets) {
                 List<ICodeSlice> complement = ListUtility.listMinus(slices, subset);
 
-                if(executor.test(complement) == ITestExecutor.ETestResult.FAILED) {
+                if(executeTest(executor, complement, totalSlices) == ITestExecutor.ETestResult.FAILED) {
                     slices = complement;
                     granularity = Math.max(granularity - 1, 2);
                     someComplementIsFailing = true;
@@ -49,7 +55,29 @@ public class MWEGenerator {
         // log to console / write to file(s)
     }
 
-    public static ITestExecutor getTestExecutor() {
+    private static ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices) {
+        ITestExecutor.ETestResult result =  executor.test(slices);
+
+        String slicingIdentifier = getSlicingIdentifier(slices, totalSlices);
+
+        System.out.print(slicingIdentifier);
+        System.out.print(" -> ");
+        System.out.println(result);
+
+        return result;
+    }
+
+    private static String getSlicingIdentifier(List<ICodeSlice> slices, int totalSlices) {
+        List<Integer> activeSlices = IntStream.range(0,totalSlices)
+                .mapToObj(i -> 0)
+                .collect(Collectors.toList());
+
+        slices.forEach(sl -> activeSlices.set(sl.getSliceNumber(), 1));
+
+        return activeSlices.stream().map(i -> Integer.toString(i)).collect(Collectors.joining());
+    }
+
+    private static ITestExecutor getTestExecutor() {
         CodeLineTestExecutorOptions options = new CodeLineTestExecutorOptions()
                 .withModulePath(System.getProperty("user.dir") + "\\CalculatorExample")
                 .withUnitTestFilePath("test\\calculator\\CalculatorTest.java")
