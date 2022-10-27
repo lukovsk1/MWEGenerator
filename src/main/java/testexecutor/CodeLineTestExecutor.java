@@ -10,8 +10,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /*
@@ -76,22 +78,35 @@ public class CodeLineTestExecutor implements ITestExecutor {
             throw new TestingException("Unable to copy module", e);
         }
         // Copy unit test file
-        copy(Path.of(m_options.getModulePath() + "\\" + m_options.getUnitTestFilePath()),
-                Path.of(testFolderPath + "\\" + m_options.getUnitTestFilePath()));
+        String unitTestFilePath = m_options.getUnitTestFilePath();
+        if(!unitTestFilePath.endsWith(".java")) {
+            unitTestFilePath += ".java";
+        }
+        copy(Path.of(m_options.getModulePath() + "\\" + unitTestFilePath),
+                Path.of(testFolderPath + "\\" + unitTestFilePath));
 
         // write files to testing folder
+        String filesForClassPath;
         try {
-            writeSlicesToTestingFolder(slices, testFolderPath.toString());
+            filesForClassPath = writeSlicesToTestingFolder(slices, testFolderPath.toString());
         } catch (IOException e) {
             throw new TestingException("Unable to write slices to testing folder", e);
         }
+
+        // compile java classes for testing
+        String classPath = System.getProperty("java.class.path");
+        classPath = Arrays.stream(classPath.split(";")).filter(
+                dependency -> dependency.endsWith(".jar") && !dependency.contains("JetBrains")
+        ).collect(Collectors.joining(";"));
+
+        String javaHome = System.getProperty("java.home");
 
         final List<String> commands = new ArrayList<>();
         commands.add("cmd.exe");
         commands.add("/C");
         commands.add("cd testingfolder");
         commands.add("& dir /s /B *.java > testingsources.txt");
-        commands.add("& javac -cp  @testingsources.txt");
+        commands.add("& " + javaHome + "/bin/javac -cp " + classPath + " @testingsources.txt");
         ProcessBuilder pb = new ProcessBuilder(commands);
         Process p;
         try {
@@ -99,11 +114,37 @@ public class CodeLineTestExecutor implements ITestExecutor {
             String input = IOUtils.toString(pb.start().getInputStream(), StandardCharsets.UTF_8);
             String error = IOUtils.toString(pb.start().getErrorStream(), StandardCharsets.UTF_8);
             if(p.waitFor() > 0) {
+                System.out.println(input);
+                System.out.println(error);
                 return ETestResult.ERROR_COMPILATION;
             }
         }
         catch (IOException | InterruptedException e) {
             throw new TestingException("Unexpected error while compiling java code", e);
+        }
+
+        // run unit test
+        commands.clear();
+        commands.add("cmd.exe");
+        commands.add("/C");
+        commands.add("cd testingfolder");
+        commands.add("& dir /s /B *.class > testingclasses.txt");
+        commands.add("& " + javaHome + "/bin/java -classpath " + filesForClassPath + classPath + " -junit5 calculator.CalculatorTest");
+
+        ProcessBuilder pb2 = new ProcessBuilder(commands);
+        Process p2;
+        try {
+            p2 = pb2.start();
+            String input = IOUtils.toString(p2.getInputStream(), StandardCharsets.UTF_8);
+            String error = IOUtils.toString(p2.getErrorStream(), StandardCharsets.UTF_8);
+            if(p2.waitFor() > 0) {
+                System.out.println(input);
+                System.out.println(error);
+                return ETestResult.ERROR_COMPILATION;
+            }
+        }
+        catch (IOException | InterruptedException e) {
+            throw new TestingException("Unexpected error while executing unit test", e);
         }
 
         return ETestResult.ERROR_RUNTIME;
@@ -146,7 +187,8 @@ public class CodeLineTestExecutor implements ITestExecutor {
         }
     }
 
-    private void writeSlicesToTestingFolder(List<ICodeSlice> slices, String testFolderPath) throws IOException {
+    private String writeSlicesToTestingFolder(List<ICodeSlice> slices, String testFolderPath) throws IOException {
+        String filesForClassPath = "";
         File testSourceFolder = getSourceFolder(testFolderPath);
         String fileName = null;
         BufferedWriter writer = null;
@@ -157,6 +199,7 @@ public class CodeLineTestExecutor implements ITestExecutor {
                     writer.close();
                 }
                 fileName = slice.getPath();
+                filesForClassPath += fileName.split("\\.")[0] + ";";
                 File newFile = new File(testSourceFolder.getPath() + fileName);
                 if(!newFile.createNewFile()) {
                     throw new TestingException("Unable to recreate file " + fileName);
@@ -170,5 +213,7 @@ public class CodeLineTestExecutor implements ITestExecutor {
         if(writer != null) {
             writer.close();
         }
+
+        return filesForClassPath;
     }
 }

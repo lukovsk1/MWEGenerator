@@ -80,3 +80,4 @@ testingfolder
 testingsources.txt
 
 target
+*.class
