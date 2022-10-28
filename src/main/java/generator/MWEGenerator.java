@@ -6,9 +6,7 @@ import testexecutor.ITestExecutor;
 import slice.ICodeSlice;
 import utility.ListUtility;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,14 +16,21 @@ public class MWEGenerator {
 
         // extract code slices
         ITestExecutor executor = getTestExecutor();
-        List<ICodeSlice> slices = new ArrayList<>(executor.extractSlices());
+        List<ICodeSlice> mweSlicing =  new ArrayList<>(executor.extractSlices());
 
-        int totalSlices = slices.size();
+        int totalSlices = mweSlicing.size();
+        Map<String, ITestExecutor.ETestResult> resultMap = new HashMap<>();
 
-        assert executeTest(executor, Collections.emptyList(), totalSlices) != ITestExecutor.ETestResult.FAILED;
-        assert executeTest(executor, slices, totalSlices) == ITestExecutor.ETestResult.FAILED;
+        if(executeTest(executor, Collections.emptyList(), totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED
+                || executeTest(executor, mweSlicing, totalSlices, resultMap) != ITestExecutor.ETestResult.FAILED) {
+            System.out.println("Initial testing conditions are not met.");
+            System.exit(1);
+        }
+
+
 
         // ddmin algorithm
+        List<ICodeSlice> slices = new ArrayList<>(mweSlicing);
         int granularity = 2;
         while(slices.size() >= 2) {
             List<List<ICodeSlice>> subsets = ListUtility.split(slices, granularity);
@@ -35,7 +40,8 @@ public class MWEGenerator {
             for(List<ICodeSlice> subset : subsets) {
                 List<ICodeSlice> complement = ListUtility.listMinus(slices, subset);
 
-                if(executeTest(executor, complement, totalSlices) == ITestExecutor.ETestResult.FAILED) {
+                if(executeTest(executor, complement, totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED) {
+                    mweSlicing = new ArrayList<>(complement);
                     slices = complement;
                     granularity = Math.max(granularity - 1, 2);
                     someComplementIsFailing = true;
@@ -51,18 +57,29 @@ public class MWEGenerator {
             }
         }
 
-        // TODO present result
-        // log to console / write to file(s)
+        // recreate mwe
+        System.out.println();
+        System.out.println("Found an optimal slicing (MWE):");
+        System.out.println(getSlicingIdentifier(mweSlicing, totalSlices));
+        System.out.println("Recreating result in testingfolder...");
+        executor.test(mweSlicing);
+        System.out.println("############## FINISHED ##############");
     }
 
-    private static ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices) {
-        ITestExecutor.ETestResult result =  executor.test(slices);
-
+    private static ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
         String slicingIdentifier = getSlicingIdentifier(slices, totalSlices);
+        ITestExecutor.ETestResult result = resultMap.get(slicingIdentifier);
+        if(result != null) {
+            return result;
+        }
+
+        result = executor.test(slices);
 
         System.out.print(slicingIdentifier);
         System.out.print(" -> ");
         System.out.println(result);
+
+        resultMap.put(slicingIdentifier, result);
 
         return result;
     }
@@ -81,6 +98,7 @@ public class MWEGenerator {
         CodeLineTestExecutorOptions options = new CodeLineTestExecutorOptions()
                 .withModulePath(System.getProperty("user.dir") + "\\CalculatorExample")
                 .withUnitTestFilePath("test\\calculator\\CalculatorTest.java")
+                .withUnitTestMethod("calculator.CalculatorTest#testCalculator")
                 .withExpectedResult("org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>");
         return new CodeLineTestExecutor(options);
     }

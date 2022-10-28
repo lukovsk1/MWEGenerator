@@ -4,6 +4,7 @@ public class CodeLineTestExecutorOptions {
 
     private String m_modulePath;
     private String m_unitTestFilePath;
+    private String m_unitTestMethod;
     private String m_expectedResult;
 
     public CodeLineTestExecutorOptions() {
@@ -34,5 +35,14 @@ public class CodeLineTestExecutorOptions {
     }
     public String getExpectedResult() {
         return m_expectedResult;
+    }
+
+    public CodeLineTestExecutorOptions withUnitTestMethod(String unitTestMethod) {
+        m_unitTestMethod = unitTestMethod;
+        return this;
+    }
+
+    public String getUnitTestMethod() {
+        return m_unitTestMethod;
     }
 }

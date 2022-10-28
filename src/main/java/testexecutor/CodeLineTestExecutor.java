@@ -73,9 +73,10 @@ public class CodeLineTestExecutor implements ITestExecutor {
     @Override
     public ETestResult test(List<ICodeSlice> slices) {
         Path testFolderPath = getTestFolderPath();
+        Path testBuildPath = getTestBuildPath();
         try {
             deleteFolder(testFolderPath);
-            deleteFolder(getTestBuildPath());
+            deleteFolder(testBuildPath);
             copyFolderStructure(Path.of(m_options.getModulePath()), testFolderPath);
         } catch (IOException e) {
             throw new TestingException("Unable to copy module", e);
@@ -107,10 +108,10 @@ public class CodeLineTestExecutor implements ITestExecutor {
         commands.add("cmd.exe");
         commands.add("/C");
         commands.add("cd testingfolder");
-        commands.add("& dir /s /B *.java > testingsources.txt");
-        commands.add("& " + javaHome + "/bin/javac -d ../testingbuild -cp " + classPath + " @testingsources.txt");
-        commands.add("& cd ../testingbuild");
-        //commands.add("& jar cvf TestingBuild.jar *");
+        commands.add("& dir /s /B *.java > testingsources.txt"); // write paths of all java files to sources file
+        commands.add("& findstr /v \"^$\" testingsources.txt > temp.txt & move /y temp.txt testingsources.txt >nul "); // remove empty lines from sources file
+        commands.add("& " + javaHome + "/bin/javac -d ../testingbuild -cp " + classPath + " @testingsources.txt"); // compile all java files
+
         ProcessBuilder pb = new ProcessBuilder(commands);
         Process p;
         try {
@@ -119,8 +120,6 @@ public class CodeLineTestExecutor implements ITestExecutor {
                 throw new TestingException("Timed out while compiling java code");
             }
             if(p.exitValue() > 0) {
-                String input = IOUtils.toString(p.getInputStream(), StandardCharsets.UTF_8);
-                String error = IOUtils.toString(p.getErrorStream(), StandardCharsets.UTF_8);
                 return ETestResult.ERROR_COMPILATION;
             }
         }
@@ -133,8 +132,8 @@ public class CodeLineTestExecutor implements ITestExecutor {
         commands.add("cmd.exe");
         commands.add("/C");
         commands.add(javaHome + "/bin/java -Dfile.encoding=UTF-8 " +
-                "-classpath C:\\Users\\lubo9\\.m2\\repository\\org\\junit\\platform\\junit-platform-console-standalone\\1.9.1\\junit-platform-console-standalone-1.9.1.jar;C:\\dev\\workspace\\ddminj\\testingbuild;C:\\Users\\lubo9\\.m2\\repository\\org\\junit\\jupiter\\junit-jupiter\\5.8.1\\junit-jupiter-5.8.1.jar; " +
-                "org.junit.platform.console.ConsoleLauncher --select-class calculator.CalculatorTest");
+                "-classpath " + testBuildPath + ";" + classPath +
+                " org.junit.platform.console.ConsoleLauncher --select-method " + m_options.getUnitTestMethod());
 
         ProcessBuilder pb2 = new ProcessBuilder(commands);
         Process p2;
@@ -160,13 +159,6 @@ public class CodeLineTestExecutor implements ITestExecutor {
         }
 
         return ETestResult.OK;
-    }
-
-    private int execute(String command) throws IOException, InterruptedException {
-        Process process = Runtime.getRuntime().exec(new String[]{
-                command
-        });
-        return process.waitFor();
     }
 
     private Path getTestFolderPath() {
@@ -204,8 +196,7 @@ public class CodeLineTestExecutor implements ITestExecutor {
         }
     }
 
-    private String writeSlicesToTestingFolder(List<ICodeSlice> slices, String testFolderPath) throws IOException {
-        String filesForClassPath = "";
+    private void writeSlicesToTestingFolder(List<ICodeSlice> slices, String testFolderPath) throws IOException {
         File testSourceFolder = getSourceFolder(testFolderPath);
         String fileName = null;
         BufferedWriter writer = null;
@@ -216,7 +207,6 @@ public class CodeLineTestExecutor implements ITestExecutor {
                     writer.close();
                 }
                 fileName = slice.getPath();
-                filesForClassPath += fileName.split("\\.")[0] + ";";
                 File newFile = new File(testSourceFolder.getPath() + fileName);
                 if(!newFile.createNewFile()) {
                     throw new TestingException("Unable to recreate file " + fileName);
@@ -230,7 +220,5 @@ public class CodeLineTestExecutor implements ITestExecutor {
         if(writer != null) {
             writer.close();
         }
-
-        return filesForClassPath;
     }
 }
