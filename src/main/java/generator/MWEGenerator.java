@@ -1,5 +1,6 @@
 package generator;
 
+import testexecutor.ATestExecutorOptions;
 import testexecutor.CodeLineTestExecutor;
 import testexecutor.CodeLineTestExecutorOptions;
 import testexecutor.ITestExecutor;
@@ -45,6 +46,7 @@ public class MWEGenerator {
                     slices = complement;
                     granularity = Math.max(granularity - 1, 2);
                     someComplementIsFailing = true;
+                    break;
                 }
             }
 
@@ -95,11 +97,12 @@ public class MWEGenerator {
     }
 
     private static ITestExecutor getTestExecutor() {
-        CodeLineTestExecutorOptions options = new CodeLineTestExecutorOptions()
+        CodeLineTestExecutorOptions options = (CodeLineTestExecutorOptions) new CodeLineTestExecutorOptions()
                 .withModulePath(System.getProperty("user.dir") + "\\CalculatorExample")
                 .withUnitTestFilePath("test\\calculator\\CalculatorTest.java")
                 .withUnitTestMethod("calculator.CalculatorTest#testCalculator")
-                .withExpectedResult("org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>");
+                .withExpectedResult("org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>")
+                .withCompilationType(ATestExecutorOptions.ECompilationType.IN_MEMORY);
         return new CodeLineTestExecutor(options);
     }
 }

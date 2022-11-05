@@ -9,10 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,7 +17,7 @@ import java.util.stream.Stream;
 /*
     A simple extractor that considers each line as a separate slice
  */
-public class CodeLineTestExecutor implements ITestExecutor {
+public class CodeLineTestExecutor extends ATestExecutor {
 
     private final CodeLineTestExecutorOptions m_options;
 
@@ -28,6 +25,11 @@ public class CodeLineTestExecutor implements ITestExecutor {
         m_options = options;
     }
 
+
+    @Override
+    protected ATestExecutorOptions getOptions() {
+        return m_options;
+    }
     @Override
     public List<ICodeSlice> extractSlices() {
         File sourceFolder = getSourceFolder(m_options.getModulePath());
@@ -58,146 +60,8 @@ public class CodeLineTestExecutor implements ITestExecutor {
         return slices;
     }
 
-    private File getSourceFolder(String modulePath) {
-        File moduleFolder = new File(modulePath);
-        if(!moduleFolder.exists()|| !moduleFolder.isDirectory()) {
-            throw new ExtractorException("Invalid module path " + modulePath);
-        }
-        File sourceFolder = new File(moduleFolder.getPath() + "/src");
-        if(!sourceFolder.exists() || !sourceFolder.isDirectory()) {
-            throw new ExtractorException("Missing source folder in module " + modulePath);
-        }
-        return sourceFolder;
-    }
-
-    @Override
-    public ETestResult test(List<ICodeSlice> slices) {
-        Path testFolderPath = getTestFolderPath();
-        Path testBuildPath = getTestBuildPath();
-        try {
-            deleteFolder(testFolderPath);
-            deleteFolder(testBuildPath);
-            copyFolderStructure(Path.of(m_options.getModulePath()), testFolderPath);
-        } catch (IOException e) {
-            throw new TestingException("Unable to copy module", e);
-        }
-        // Copy unit test file
-        String unitTestFilePath = m_options.getUnitTestFilePath();
-        if(!unitTestFilePath.endsWith(".java")) {
-            unitTestFilePath += ".java";
-        }
-        copy(Path.of(m_options.getModulePath() + "\\" + unitTestFilePath),
-                Path.of(testFolderPath + "\\" + unitTestFilePath));
-
-        // write files to testing folder
-        try {
-            writeSlicesToTestingFolder(slices, testFolderPath.toString());
-        } catch (IOException e) {
-            throw new TestingException("Unable to write slices to testing folder", e);
-        }
-
-        // compile java classes for testing
-        String classPath = System.getProperty("java.class.path");
-        classPath = Arrays.stream(classPath.split(";")).filter(
-                dependency -> dependency.endsWith(".jar") && !dependency.contains("JetBrains")
-        ).collect(Collectors.joining(";"));
-
-        String javaHome = System.getProperty("java.home");
-
-        final List<String> commands = new ArrayList<>();
-        commands.add("cmd.exe");
-        commands.add("/C");
-        commands.add("cd testingfolder");
-        commands.add("& dir /s /B *.java > testingsources.txt"); // write paths of all java files to sources file
-        commands.add("& findstr /v \"^$\" testingsources.txt > temp.txt & move /y temp.txt testingsources.txt >nul "); // remove empty lines from sources file
-        commands.add("& " + javaHome + "/bin/javac -d ../testingbuild -cp " + classPath + " @testingsources.txt"); // compile all java files
-
-        ProcessBuilder pb = new ProcessBuilder(commands);
-        Process p;
-        try {
-            p = pb.start();
-            if(!p.waitFor(1, TimeUnit.MINUTES)) {
-                throw new TestingException("Timed out while compiling java code");
-            }
-            if(p.exitValue() > 0) {
-                return ETestResult.ERROR_COMPILATION;
-            }
-        }
-        catch (IOException | InterruptedException e) {
-            throw new TestingException("Unexpected error while compiling java code", e);
-        }
-
-        // run unit test
-        commands.clear();
-        commands.add("cmd.exe");
-        commands.add("/C");
-        commands.add(javaHome + "/bin/java -Dfile.encoding=UTF-8 " +
-                "-classpath " + testBuildPath + ";" + classPath +
-                " org.junit.platform.console.ConsoleLauncher --select-method " + m_options.getUnitTestMethod());
-
-        ProcessBuilder pb2 = new ProcessBuilder(commands);
-        Process p2;
-        try {
-            p2 = pb2.start();
-            if(!p2.waitFor(1, TimeUnit.MINUTES)) {
-                throw new TestingException("Timed out while running testing code");
-            }
-            if(p2.exitValue() > 0) {
-                String input = IOUtils.toString(p2.getInputStream(), StandardCharsets.UTF_8);
-                String error = IOUtils.toString(p2.getErrorStream(), StandardCharsets.UTF_8);
-                if(error != null && error.length() > 0) {
-                    return ETestResult.ERROR_RUNTIME;
-                }
-                if(input.contains(m_options.getExpectedResult())) {
-                    return ETestResult.FAILED;
-                }
-                return ETestResult.ERROR_RUNTIME;
-            }
-        }
-        catch (IOException | InterruptedException e) {
-            throw new TestingException("Unexpected error while executing unit test", e);
-        }
-
-        return ETestResult.OK;
-    }
-
-    private Path getTestFolderPath() {
-        String dir = System.getProperty("user.dir");
-        return Path.of(dir + "/testingfolder");
-    }
-
-    private Path getTestBuildPath() {
-        String dir = System.getProperty("user.dir");
-        return Path.of(dir + "/testingbuild");
-    }
-
-    public void deleteFolder(Path folder) throws IOException {
-        if(!Files.exists(folder)) {
-            return;
-        }
-        Files.walk(folder)
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
-    }
-
-    public void copyFolderStructure(Path src, Path dest) throws IOException {
-        try (Stream<Path> stream = Files.walk(src)) {
-            stream.filter(path -> !Files.isRegularFile(path))
-                .forEach(source -> copy(source, dest.resolve(src.relativize(source))));
-        }
-    }
-
-    private void copy(Path source, Path dest) {
-        try {
-            Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    private void writeSlicesToTestingFolder(List<ICodeSlice> slices, String testFolderPath) throws IOException {
-        File testSourceFolder = getSourceFolder(testFolderPath);
+    protected void writeSlicesToTestingFolder(List<ICodeSlice> slices) throws IOException {
+        File testSourceFolder = getSourceFolder(getTestFolderPath().toString());
         String fileName = null;
         BufferedWriter writer = null;
         for(ICodeSlice sl : slices) {
@@ -220,5 +84,28 @@ public class CodeLineTestExecutor implements ITestExecutor {
         if(writer != null) {
             writer.close();
         }
+    }
+
+    @Override
+    protected Map<String, String> mapSlicesToFiles(List<ICodeSlice> slices) {
+        Map<String,String> files = new HashMap<>();
+        String fileName = null;
+        StringBuilder sb = null;
+        for(ICodeSlice sl : slices) {
+            CodeLineSlice slice = (CodeLineSlice) sl;
+            if(!slice.getPath().equals(fileName)) {
+                if(sb != null) {
+                    files.put(fileName, sb.toString());
+                }
+                fileName = slice.getPath();
+                sb = new StringBuilder();
+            }
+            sb.append(slice.getCodeLine());
+            sb.append("\n");
+        }
+        if(sb != null) {
+            files.put(fileName, sb.toString());
+        }
+        return files;
     }
 }
