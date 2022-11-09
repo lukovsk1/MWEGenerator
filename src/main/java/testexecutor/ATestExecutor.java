@@ -8,7 +8,6 @@ import slice.ICodeSlice;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -21,7 +20,16 @@ import java.util.stream.Stream;
 
 public abstract class ATestExecutor implements ITestExecutor {
 
-    abstract ATestExecutorOptions getOptions();
+    private final ATestExecutorOptions m_options;
+
+    protected ATestExecutor(ATestExecutorOptions options) {
+        m_options = options;
+
+        System.out.println("Create executor of class " + this.getClass().getName() +" with comilation type " + options.getCompilationType());
+    }
+    protected ATestExecutorOptions getOptions() {
+        return m_options;
+    }
 
     abstract void writeSlicesToTestingFolder(List<ICodeSlice> slices) throws IOException;
 

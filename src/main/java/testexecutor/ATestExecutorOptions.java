@@ -11,7 +11,7 @@ public abstract class ATestExecutorOptions {
     private String m_unitTestFilePath;
     private String m_unitTestMethod;
     private String m_expectedResult;
-    private ECompilationType m_compilationType = ECompilationType.COMMAND_LINE;
+    private ECompilationType m_compilationType = ECompilationType.IN_MEMORY;
 
     public ATestExecutorOptions withModulePath(String modulePath) {
         m_modulePath = modulePath;

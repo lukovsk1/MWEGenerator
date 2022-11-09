@@ -1,17 +1,15 @@
 package testexecutor;
 
-import org.apache.commons.io.IOUtils;
 import slice.CodeLineSlice;
 import slice.ICodeSlice;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /*
@@ -19,20 +17,18 @@ import java.util.stream.Stream;
  */
 public class CodeLineTestExecutor extends ATestExecutor {
 
-    private final CodeLineTestExecutorOptions m_options;
-
     public CodeLineTestExecutor(CodeLineTestExecutorOptions options) {
-        m_options = options;
+        super(options);
     }
 
 
     @Override
-    protected ATestExecutorOptions getOptions() {
-        return m_options;
+    protected CodeLineTestExecutorOptions getOptions() {
+        return (CodeLineTestExecutorOptions) super.getOptions();
     }
     @Override
     public List<ICodeSlice> extractSlices() {
-        File sourceFolder = getSourceFolder(m_options.getModulePath());
+        File sourceFolder = getSourceFolder(getOptions().getModulePath());
         List<Path> filePaths;
         try (Stream<Path> stream = Files.walk(Path.of(sourceFolder.getPath()))) {
             filePaths = stream.filter(Files::isRegularFile).toList();

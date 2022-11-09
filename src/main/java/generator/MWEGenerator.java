@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 public class MWEGenerator {
 
     public static void main(String[] args) {
-
+        long start = System.currentTimeMillis();
         // extract code slices
         ITestExecutor executor = getTestExecutor();
         List<ICodeSlice> mweSlicing =  new ArrayList<>(executor.extractSlices());
@@ -61,7 +61,8 @@ public class MWEGenerator {
 
         // recreate mwe
         System.out.println();
-        System.out.println("Found an optimal slicing (MWE):");
+        long time = System.currentTimeMillis() - start;
+        System.out.println("Found an (locally) minimal slicing (MWE) in " + time + " ms:");
         System.out.println(getSlicingIdentifier(mweSlicing, totalSlices));
         System.out.println("Recreating result in testingfolder...");
         executor.recreateCode(mweSlicing);
