@@ -64,7 +64,7 @@ public class MWEGenerator {
         System.out.println("Found an optimal slicing (MWE):");
         System.out.println(getSlicingIdentifier(mweSlicing, totalSlices));
         System.out.println("Recreating result in testingfolder...");
-        executor.test(mweSlicing);
+        executor.recreateCode(mweSlicing);
         System.out.println("############## FINISHED ##############");
     }
 

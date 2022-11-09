@@ -95,7 +95,7 @@ public class CodeLineTestExecutor extends ATestExecutor {
             CodeLineSlice slice = (CodeLineSlice) sl;
             if(!slice.getPath().equals(fileName)) {
                 if(sb != null) {
-                    files.put(fileName, sb.toString());
+                    files.put(fileNameToClassName(fileName), sb.toString());
                 }
                 fileName = slice.getPath();
                 sb = new StringBuilder();
@@ -104,8 +104,22 @@ public class CodeLineTestExecutor extends ATestExecutor {
             sb.append("\n");
         }
         if(sb != null) {
-            files.put(fileName, sb.toString());
+            files.put(fileNameToClassName(fileName), sb.toString());
         }
         return files;
+    }
+
+    protected String fileNameToClassName(String fileName) {
+        if(fileName == null || fileName.isEmpty()) {
+            return null;
+        }
+
+        if(fileName.matches("^[.\\\\/].+")) {
+            fileName = fileName.substring(1);
+        }
+        if(fileName.endsWith(".java")) {
+            fileName = fileName.substring(0, fileName.length() - 5);
+        }
+        return fileName.replaceAll("[\\\\/]", ".");
     }
 }

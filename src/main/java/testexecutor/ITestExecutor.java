@@ -5,6 +5,7 @@ import slice.ICodeSlice;
 import java.util.List;
 
 public interface ITestExecutor {
+
     enum ETestResult {
         OK,
         FAILED,
@@ -13,6 +14,8 @@ public interface ITestExecutor {
     }
 
     List<ICodeSlice> extractSlices();
+
+    void recreateCode(List<ICodeSlice> slices);
 
     ETestResult test(List<ICodeSlice> slices);
 }

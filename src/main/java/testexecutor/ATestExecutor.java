@@ -1,10 +1,15 @@
 package testexecutor;
 
 import org.apache.commons.io.IOUtils;
+import org.mdkt.compiler.CompilationException;
+import org.mdkt.compiler.InMemoryJavaCompiler;
 import slice.ICodeSlice;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -73,7 +78,7 @@ public abstract class ATestExecutor implements ITestExecutor {
     public ETestResult test(List<ICodeSlice> slices) {
         switch (getOptions().getCompilationType()) {
             case IN_MEMORY -> {
-                return null;
+                return testInMemory(slices);
             }
             case COMMAND_LINE -> {
                 return testWithCommandLine(slices);
@@ -83,10 +88,64 @@ public abstract class ATestExecutor implements ITestExecutor {
         }
     }
 
+    public void recreateCode(List<ICodeSlice> slices) {
+        // TODO improve this to not actually run the test again
+        testWithCommandLine(slices);
+    }
+
     protected ETestResult testInMemory(List<ICodeSlice> slices) {
+        InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
+
+        String[] unitTestName = getOptions().getUnitTestMethod().split("#");
+        String unitTestFilePath = getOptions().getUnitTestFilePath();
+        if(!unitTestFilePath.endsWith(".java")) {
+            unitTestFilePath += ".java";
+        }
+
+        try {
+            String unitTestFile = Files.readString(Path.of(getOptions().getModulePath() + "\\" + unitTestFilePath));
+            compiler.addSource(unitTestName[0], unitTestFile);
+            for (Map.Entry<String, String> file : mapSlicesToFiles(slices).entrySet()) {
+                compiler.addSource(file.getKey(), file.getValue());
+            }
+        } catch (Exception e) {
+            throw new TestingException("Error while adding files", e);
+        }
+        Map<String, Class<?>> classes;
+
+        try {
+            classes = compiler.compileAll();
+        } catch (CompilationException e) {
+            return ETestResult.ERROR_COMPILATION;
+        } catch (Exception e) {
+            throw new TestingException("Error during compilation", e);
+        }
 
 
-        return ETestResult.ERROR_COMPILATION;
+        // execute unit test
+        Class<?> unitTestClass = classes.get(unitTestName[0]);
+        try {
+            Constructor<?> constructor = unitTestClass.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            Object unitTest = constructor.newInstance();
+
+            Method testingMethod = unitTestClass.getDeclaredMethod(unitTestName[1]);
+            testingMethod.setAccessible(true);
+
+            try {
+                testingMethod.invoke(unitTest);
+                return ETestResult.OK;
+            } catch (Exception ex) {
+                if(ex.getCause().toString() != null && ex.getCause().toString().contains(getOptions().getExpectedResult())) {
+                    return ETestResult.FAILED;
+                }
+            }
+        } catch (Exception e) {
+            throw new TestingException("Error during test execution", e);
+        }
+
+
+        return ETestResult.ERROR_RUNTIME;
     }
 
     protected ETestResult testWithCommandLine(List<ICodeSlice> slices) {
