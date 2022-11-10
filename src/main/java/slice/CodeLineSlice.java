@@ -1,34 +1,19 @@
 package slice;
 
-public class CodeLineSlice implements ICodeSlice {
+public class CodeLineSlice extends ACodeSlice<String> {
 
-    private final String m_path;
-
-    private final String m_codeLine;
     private final int m_lineNumber;
-    private final int m_sliceNumber;
 
     public CodeLineSlice(String path, String codeLine, int lineNumber, int sliceNumber) {
-        m_path = path;
-        m_codeLine = codeLine;
+        super(path, codeLine, sliceNumber);
         m_lineNumber = lineNumber;
-        m_sliceNumber = sliceNumber;
-    }
-
-    public String getPath() {
-        return m_path;
     }
 
     public String getCodeLine() {
-        return m_codeLine;
+        return super.getContent();
     }
 
     public int getLineNumber() {
         return m_lineNumber;
-    }
-
-    @Override
-    public int getSliceNumber() {
-        return m_sliceNumber;
     }
 }
