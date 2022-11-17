@@ -1,8 +1,9 @@
 package testexecutor.ast;
 
 import org.eclipse.jdt.core.compiler.InvalidInputException;
-import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import slice.ASTCodeSlice;
 import slice.CodeLineSlice;
 import slice.ICodeSlice;
 import testexecutor.ATestExecutor;
@@ -10,16 +11,15 @@ import testexecutor.ExtractorException;
 import testexecutor.TestingException;
 import utility.FileUtility;
 import utility.JavaParserUtility;
+import utility.JavaParserUtility.Token;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
@@ -27,9 +27,6 @@ import java.util.stream.Stream;
     A simple extractor that considers each line as a separate slice
  */
 public class ASTTestExecutor extends ATestExecutor {
-
-	public static int JAVA_LANGUAGE_SPECIFICATION = AST.getJLSLatest();
-
 
 	public ASTTestExecutor(ASTTestExecutorOptions options) {
 		super(options);
@@ -54,21 +51,60 @@ public class ASTTestExecutor extends ATestExecutor {
 
 		List<ICodeSlice> slices = new ArrayList<>();
 
-		int sliceNr = 0;
+		AtomicInteger sliceNr = new AtomicInteger();
 		for (Path filePath : filePaths) {
 			try {
 				String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
 				String code = FileUtility.readTextFile(filePath);
 				CompilationUnit javaAST = JavaParserUtility.parse(code, true);
-				List<JavaParserUtility.Token> tokensToAST = JavaParserUtility.tokensToAST(code, javaAST);
-
-	
+				List<Token> tokensToAST = JavaParserUtility.tokensToAST(code, javaAST);
+				slices.addAll(transformToSlices(tokensToAST, relativeFileName, sliceNr));
 			} catch (IOException | InvalidInputException e) {
 				throw new ExtractorException("Unable to create slices from file " + filePath, e);
 			}
 		}
 
 		return slices;
+	}
+
+	private List<ASTCodeSlice> transformToSlices(List<Token> fromTokens, String relativeFileName, AtomicInteger sliceNr) {
+		var tokens = fromTokens.stream()
+				.sorted(Comparator.comparing(t -> t.start))
+				.toList();
+
+		// Combine all tokens that belong to the same AST node:
+		Map<ASTNode, ASTCodeSlice> astNodeToSlice = new HashMap<>();
+		for (Token token : tokens) {
+			ASTCodeSlice slice = astNodeToSlice.get(token.node);
+			if (slice == null) {
+				slice = new ASTCodeSlice(relativeFileName, sliceNr.getAndIncrement());
+				astNodeToSlice.put(token.node, slice);
+			}
+			slice.addToken(token);
+		}
+
+		var slices = new ArrayList<>(astNodeToSlice.values());
+		calculateDependencies(slices);
+		return slices;
+	}
+
+	private void calculateDependencies(List<ASTCodeSlice> slices) {
+		// slides and their tokens are ordered by start
+		for (int i = 0; i < slices.size(); i++) {
+			ASTCodeSlice slice = slices.get(i);
+			int start = slice.getStart();
+			int end = slice.getEnd();
+			for (int j = i + 1; j < slices.size(); j++) {
+				ASTCodeSlice otherSlice = slices.get(j);
+				if (otherSlice.getStart() > start) {
+					if (otherSlice.getEnd() < end) {
+						// TODO add dependency
+					}
+				} else {
+					break;
+				}
+			}
+		}
 	}
 
 
