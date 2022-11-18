@@ -14,12 +14,32 @@ import java.util.stream.IntStream;
 public class MWEGenerator {
 
 	public static void main(String[] args) {
-		long start = System.currentTimeMillis();
 		// extract code slices
 		ITestExecutor executor = getTestExecutor();
-		List<ICodeSlice> mweSlicing = new ArrayList<>(executor.extractSlices());
+		List<ICodeSlice> mweSlicing;
+		int testNr = 1;
+		int totalSlices;
+		do {
+			System.out.println("############## RUNNING TEST NR. " + testNr++ + " ##############");
+			mweSlicing = new ArrayList<>(executor.extractSlices());
+			totalSlices = mweSlicing.size();
+			long start = System.currentTimeMillis();
+			mweSlicing = runDDMin(executor, mweSlicing, totalSlices);
+			long time = System.currentTimeMillis() - start;
+			System.out.println();
+			System.out.println("Found an (locally) minimal slicing (MWE) in " + time + " ms:");
+			System.out.println(getSlicingIdentifier(mweSlicing, totalSlices));
 
-		int totalSlices = mweSlicing.size();
+			// recreate mwe
+			System.out.println("Recreating result in testingoutput folder...");
+			executor.recreateCode(mweSlicing);
+			executor.changeSourceToOutputFolder();
+		} while (mweSlicing.size() < totalSlices);
+
+		System.out.println("############## FINISHED ##############");
+	}
+
+	private static List<ICodeSlice> runDDMin(ITestExecutor executor, List<ICodeSlice> mweSlicing, int totalSlices) {
 		Map<String, ITestExecutor.ETestResult> resultMap = new HashMap<>();
 
 		if (executeTest(executor, Collections.emptyList(), totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED
@@ -28,8 +48,6 @@ public class MWEGenerator {
 			System.exit(1);
 		}
 
-
-		// ddmin algorithm
 		List<ICodeSlice> slices = new ArrayList<>(mweSlicing);
 		int granularity = 2;
 		while (slices.size() >= 2) {
@@ -57,15 +75,7 @@ public class MWEGenerator {
 				granularity = Math.min(granularity * 2, slices.size());
 			}
 		}
-
-		// recreate mwe
-		System.out.println();
-		long time = System.currentTimeMillis() - start;
-		System.out.println("Found an (locally) minimal slicing (MWE) in " + time + " ms:");
-		System.out.println(getSlicingIdentifier(mweSlicing, totalSlices));
-		System.out.println("Recreating result in testingfolder...");
-		executor.recreateCode(mweSlicing);
-		System.out.println("############## FINISHED ##############");
+		return mweSlicing;
 	}
 
 	private static ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {

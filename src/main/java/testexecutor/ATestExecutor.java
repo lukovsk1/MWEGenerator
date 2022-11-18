@@ -31,8 +31,8 @@ public abstract class ATestExecutor implements ITestExecutor {
 		return m_options;
 	}
 
-	protected void writeSlicesToTestingFolder(List<ICodeSlice> slices) throws IOException {
-		File testSourceFolder = getSourceFolder(getTestFolderPath().toString());
+	protected void writeSlicesToTestingFolder(List<ICodeSlice> slices, Path folderPath) throws IOException {
+		File testSourceFolder = getSourceFolder(folderPath.toString());
 		for (Map.Entry<String, String> file : mapSlicesToFiles(slices).entrySet()) {
 			String fileName = file.getKey();
 			File newFile = new File(testSourceFolder.getPath() + fileName);
@@ -65,9 +65,19 @@ public abstract class ATestExecutor implements ITestExecutor {
 		return Path.of(dir + "/testingfolder");
 	}
 
+	protected Path getTestSourcePath() {
+		String dir = System.getProperty("user.dir");
+		return Path.of(dir + "/testingsource");
+	}
+
 	protected Path getTestBuildPath() {
 		String dir = System.getProperty("user.dir");
 		return Path.of(dir + "/testingbuild");
+	}
+
+	protected Path getTestOutputPath() {
+		String dir = System.getProperty("user.dir");
+		return Path.of(dir + "/testingoutput");
 	}
 
 	protected void deleteFolder(Path folder) throws IOException {
@@ -80,9 +90,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 				.forEach(File::delete);
 	}
 
-	protected void copyFolderStructure(Path src, Path dest) throws IOException {
+	protected void copyFolderStructure(Path src, Path dest, boolean includeFiles) throws IOException {
 		try (Stream<Path> stream = Files.walk(src)) {
-			stream.filter(path -> !Files.isRegularFile(path))
+			stream.filter(path -> includeFiles || !Files.isRegularFile(path))
 					.forEach(source -> copy(source, dest.resolve(src.relativize(source))));
 		}
 	}
@@ -123,18 +133,54 @@ public abstract class ATestExecutor implements ITestExecutor {
 	}
 
 	public void recreateCode(List<ICodeSlice> slices) {
-		// TODO improve this to not actually run the test again
-		testWithCommandLine(slices);
-	}
-
-	protected ETestResult testInMemory(List<ICodeSlice> slices) {
-		InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
-
-		String[] unitTestName = getOptions().getUnitTestMethod().split("#");
+		Path testOutputPath = getTestOutputPath();
+		try {
+			deleteFolder(testOutputPath);
+			copyFolderStructure(getTestSourcePath(), testOutputPath, false);
+		} catch (IOException e) {
+			throw new TestingException("Unable to copy module", e);
+		}
+		// Copy unit test file
 		String unitTestFilePath = getOptions().getUnitTestFilePath();
 		if (!unitTestFilePath.endsWith(".java")) {
 			unitTestFilePath += ".java";
 		}
+		copy(Path.of(getTestSourcePath() + "\\" + unitTestFilePath),
+				Path.of(testOutputPath + "\\" + unitTestFilePath));
+
+		// write files to output folder
+		try {
+			writeSlicesToTestingFolder(slices, testOutputPath);
+		} catch (IOException e) {
+			throw new TestingException("Unable to write slices to testing folder", e);
+		}
+	}
+
+	@Override
+	public void changeSourceToOutputFolder() {
+		getOptions().withModulePath(getTestOutputPath().toString());
+	}
+
+	protected ETestResult testInMemory(List<ICodeSlice> slices) {
+		// copy source folder
+		Path testSourcePath = getTestSourcePath();
+		try {
+			deleteFolder(testSourcePath);
+			copyFolderStructure(Path.of(getOptions().getModulePath()), testSourcePath, true);
+		} catch (IOException e) {
+			throw new TestingException("Unable to copy module", e);
+		}
+		// Copy unit test file to source folder
+		String unitTestFilePath = getOptions().getUnitTestFilePath();
+		if (!unitTestFilePath.endsWith(".java")) {
+			unitTestFilePath += ".java";
+		}
+		copy(Path.of(getOptions().getModulePath() + "\\" + unitTestFilePath),
+				Path.of(testSourcePath + "\\" + unitTestFilePath));
+
+		InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
+
+		String[] unitTestName = getOptions().getUnitTestMethod().split("#");
 
 		try {
 			String unitTestFile = Files.readString(Path.of(getOptions().getModulePath() + "\\" + unitTestFilePath));
@@ -183,12 +229,15 @@ public abstract class ATestExecutor implements ITestExecutor {
 	}
 
 	protected ETestResult testWithCommandLine(List<ICodeSlice> slices) {
+		Path testSourcePath = getTestSourcePath();
 		Path testFolderPath = getTestFolderPath();
 		Path testBuildPath = getTestBuildPath();
 		try {
 			deleteFolder(testFolderPath);
 			deleteFolder(testBuildPath);
-			copyFolderStructure(Path.of(getOptions().getModulePath()), testFolderPath);
+			deleteFolder(testSourcePath);
+			copyFolderStructure(Path.of(getOptions().getModulePath()), testSourcePath, true);
+			copyFolderStructure(Path.of(getOptions().getModulePath()), testFolderPath, false);
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
 		}
@@ -199,10 +248,12 @@ public abstract class ATestExecutor implements ITestExecutor {
 		}
 		copy(Path.of(getOptions().getModulePath() + "\\" + unitTestFilePath),
 				Path.of(testFolderPath + "\\" + unitTestFilePath));
+		copy(Path.of(getOptions().getModulePath() + "\\" + unitTestFilePath),
+				Path.of(testSourcePath + "\\" + unitTestFilePath));
 
 		// write files to testing folder
 		try {
-			writeSlicesToTestingFolder(slices);
+			writeSlicesToTestingFolder(slices, getTestFolderPath());
 		} catch (IOException e) {
 			throw new TestingException("Unable to write slices to testing folder", e);
 		}
