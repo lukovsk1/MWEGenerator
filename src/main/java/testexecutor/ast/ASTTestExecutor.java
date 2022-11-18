@@ -4,23 +4,20 @@ import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import slice.ASTCodeSlice;
-import slice.CodeLineSlice;
 import slice.ICodeSlice;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
-import testexecutor.TestingException;
 import utility.FileUtility;
 import utility.JavaParserUtility;
 import utility.JavaParserUtility.Token;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /*
@@ -84,6 +81,7 @@ public class ASTTestExecutor extends ATestExecutor {
 		}
 
 		var slices = new ArrayList<>(astNodeToSlice.values());
+		slices.sort(Comparator.comparing(ASTCodeSlice::getStart));
 		calculateDependencies(slices);
 		return slices;
 	}
@@ -98,7 +96,7 @@ public class ASTTestExecutor extends ATestExecutor {
 				ASTCodeSlice otherSlice = slices.get(j);
 				if (otherSlice.getStart() > start) {
 					if (otherSlice.getEnd() < end) {
-						// TODO add dependency
+						slice.addDependent(otherSlice.getSliceNumber());
 					}
 				} else {
 					break;
@@ -107,36 +105,19 @@ public class ASTTestExecutor extends ATestExecutor {
 		}
 	}
 
-
-	@Override
-	protected BiConsumer<BufferedWriter, ICodeSlice> getFileWriterConsumer() {
-		return (writer, slice) -> {
-			try {
-				writer.write(((CodeLineSlice) slice).getCodeLine());
-			} catch (IOException e) {
-				throw new TestingException("Error while recreating test file");
-			}
-		};
-	}
-
 	@Override
 	protected Map<String, String> mapSlicesToFiles(List<ICodeSlice> slices) {
 		Map<String, String> files = new HashMap<>();
-		String fileName = null;
-		StringBuilder sb = null;
-		for (ICodeSlice sl : slices) {
-			CodeLineSlice slice = (CodeLineSlice) sl;
-			if (!slice.getPath().equals(fileName)) {
-				if (sb != null) {
-					files.put(fileName, sb.toString());
-				}
-				fileName = slice.getPath();
-				sb = new StringBuilder();
-			}
-			sb.append(slice.getCodeLine());
-			sb.append("\n");
-		}
-		if (sb != null) {
+		Map<String, List<ICodeSlice>> slicesByFile = slices.stream()
+				.collect(Collectors.groupingBy(ICodeSlice::getPath, Collectors.mapping(sl -> sl, Collectors.toList())));
+		for (Map.Entry<String, List<ICodeSlice>> entry : slicesByFile.entrySet()) {
+			String fileName = entry.getKey();
+			StringBuilder sb = new StringBuilder();
+			entry.getValue().stream()
+					.flatMap(sl -> ((ASTCodeSlice) sl).getTokens().stream())
+					.sorted(Comparator.comparing(t -> t.start))
+					.forEach(token -> sb.append(token.code));
+
 			files.put(fileName, sb.toString());
 		}
 		return files;

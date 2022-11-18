@@ -4,9 +4,7 @@ import slice.ICodeSlice;
 import slice.SingleCharacterCodeSlice;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
-import testexecutor.TestingException;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -62,17 +60,6 @@ public class SingleCharacterTestExecutor extends ATestExecutor {
 		}
 
 		return slices;
-	}
-
-	@Override
-	protected BiConsumer<BufferedWriter, ICodeSlice> getFileWriterConsumer() {
-		return (writer, slice) -> {
-			try {
-				writer.write(((SingleCharacterCodeSlice) slice).getContent());
-			} catch (IOException e) {
-				throw new TestingException("Error while recreating test file");
-			}
-		};
 	}
 
 	@Override

@@ -4,9 +4,7 @@ import slice.CodeLineSlice;
 import slice.ICodeSlice;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
-import testexecutor.TestingException;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 /*
@@ -61,17 +58,6 @@ public class CodeLineTestExecutor extends ATestExecutor {
 		}
 
 		return slices;
-	}
-
-	@Override
-	protected BiConsumer<BufferedWriter, ICodeSlice> getFileWriterConsumer() {
-		return (writer, slice) -> {
-			try {
-				writer.write(((CodeLineSlice) slice).getCodeLine());
-			} catch (IOException e) {
-				throw new TestingException("Error while recreating test file");
-			}
-		};
 	}
 
 	@Override

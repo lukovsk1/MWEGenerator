@@ -8,6 +8,7 @@ import java.util.List;
 public class ASTCodeSlice extends ACodeSlice<Void> {
 
 	private final List<Token> m_tokens = new ArrayList<>();
+	private final List<Integer> m_dependents = new ArrayList<>();
 
 	public ASTCodeSlice(String path, int sliceNumber) {
 		super(path, null, sliceNumber);
@@ -15,6 +16,10 @@ public class ASTCodeSlice extends ACodeSlice<Void> {
 
 	public void addToken(Token token) {
 		m_tokens.add(token);
+	}
+
+	public List<Token> getTokens() {
+		return new ArrayList<>(m_tokens);
 	}
 
 	public int getStart() {
@@ -29,5 +34,9 @@ public class ASTCodeSlice extends ACodeSlice<Void> {
 			return -1;
 		}
 		return m_tokens.get(m_tokens.size() - 1).end;
+	}
+
+	public void addDependent(int dependentId) {
+		m_dependents.add(dependentId);
 	}
 }

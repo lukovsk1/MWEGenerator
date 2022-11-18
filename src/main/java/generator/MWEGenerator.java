@@ -3,8 +3,8 @@ package generator;
 import slice.ICodeSlice;
 import testexecutor.ATestExecutorOptions;
 import testexecutor.ITestExecutor;
-import testexecutor.singlecharacter.SingleCharacterTestExecutor;
-import testexecutor.singlecharacter.SingleCharacterTestExecutorOptions;
+import testexecutor.ast.ASTTestExecutor;
+import testexecutor.ast.ASTTestExecutorOptions;
 import utility.ListUtility;
 
 import java.util.*;
@@ -97,12 +97,12 @@ public class MWEGenerator {
 	}
 
 	private static ITestExecutor getTestExecutor() {
-		SingleCharacterTestExecutorOptions options = (SingleCharacterTestExecutorOptions) new SingleCharacterTestExecutorOptions()
+		ASTTestExecutorOptions options = (ASTTestExecutorOptions) new ASTTestExecutorOptions()
 				.withModulePath(System.getProperty("user.dir") + "\\CalculatorExample")
 				.withUnitTestFilePath("test\\calculator\\CalculatorTest.java")
 				.withUnitTestMethod("calculator.CalculatorTest#testCalculator")
 				.withExpectedResult("org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>")
 				.withCompilationType(ATestExecutorOptions.ECompilationType.IN_MEMORY);
-		return new SingleCharacterTestExecutor(options);
+		return new ASTTestExecutor(options);
 	}
 }

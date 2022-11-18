@@ -14,7 +14,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,11 +31,8 @@ public abstract class ATestExecutor implements ITestExecutor {
 		return m_options;
 	}
 
-	protected abstract BiConsumer<BufferedWriter, ICodeSlice> getFileWriterConsumer();
-
 	protected void writeSlicesToTestingFolder(List<ICodeSlice> slices) throws IOException {
 		File testSourceFolder = getSourceFolder(getTestFolderPath().toString());
-		BiConsumer<BufferedWriter, ICodeSlice> consumer = getFileWriterConsumer();
 		for (Map.Entry<String, String> file : mapSlicesToFiles(slices).entrySet()) {
 			String fileName = file.getKey();
 			File newFile = new File(testSourceFolder.getPath() + fileName);
