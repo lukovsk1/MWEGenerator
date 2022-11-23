@@ -39,16 +39,16 @@ public class MWEGenerator {
 		System.out.println("############## FINISHED ##############");
 	}
 
-	private static List<ICodeSlice> runDDMin(ITestExecutor executor, List<ICodeSlice> mweSlicing, int totalSlices) {
+	private static List<ICodeSlice> runDDMin(ITestExecutor executor, List<ICodeSlice> initialSlicing, int totalSlices) {
 		Map<String, ITestExecutor.ETestResult> resultMap = new HashMap<>();
 
 		if (executeTest(executor, Collections.emptyList(), totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED
-				|| executeTest(executor, mweSlicing, totalSlices, resultMap) != ITestExecutor.ETestResult.FAILED) {
+				|| executeTest(executor, initialSlicing, totalSlices, resultMap) != ITestExecutor.ETestResult.FAILED) {
 			System.out.println("Initial testing conditions are not met.");
 			System.exit(1);
 		}
 
-		List<ICodeSlice> slices = new ArrayList<>(mweSlicing);
+		List<ICodeSlice> slices = new ArrayList<>(initialSlicing);
 		int granularity = 2;
 		while (slices.size() >= 2) {
 			List<List<ICodeSlice>> subsets = ListUtility.split(slices, granularity);
@@ -59,7 +59,6 @@ public class MWEGenerator {
 				List<ICodeSlice> complement = ListUtility.listMinus(slices, subset);
 
 				if (executeTest(executor, complement, totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED) {
-					mweSlicing = new ArrayList<>(complement);
 					slices = complement;
 					granularity = Math.max(granularity - 1, 2);
 					someComplementIsFailing = true;
@@ -75,7 +74,7 @@ public class MWEGenerator {
 				granularity = Math.min(granularity * 2, slices.size());
 			}
 		}
-		return mweSlicing;
+		return slices;
 	}
 
 	private static ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {

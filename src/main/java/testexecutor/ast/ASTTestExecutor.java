@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -54,8 +55,8 @@ public class ASTTestExecutor extends ATestExecutor {
 				String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
 				String code = FileUtility.readTextFile(filePath);
 				CompilationUnit javaAST = JavaParserUtility.parse(code, true);
-				List<Token> tokensToAST = JavaParserUtility.tokensToAST(code, javaAST);
-				slices.addAll(transformToSlices(tokensToAST, relativeFileName, sliceNr));
+				List<Token> tokens = JavaParserUtility.tokensToAST(code, javaAST);
+				slices.add(transformToSlices(tokens, relativeFileName, sliceNr));
 			} catch (IOException | InvalidInputException e) {
 				throw new ExtractorException("Unable to create slices from file " + filePath, e);
 			}
@@ -64,11 +65,9 @@ public class ASTTestExecutor extends ATestExecutor {
 		return slices;
 	}
 
-	private List<ASTCodeSlice> transformToSlices(List<Token> fromTokens, String relativeFileName, AtomicInteger sliceNr) {
-		var tokens = fromTokens.stream()
-				.sorted(Comparator.comparing(t -> t.start))
-				.toList();
-
+	private ASTCodeSlice transformToSlices(List<Token> tokens, String relativeFileName, AtomicInteger sliceNr) {
+		ASTCodeSlice rootSlice = new ASTCodeSlice(relativeFileName, sliceNr.getAndIncrement());
+		rootSlice.setLevel(0);
 		// Combine all tokens that belong to the same AST node:
 		Map<ASTNode, ASTCodeSlice> astNodeToSlice = new HashMap<>();
 		for (Token token : tokens) {
@@ -79,29 +78,51 @@ public class ASTTestExecutor extends ATestExecutor {
 			}
 			slice.addToken(token);
 		}
+		calculateDependencies(rootSlice, astNodeToSlice);
 
-		var slices = new ArrayList<>(astNodeToSlice.values());
-		slices.sort(Comparator.comparing(ASTCodeSlice::getStart));
-		calculateDependencies(slices);
-		return slices;
+		return rootSlice;
 	}
 
-	private void calculateDependencies(List<ASTCodeSlice> slices) {
-		// slides and their tokens are ordered by start
-		for (int i = 0; i < slices.size(); i++) {
-			ASTCodeSlice slice = slices.get(i);
-			int start = slice.getStart();
-			int end = slice.getEnd();
-			for (int j = i + 1; j < slices.size(); j++) {
-				ASTCodeSlice otherSlice = slices.get(j);
-				if (otherSlice.getStart() > start) {
-					if (otherSlice.getEnd() < end) {
-						slice.addDependent(otherSlice.getSliceNumber());
-					}
+	private void calculateDependencies(ASTCodeSlice rootSlice, Map<ASTNode, ASTCodeSlice> nodesToSlices) {
+		// For each node, calculate its children and its level
+		// TODO: a more efficient implementation might be possible
+		if (nodesToSlices.isEmpty()) {
+			return;
+		}
+		int level = 1;
+		Set<ASTNode> nodesOnParentLevel = Collections.emptySet();
+		Set<ASTNode> nodesOnLevel = new HashSet<>();
+		AtomicReference<ASTNode> parent = new AtomicReference<>(null);
+		// check if we have a slice without a calculated level
+		while (true) {
+			var childNodes = nodesToSlices.keySet()
+					.stream()
+					.filter(node -> Objects.equals(node.getParent(), parent.get()))
+					.filter(node -> !Objects.equals(node, parent.get()))
+					.toList();
+			for (var child : childNodes) {
+				ASTCodeSlice slice = nodesToSlices.get(child);
+				slice.setLevel(level);
+				nodesOnLevel.add(child);
+				if (parent.get() != null) {
+					nodesToSlices.get(parent.get()).addChild(slice);
 				} else {
-					break;
+					rootSlice.addChild(slice);
 				}
 			}
+			// descend to next level
+			if (nodesOnParentLevel.isEmpty()) {
+				if (nodesOnLevel.isEmpty()) {
+					return;
+				}
+				nodesOnParentLevel = new HashSet<>(nodesOnLevel);
+				nodesOnLevel = new HashSet<>();
+				level++;
+			}
+
+			// set next parent and remove it from set
+			parent.set(nodesOnParentLevel.iterator().next());
+			nodesOnParentLevel.remove(parent.get());
 		}
 	}
 

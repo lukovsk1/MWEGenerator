@@ -5,10 +5,11 @@ import utility.JavaParserUtility.Token;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ASTCodeSlice extends ACodeSlice<Void> {
+public class ASTCodeSlice extends ACodeSlice<Void> implements IHierarchicalCodeSlice {
 
 	private final List<Token> m_tokens = new ArrayList<>();
-	private final List<Integer> m_dependents = new ArrayList<>();
+	private final List<ASTCodeSlice> m_children = new ArrayList<>();
+	private int m_level = -1;
 
 	public ASTCodeSlice(String path, int sliceNumber) {
 		super(path, null, sliceNumber);
@@ -36,7 +37,21 @@ public class ASTCodeSlice extends ACodeSlice<Void> {
 		return m_tokens.get(m_tokens.size() - 1).end;
 	}
 
-	public void addDependent(int dependentId) {
-		m_dependents.add(dependentId);
+	public void addChild(ASTCodeSlice child) {
+		m_children.add(child);
+	}
+
+	@Override
+	public List<IHierarchicalCodeSlice> getChildren() {
+		return new ArrayList<>(m_children);
+	}
+
+	public void setLevel(int level) {
+		this.m_level = level;
+	}
+
+	@Override
+	public int getLevel() {
+		return m_level;
 	}
 }
