@@ -1,12 +1,13 @@
 package utility;
 
-import java.util.ArrayList;
-import java.util.List;
+import slice.IHierarchicalCodeSlice;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
-public final class ListUtility {
+public final class CollectionsUtility {
 
-	private ListUtility() {
+	private CollectionsUtility() {
 	}
 
 	/*
@@ -37,5 +38,20 @@ public final class ListUtility {
 		return c1.stream()
 				.filter(slice -> !c2.contains(slice))
 				.collect(Collectors.toList());
+	}
+
+	public static Set<IHierarchicalCodeSlice> getChildrenInDeep(IHierarchicalCodeSlice sl) {
+		if (sl == null) {
+			return Collections.emptySet();
+		}
+		if (sl.getChildren().isEmpty()) {
+			return Collections.singleton(sl);
+		}
+		var returnValue = new HashSet<IHierarchicalCodeSlice>();
+		returnValue.add(sl);
+		for (IHierarchicalCodeSlice child : sl.getChildren()) {
+			returnValue.addAll(getChildrenInDeep(child));
+		}
+		return returnValue;
 	}
 }

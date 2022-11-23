@@ -42,7 +42,7 @@ public class ASTCodeSlice extends ACodeSlice<Void> implements IHierarchicalCodeS
 	}
 
 	@Override
-	public List<IHierarchicalCodeSlice> getChildren() {
+	public List<ASTCodeSlice> getChildren() {
 		return new ArrayList<>(m_children);
 	}
 

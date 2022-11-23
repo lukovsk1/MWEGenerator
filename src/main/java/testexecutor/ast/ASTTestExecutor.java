@@ -7,6 +7,7 @@ import slice.ASTCodeSlice;
 import slice.ICodeSlice;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
+import utility.CollectionsUtility;
 import utility.FileUtility;
 import utility.JavaParserUtility;
 import utility.JavaParserUtility.Token;
@@ -130,7 +131,11 @@ public class ASTTestExecutor extends ATestExecutor {
 	protected Map<String, String> mapSlicesToFiles(List<ICodeSlice> slices) {
 		Map<String, String> files = new HashMap<>();
 		Map<String, List<ICodeSlice>> slicesByFile = slices.stream()
+				.map(sl -> ((ASTCodeSlice) sl))
+				.map(CollectionsUtility::getChildrenInDeep)
+				.flatMap(Set::stream)
 				.collect(Collectors.groupingBy(ICodeSlice::getPath, Collectors.mapping(sl -> sl, Collectors.toList())));
+
 		for (Map.Entry<String, List<ICodeSlice>> entry : slicesByFile.entrySet()) {
 			String fileName = entry.getKey();
 			StringBuilder sb = new StringBuilder();

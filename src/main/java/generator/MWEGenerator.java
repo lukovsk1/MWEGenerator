@@ -5,7 +5,7 @@ import testexecutor.ATestExecutorOptions;
 import testexecutor.ITestExecutor;
 import testexecutor.ast.ASTTestExecutor;
 import testexecutor.ast.ASTTestExecutorOptions;
-import utility.ListUtility;
+import utility.CollectionsUtility;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,12 +51,12 @@ public class MWEGenerator {
 		List<ICodeSlice> slices = new ArrayList<>(initialSlicing);
 		int granularity = 2;
 		while (slices.size() >= 2) {
-			List<List<ICodeSlice>> subsets = ListUtility.split(slices, granularity);
+			List<List<ICodeSlice>> subsets = CollectionsUtility.split(slices, granularity);
 			assert subsets.size() == granularity;
 
 			boolean someComplementIsFailing = false;
 			for (List<ICodeSlice> subset : subsets) {
-				List<ICodeSlice> complement = ListUtility.listMinus(slices, subset);
+				List<ICodeSlice> complement = CollectionsUtility.listMinus(slices, subset);
 
 				if (executeTest(executor, complement, totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED) {
 					slices = complement;

@@ -2,9 +2,9 @@ package slice;
 
 import java.util.List;
 
-public interface IHierarchicalCodeSlice {
+public interface IHierarchicalCodeSlice extends ICodeSlice {
 
 	int getLevel();
 
-	List<IHierarchicalCodeSlice> getChildren();
+	List<? extends IHierarchicalCodeSlice> getChildren();
 }
