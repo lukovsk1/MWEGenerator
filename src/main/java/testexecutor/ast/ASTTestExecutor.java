@@ -7,6 +7,7 @@ import slice.ASTCodeSlice;
 import slice.ICodeSlice;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
+import testexecutor.TestingException;
 import utility.CollectionsUtility;
 import utility.FileUtility;
 import utility.JavaParserUtility;
@@ -26,6 +27,8 @@ import java.util.stream.Stream;
     A simple extractor that considers each line as a separate slice
  */
 public class ASTTestExecutor extends ATestExecutor {
+
+	private final Set<ICodeSlice> m_fixedSlices = new HashSet<>();
 
 	public ASTTestExecutor(ASTTestExecutorOptions options) {
 		super(options);
@@ -114,7 +117,7 @@ public class ASTTestExecutor extends ATestExecutor {
 			// descend to next level
 			if (nodesOnParentLevel.isEmpty()) {
 				if (nodesOnLevel.isEmpty()) {
-					return;
+					break;
 				}
 				nodesOnParentLevel = new HashSet<>(nodesOnLevel);
 				nodesOnLevel = new HashSet<>();
@@ -125,15 +128,39 @@ public class ASTTestExecutor extends ATestExecutor {
 			parent.set(nodesOnParentLevel.iterator().next());
 			nodesOnParentLevel.remove(parent.get());
 		}
+		// sometimes there are middle nodes, that are not assigned to a token in a slice
+		for(var unassignedEntry : nodesToSlices.entrySet()
+				.stream()
+				.filter(e -> e.getValue().getLevel() < 0)
+				.sorted(Comparator.comparing(e -> e.getValue().getStart()))
+				.toList()) {
+			var slice = unassignedEntry.getValue();
+			var ancestorNode = unassignedEntry.getKey().getParent();
+			while(nodesToSlices.get(ancestorNode) == null) {
+				ancestorNode = ancestorNode.getParent();
+				if(ancestorNode == null) {
+					throw new TestingException("Unable to calculate dependencies. Found unassignable node");
+				}
+			}
+			var parentSlice = nodesToSlices.get(ancestorNode);
+			parentSlice.addChild(slice);
+			slice.setLevel(parentSlice.getLevel()+1);
+		}
+		if(!nodesToSlices.entrySet().stream().filter(e -> e.getValue().getLevel() < 0).toList().isEmpty()) {
+			throw new TestingException("Unable to calculate dependencies. Cannot fix unassigned nodes");
+		}
 	}
 
 	@Override
-	protected Map<String, String> mapSlicesToFiles(List<ICodeSlice> slices) {
+	protected Map<String, String> mapSlicesToFiles(List<ICodeSlice> activeSlices) {
 		Map<String, String> files = new HashMap<>();
+		var slices = new ArrayList<>(activeSlices);
+		slices.addAll(m_fixedSlices);
 		Map<String, List<ICodeSlice>> slicesByFile = slices.stream()
 				.map(sl -> ((ASTCodeSlice) sl))
 				.map(CollectionsUtility::getChildrenInDeep)
 				.flatMap(Set::stream)
+				.map(sl -> (ICodeSlice) sl)
 				.collect(Collectors.groupingBy(ICodeSlice::getPath, Collectors.mapping(sl -> sl, Collectors.toList())));
 
 		for (Map.Entry<String, List<ICodeSlice>> entry : slicesByFile.entrySet()) {
@@ -147,5 +174,9 @@ public class ASTTestExecutor extends ATestExecutor {
 			files.put(fileName, sb.toString());
 		}
 		return files;
+	}
+
+	public void addFixedSlices(List<ICodeSlice> minConfig) {
+		m_fixedSlices.addAll(minConfig);
 	}
 }

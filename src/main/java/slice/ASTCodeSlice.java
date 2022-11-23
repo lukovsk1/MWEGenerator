@@ -54,4 +54,16 @@ public class ASTCodeSlice extends ACodeSlice<Void> implements IHierarchicalCodeS
 	public int getLevel() {
 		return m_level;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("# ");
+		sb.append(getSliceNumber());
+		sb.append(" # ");
+		if(!m_tokens.isEmpty()) {
+			sb.append(m_tokens.get(0).node);
+		}
+		return sb.toString();
+	}
 }

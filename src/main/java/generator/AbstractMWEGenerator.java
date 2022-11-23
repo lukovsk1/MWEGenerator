@@ -1,52 +1,48 @@
 package generator;
 
 import slice.ICodeSlice;
-import testexecutor.ATestExecutorOptions;
 import testexecutor.ITestExecutor;
-import testexecutor.ast.ASTTestExecutor;
-import testexecutor.ast.ASTTestExecutorOptions;
 import utility.CollectionsUtility;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class MWEGenerator {
+public abstract class AbstractMWEGenerator {
 
-	public static void main(String[] args) {
+	public void runGenerator(boolean multipleRuns) {
 		// extract code slices
 		ITestExecutor executor = getTestExecutor();
-		List<ICodeSlice> mweSlicing;
+		List<ICodeSlice> slicing;
 		int testNr = 1;
 		int totalSlices;
 		do {
 			System.out.println("############## RUNNING TEST NR. " + testNr++ + " ##############");
-			mweSlicing = new ArrayList<>(executor.extractSlices());
-			totalSlices = mweSlicing.size();
+			slicing = executor.extractSlices();
+			totalSlices = slicing.size();
 			long start = System.currentTimeMillis();
-			mweSlicing = runDDMin(executor, mweSlicing, totalSlices);
+			slicing = runDDMin(executor, slicing, totalSlices);
 			long time = System.currentTimeMillis() - start;
 			System.out.println();
 			System.out.println("Found an (locally) minimal slicing (MWE) in " + time + " ms:");
-			System.out.println(getSlicingIdentifier(mweSlicing, totalSlices));
+			System.out.println(getSlicingIdentifier(slicing, totalSlices));
 
+			if(!multipleRuns) {
+				break;
+			}
 			// recreate mwe
 			System.out.println("Recreating result in testingoutput folder...");
-			executor.recreateCode(mweSlicing);
+			executor.recreateCode(slicing);
 			executor.changeSourceToOutputFolder();
-		} while (mweSlicing.size() < totalSlices);
+		} while (slicing.size() < totalSlices);
 
 		System.out.println("############## FINISHED ##############");
 	}
 
-	private static List<ICodeSlice> runDDMin(ITestExecutor executor, List<ICodeSlice> initialSlicing, int totalSlices) {
+	protected List<ICodeSlice> runDDMin(ITestExecutor executor, List<ICodeSlice> initialSlicing, int totalSlices) {
 		Map<String, ITestExecutor.ETestResult> resultMap = new HashMap<>();
 
-		if (executeTest(executor, Collections.emptyList(), totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED
-				|| executeTest(executor, initialSlicing, totalSlices, resultMap) != ITestExecutor.ETestResult.FAILED) {
-			System.out.println("Initial testing conditions are not met.");
-			System.exit(1);
-		}
+		checkPreconditions(executor, initialSlicing, totalSlices, resultMap);
 
 		List<ICodeSlice> slices = new ArrayList<>(initialSlicing);
 		int granularity = 2;
@@ -77,7 +73,15 @@ public class MWEGenerator {
 		return slices;
 	}
 
-	private static ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
+	protected void checkPreconditions(ITestExecutor executor, List<ICodeSlice> initialSlicing, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
+		if (executeTest(executor, Collections.emptyList(), totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED
+				|| executeTest(executor, initialSlicing, totalSlices, resultMap) != ITestExecutor.ETestResult.FAILED) {
+			System.out.println("Initial testing conditions are not met.");
+			System.exit(1);
+		}
+	}
+
+	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
 		String slicingIdentifier = getSlicingIdentifier(slices, totalSlices);
 		ITestExecutor.ETestResult result = resultMap.get(slicingIdentifier);
 		if (result != null) {
@@ -95,7 +99,7 @@ public class MWEGenerator {
 		return result;
 	}
 
-	private static String getSlicingIdentifier(List<ICodeSlice> slices, int totalSlices) {
+	protected String getSlicingIdentifier(List<ICodeSlice> slices, int totalSlices) {
 		List<Integer> activeSlices = IntStream.range(0, totalSlices)
 				.mapToObj(i -> 0)
 				.collect(Collectors.toList());
@@ -105,13 +109,5 @@ public class MWEGenerator {
 		return activeSlices.stream().map(i -> Integer.toString(i)).collect(Collectors.joining());
 	}
 
-	private static ITestExecutor getTestExecutor() {
-		ASTTestExecutorOptions options = (ASTTestExecutorOptions) new ASTTestExecutorOptions()
-				.withModulePath(System.getProperty("user.dir") + "\\CalculatorExample")
-				.withUnitTestFilePath("test\\calculator\\CalculatorTest.java")
-				.withUnitTestMethod("calculator.CalculatorTest#testCalculator")
-				.withExpectedResult("org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>")
-				.withCompilationType(ATestExecutorOptions.ECompilationType.IN_MEMORY);
-		return new ASTTestExecutor(options);
-	}
+	protected abstract ITestExecutor getTestExecutor();
 }
