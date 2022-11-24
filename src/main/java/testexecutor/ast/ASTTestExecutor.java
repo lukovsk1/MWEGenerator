@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 public class ASTTestExecutor extends ATestExecutor {
 
 	private final Set<ICodeSlice> m_fixedSlices = new HashSet<>();
+	private boolean m_isRecreating = false;
 
 	public ASTTestExecutor(ASTTestExecutorOptions options) {
 		super(options);
@@ -129,24 +130,24 @@ public class ASTTestExecutor extends ATestExecutor {
 			nodesOnParentLevel.remove(parent.get());
 		}
 		// sometimes there are middle nodes, that are not assigned to a token in a slice
-		for(var unassignedEntry : nodesToSlices.entrySet()
+		for (var unassignedEntry : nodesToSlices.entrySet()
 				.stream()
 				.filter(e -> e.getValue().getLevel() < 0)
 				.sorted(Comparator.comparing(e -> e.getValue().getStart()))
 				.toList()) {
 			var slice = unassignedEntry.getValue();
 			var ancestorNode = unassignedEntry.getKey().getParent();
-			while(nodesToSlices.get(ancestorNode) == null) {
+			while (nodesToSlices.get(ancestorNode) == null) {
 				ancestorNode = ancestorNode.getParent();
-				if(ancestorNode == null) {
+				if (ancestorNode == null) {
 					throw new TestingException("Unable to calculate dependencies. Found unassignable node");
 				}
 			}
 			var parentSlice = nodesToSlices.get(ancestorNode);
 			parentSlice.addChild(slice);
-			slice.setLevel(parentSlice.getLevel()+1);
+			slice.setLevel(parentSlice.getLevel() + 1);
 		}
-		if(!nodesToSlices.entrySet().stream().filter(e -> e.getValue().getLevel() < 0).toList().isEmpty()) {
+		if (!nodesToSlices.entrySet().stream().filter(e -> e.getValue().getLevel() < 0).toList().isEmpty()) {
 			throw new TestingException("Unable to calculate dependencies. Cannot fix unassigned nodes");
 		}
 	}
@@ -154,16 +155,22 @@ public class ASTTestExecutor extends ATestExecutor {
 	@Override
 	protected Map<String, String> mapSlicesToFiles(List<ICodeSlice> activeSlices) {
 		Map<String, String> files = new HashMap<>();
-		var slices = new ArrayList<>(activeSlices);
-		slices.addAll(m_fixedSlices);
-		Map<String, List<ICodeSlice>> slicesByFile = slices.stream()
-				.map(sl -> ((ASTCodeSlice) sl))
-				.map(CollectionsUtility::getChildrenInDeep)
-				.flatMap(Set::stream)
-				.map(sl -> (ICodeSlice) sl)
-				.collect(Collectors.groupingBy(ICodeSlice::getPath, Collectors.mapping(sl -> sl, Collectors.toList())));
 
-		for (Map.Entry<String, List<ICodeSlice>> entry : slicesByFile.entrySet()) {
+		// add active slices and all their children
+		Map<String, Set<ICodeSlice>> slicesByFile = activeSlices.stream()
+				.map(sl -> ((ASTCodeSlice) sl))
+				.flatMap(sl -> m_isRecreating ? Stream.of(sl) : CollectionsUtility.getChildrenInDeep(sl).stream())
+				.map(sl -> (ICodeSlice) sl)
+				.collect(Collectors.groupingBy(ICodeSlice::getPath, Collectors.mapping(sl -> sl, Collectors.toSet())));
+
+		// add fixed slices without any children
+		m_fixedSlices.forEach(sl -> {
+			var f = slicesByFile.getOrDefault(sl.getPath(), new HashSet<>());
+			f.add(sl);
+			slicesByFile.put(sl.getPath(), f);
+		});
+
+		for (Map.Entry<String, Set<ICodeSlice>> entry : slicesByFile.entrySet()) {
 			String fileName = entry.getKey();
 			StringBuilder sb = new StringBuilder();
 			entry.getValue().stream()
@@ -178,5 +185,11 @@ public class ASTTestExecutor extends ATestExecutor {
 
 	public void addFixedSlices(List<ICodeSlice> minConfig) {
 		m_fixedSlices.addAll(minConfig);
+	}
+
+	@Override
+	public void recreateCode(List<ICodeSlice> slices) {
+		m_isRecreating = true;
+		super.recreateCode(slices);
 	}
 }
