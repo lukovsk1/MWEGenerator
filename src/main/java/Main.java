@@ -24,7 +24,7 @@ public class Main {
 
         // new SingleCharacterMWEGenerator().runGenerator(false);
         // new CodeLineMWEGenerator().runGenerator(true);
-        new ASTMWEGenerator(calculatorOptions).runGenerator(false);
+        new ASTMWEGenerator(fibonacciOptions).runGenerator(false);
 
         long time = System.currentTimeMillis() - start;
         System.out.println();

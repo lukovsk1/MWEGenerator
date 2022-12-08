@@ -38,7 +38,9 @@ public class ASTCodeSlice extends ACodeSlice<Void> implements IHierarchicalCodeS
 	}
 
 	public void addChild(ASTCodeSlice child) {
-		m_children.add(child);
+		if (this != child) {
+			m_children.add(child);
+		}
 	}
 
 	@Override
@@ -61,7 +63,7 @@ public class ASTCodeSlice extends ACodeSlice<Void> implements IHierarchicalCodeS
 		sb.append("# ");
 		sb.append(getSliceNumber());
 		sb.append(" # ");
-		if(!m_tokens.isEmpty()) {
+		if (!m_tokens.isEmpty()) {
 			sb.append(m_tokens.get(0).node);
 		}
 		return sb.toString();
