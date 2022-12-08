@@ -27,6 +27,7 @@ public class JavaParserUtility {
 	 */
 	public static class Token {
 		public ASTNode node;
+		public List<ASTNode> additionalNodes = new ArrayList<>();
 		public String code;
 		public int start;
 		public int end;
@@ -81,7 +82,12 @@ public class JavaParserUtility {
 				for (Token token : sortedTokens.tailMap(nodeStart).values()) {
 					// Is token in node range?
 					if (nodeStart <= token.start && token.end <= nodeEnd) {
-						token.node = node; // assign token
+						if(token.node != null && token.node.getStartPosition() == nodeStart && token.node.getLength() == node.getLength()) {
+							token.additionalNodes.add(node);
+						} else {
+							token.node = node; // assign token
+							token.additionalNodes.clear();
+						}
 					} else {
 						break;
 					}

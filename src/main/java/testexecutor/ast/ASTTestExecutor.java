@@ -56,7 +56,7 @@ public class ASTTestExecutor extends ATestExecutor {
 				String code = FileUtility.readTextFile(filePath);
 				CompilationUnit javaAST = JavaParserUtility.parse(code, true);
 				List<Token> tokens = JavaParserUtility.tokensToAST(code, javaAST);
-				slices.add(transformToSlices(tokens, relativeFileName, sliceNr));
+				slices.add(transformToSlices(javaAST, tokens, relativeFileName, sliceNr));
 			} catch (IOException | InvalidInputException e) {
 				throw new ExtractorException("Unable to create slices from file " + filePath, e);
 			}
@@ -65,25 +65,28 @@ public class ASTTestExecutor extends ATestExecutor {
 		return slices;
 	}
 
-	private ASTCodeSlice transformToSlices(List<Token> tokens, String relativeFileName, AtomicInteger sliceNr) {
+	private ASTCodeSlice transformToSlices(CompilationUnit javaAST, List<Token> tokens, String relativeFileName, AtomicInteger sliceNr) {
+		Map<ASTNode, ASTCodeSlice> astNodeToSlice = new HashMap<>();
 		ASTCodeSlice rootSlice = new ASTCodeSlice(relativeFileName, sliceNr.getAndIncrement());
 		rootSlice.setLevel(0);
 		// Combine all tokens that belong to the same AST node:
-		Map<ASTNode, ASTCodeSlice> astNodeToSlice = new HashMap<>();
 		for (Token token : tokens) {
 			ASTCodeSlice slice = astNodeToSlice.get(token.node);
 			if (slice == null) {
 				slice = new ASTCodeSlice(relativeFileName, sliceNr.getAndIncrement());
 				astNodeToSlice.put(token.node, slice);
+				for(ASTNode additionalNode : token.additionalNodes) {
+					astNodeToSlice.put(additionalNode, slice);
+				}
 			}
 			slice.addToken(token);
 		}
-		calculateDependencies(rootSlice, astNodeToSlice);
+		calculateDependencies(javaAST.getRoot(), rootSlice, astNodeToSlice);
 
 		return rootSlice;
 	}
 
-	private void calculateDependencies(ASTCodeSlice rootSlice, Map<ASTNode, ASTCodeSlice> nodesToSlices) {
+	private void calculateDependencies(ASTNode rootNode, ASTCodeSlice rootSlice, Map<ASTNode, ASTCodeSlice> nodesToSlices) {
 		// For each node, calculate its children and its level
 		// TODO: a more efficient implementation might be possible
 		if (nodesToSlices.isEmpty()) {
@@ -92,7 +95,7 @@ public class ASTTestExecutor extends ATestExecutor {
 		int level = 1;
 		Set<ASTNode> nodesOnParentLevel = Collections.emptySet();
 		Set<ASTNode> nodesOnLevel = new HashSet<>();
-		AtomicReference<ASTNode> parent = new AtomicReference<>(null);
+		AtomicReference<ASTNode> parent = new AtomicReference<>(rootNode);
 		// check if we have a slice without a calculated level
 		while (true) {
 			var childNodes = nodesToSlices.keySet()
@@ -104,7 +107,7 @@ public class ASTTestExecutor extends ATestExecutor {
 				ASTCodeSlice slice = nodesToSlices.get(child);
 				slice.setLevel(level);
 				nodesOnLevel.add(child);
-				if (parent.get() != null) {
+				if (parent.get() != null && nodesToSlices.get(parent.get()) != null) {
 					nodesToSlices.get(parent.get()).addChild(slice);
 				} else {
 					rootSlice.addChild(slice);
