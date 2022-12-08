@@ -2,10 +2,9 @@ package generator;
 
 import slice.ICodeSlice;
 import slice.IHierarchicalCodeSlice;
-import testexecutor.ATestExecutorOptions;
+import testexecutor.TestExecutorOptions;
 import testexecutor.ITestExecutor;
 import testexecutor.ast.ASTTestExecutor;
-import testexecutor.ast.ASTTestExecutorOptions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +14,10 @@ import java.util.Map;
 public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 	private int m_level = 0;
+
+	public ASTMWEGenerator(TestExecutorOptions options) {
+		super(options);
+	}
 
 	public void runGenerator(boolean multipleRuns) {
 		// extract code slices
@@ -74,12 +77,6 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 	@Override
 	protected ASTTestExecutor getTestExecutor() {
-		ASTTestExecutorOptions options = (ASTTestExecutorOptions) new ASTTestExecutorOptions()
-				.withModulePath(System.getProperty("user.dir") + "\\CalculatorExample")
-				.withUnitTestFilePath("test\\calculator\\CalculatorTest.java")
-				.withUnitTestMethod("calculator.CalculatorTest#testCalculator")
-				.withExpectedResult("org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>")
-				.withCompilationType(ATestExecutorOptions.ECompilationType.IN_MEMORY);
-		return new ASTTestExecutor(options);
+		return new ASTTestExecutor(m_testExecutorOptions);
 	}
 }

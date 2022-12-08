@@ -1,6 +1,6 @@
 package testexecutor;
 
-public abstract class ATestExecutorOptions {
+public class TestExecutorOptions {
 
     public enum ECompilationType {
         COMMAND_LINE,
@@ -13,7 +13,7 @@ public abstract class ATestExecutorOptions {
     private String m_expectedResult;
     private ECompilationType m_compilationType = ECompilationType.IN_MEMORY;
 
-    public ATestExecutorOptions withModulePath(String modulePath) {
+    public TestExecutorOptions withModulePath(String modulePath) {
         m_modulePath = modulePath;
         return this;
     }
@@ -22,7 +22,7 @@ public abstract class ATestExecutorOptions {
         return m_modulePath;
     }
 
-    public ATestExecutorOptions withUnitTestFilePath(String unitTestFilePath) {
+    public TestExecutorOptions withUnitTestFilePath(String unitTestFilePath) {
         m_unitTestFilePath = unitTestFilePath;
         return this;
     }
@@ -31,7 +31,7 @@ public abstract class ATestExecutorOptions {
         return m_unitTestFilePath;
     }
 
-    public ATestExecutorOptions withExpectedResult(String expectedResult) {
+    public TestExecutorOptions withExpectedResult(String expectedResult) {
         m_expectedResult = expectedResult;
         return this;
     }
@@ -39,7 +39,7 @@ public abstract class ATestExecutorOptions {
         return m_expectedResult;
     }
 
-    public ATestExecutorOptions withUnitTestMethod(String unitTestMethod) {
+    public TestExecutorOptions withUnitTestMethod(String unitTestMethod) {
         m_unitTestMethod = unitTestMethod;
         return this;
     }
@@ -48,7 +48,7 @@ public abstract class ATestExecutorOptions {
         return m_unitTestMethod;
     }
 
-    public ATestExecutorOptions withCompilationType(ECompilationType compilationType) {
+    public TestExecutorOptions withCompilationType(ECompilationType compilationType) {
         m_compilationType = compilationType;
         return this;
     }

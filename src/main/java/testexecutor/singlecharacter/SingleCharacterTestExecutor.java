@@ -4,6 +4,7 @@ import slice.ICodeSlice;
 import slice.SingleCharacterCodeSlice;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
+import testexecutor.TestExecutorOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,14 +23,8 @@ import java.util.stream.Stream;
  */
 public class SingleCharacterTestExecutor extends ATestExecutor {
 
-	public SingleCharacterTestExecutor(SingleCharacterTestExecutorOptions options) {
+	public SingleCharacterTestExecutor(TestExecutorOptions options) {
 		super(options);
-	}
-
-
-	@Override
-	protected SingleCharacterTestExecutorOptions getOptions() {
-		return (SingleCharacterTestExecutorOptions) super.getOptions();
 	}
 
 	@Override

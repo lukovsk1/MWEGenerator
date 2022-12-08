@@ -2,6 +2,7 @@ package generator;
 
 import slice.ICodeSlice;
 import testexecutor.ITestExecutor;
+import testexecutor.TestExecutorOptions;
 import utility.CollectionsUtility;
 
 import java.util.*;
@@ -9,6 +10,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class AbstractMWEGenerator {
+
+	protected final TestExecutorOptions m_testExecutorOptions;
+	public AbstractMWEGenerator(TestExecutorOptions options) {
+		m_testExecutorOptions = options;
+	}
 
 	public void runGenerator(boolean multipleRuns) {
 		// extract code slices
@@ -27,14 +33,11 @@ public abstract class AbstractMWEGenerator {
 			System.out.println("Found an (locally) minimal slicing (MWE) in " + time + " ms:");
 			System.out.println(getSlicingIdentifier(slicing, totalSlices));
 
-			if(!multipleRuns) {
-				break;
-			}
 			// recreate mwe
 			System.out.println("Recreating result in testingoutput folder...");
 			executor.recreateCode(slicing);
 			executor.changeSourceToOutputFolder();
-		} while (slicing.size() < totalSlices);
+		} while (multipleRuns && slicing.size() < totalSlices);
 
 		System.out.println("############## FINISHED ##############");
 	}

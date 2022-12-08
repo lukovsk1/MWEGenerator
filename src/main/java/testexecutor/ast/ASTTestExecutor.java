@@ -7,6 +7,7 @@ import slice.ASTCodeSlice;
 import slice.ICodeSlice;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
+import testexecutor.TestExecutorOptions;
 import testexecutor.TestingException;
 import utility.CollectionsUtility;
 import utility.FileUtility;
@@ -31,14 +32,8 @@ public class ASTTestExecutor extends ATestExecutor {
 	private final Set<ICodeSlice> m_fixedSlices = new HashSet<>();
 	private boolean m_isRecreating = false;
 
-	public ASTTestExecutor(ASTTestExecutorOptions options) {
+	public ASTTestExecutor(TestExecutorOptions options) {
 		super(options);
-	}
-
-
-	@Override
-	protected ASTTestExecutorOptions getOptions() {
-		return (ASTTestExecutorOptions) super.getOptions();
 	}
 
 	@Override

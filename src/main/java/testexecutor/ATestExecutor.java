@@ -19,15 +19,15 @@ import java.util.stream.Stream;
 
 public abstract class ATestExecutor implements ITestExecutor {
 
-	private final ATestExecutorOptions m_options;
+	private final TestExecutorOptions m_options;
 
-	protected ATestExecutor(ATestExecutorOptions options) {
+	protected ATestExecutor(TestExecutorOptions options) {
 		m_options = options;
 
 		System.out.println("Create executor of class " + this.getClass().getName() + " with comilation type " + options.getCompilationType());
 	}
 
-	protected ATestExecutorOptions getOptions() {
+	protected TestExecutorOptions getOptions() {
 		return m_options;
 	}
 
@@ -307,7 +307,11 @@ public abstract class ATestExecutor implements ITestExecutor {
 				String input = IOUtils.toString(p2.getInputStream(), StandardCharsets.UTF_8);
 				String error = IOUtils.toString(p2.getErrorStream(), StandardCharsets.UTF_8);
 				if (error != null && error.length() > 0) {
-					return ETestResult.ERROR_RUNTIME;
+					if (error.contains(getOptions().getExpectedResult())) {
+						return ETestResult.FAILED;
+					} else {
+						return ETestResult.ERROR_RUNTIME;
+					}
 				}
 				if (input.contains(getOptions().getExpectedResult())) {
 					return ETestResult.FAILED;

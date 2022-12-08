@@ -6,12 +6,13 @@ import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.*;
-import java.util.function.Function;
 
 /**
  * Helper to parse Java code.
  *
  * @author Manuel Ohrndorf
+ *
+ * adapted slightly by Lukas Bosshart
  */
 public class JavaParserUtility {
 
@@ -48,8 +49,7 @@ public class JavaParserUtility {
 		parser.setResolveBindings(true);
 		parser.setBindingsRecovery(true); // generates binding also for none resolvable/missing types
 		parser.setIgnoreMethodBodies(!parseMethodBodies);
-		CompilationUnit ast = (CompilationUnit) parser.createAST(null);
-		return ast;
+		return (CompilationUnit) parser.createAST(null);
 	}
 
 
@@ -59,14 +59,15 @@ public class JavaParserUtility {
 	 * @param source The Java source file.
 	 * @param unit   The parsed Java AST.
 	 * @return The Java AST node to tokens mapping.
-	 * @throws InvalidInputException
 	 */
 	public static List<Token> tokensToAST(String source, CompilationUnit unit) throws InvalidInputException {
+
+		// TODO: there is a problem with this logic because nodes can have parents with the same start and end. This has to be fixed.
 
 		// Sort tokens:
 		SortedMap<Integer, Token> sortedTokens = new TreeMap<>();
 		List<Token> scannedTokens = scan(source);
-		scannedTokens.stream().forEach(token -> sortedTokens.put(token.start, token));
+		scannedTokens.forEach(token -> sortedTokens.put(token.start, token));
 
 		// Visit AST:
 		unit.accept(new ASTVisitor(true) {
@@ -96,7 +97,6 @@ public class JavaParserUtility {
 	 *
 	 * @param source The Java source file.
 	 * @return A list of tokens representing the source file.
-	 * @throws InvalidInputException
 	 */
 	public static List<Token> scan(String source) throws InvalidInputException {
 		IScanner scanner = ToolFactory.createScanner(true, true, true, "" + JAVA_LANGUAGE_SPECIFICATION);
@@ -118,39 +118,4 @@ public class JavaParserUtility {
 
 		return tokens;
 	}
-
-	/**
-	 * @param tokens A list of tokens representing the source file.
-	 * @return The code unparsed from the tokens.
-	 */
-	public static String unparse(List<Token> tokens) {
-		return unparse(tokens, (t) -> "", (t) -> "");
-	}
-
-	/**
-	 * @param tokens       A list of tokens representing the source file.
-	 * @param tokenPrefix  Add separator before token.
-	 * @param tokenPostfix Add separator behind token.
-	 * @return The code unparsed from the tokens.
-	 */
-	public static String unparse(List<Token> tokens, Function<Token, String> tokenPrefix, Function<Token, String> tokenPostfix) {
-		tokens.sort(new Comparator<Token>() {
-
-			@Override
-			public int compare(Token t1, Token t2) {
-				return t1.start - t2.start;
-			}
-		});
-
-		StringBuffer code = new StringBuffer();
-
-		for (Token token : tokens) {
-			code.append(tokenPrefix.apply(token));
-			code.append(token.code);
-			code.append(tokenPostfix.apply(token));
-		}
-
-		return code.toString();
-	}
-
 }

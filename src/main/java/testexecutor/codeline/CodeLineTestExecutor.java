@@ -4,6 +4,7 @@ import slice.CodeLineSlice;
 import slice.ICodeSlice;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
+import testexecutor.TestExecutorOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,14 +21,8 @@ import java.util.stream.Stream;
  */
 public class CodeLineTestExecutor extends ATestExecutor {
 
-	public CodeLineTestExecutor(CodeLineTestExecutorOptions options) {
+	public CodeLineTestExecutor(TestExecutorOptions options) {
 		super(options);
-	}
-
-
-	@Override
-	protected CodeLineTestExecutorOptions getOptions() {
-		return (CodeLineTestExecutorOptions) super.getOptions();
 	}
 
 	@Override
