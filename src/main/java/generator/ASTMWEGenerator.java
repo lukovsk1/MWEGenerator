@@ -2,8 +2,8 @@ package generator;
 
 import slice.ICodeSlice;
 import slice.IHierarchicalCodeSlice;
-import testexecutor.TestExecutorOptions;
 import testexecutor.ITestExecutor;
+import testexecutor.TestExecutorOptions;
 import testexecutor.ast.ASTTestExecutor;
 
 import java.util.ArrayList;
@@ -24,12 +24,12 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 		ASTTestExecutor executor = getTestExecutor();
 		var fullTree = executor.extractSlices();
 		List<ICodeSlice> slicing = new ArrayList<>(fullTree);
-		System.out.println("############## RUNNING TEST ##############");
+		log("############## RUNNING TEST ##############");
 		m_level = 0;
 
 
 		while (true) {
-			System.out.println("############## EXECUTING LVL " + m_level + " ##############");
+			log("############## EXECUTING LVL " + m_level + " ##############");
 			var minConfig = runDDMin(executor, slicing, slicing.size());
 			printSlicingInfo(minConfig, slicing);
 			if (minConfig.isEmpty()) {
@@ -45,9 +45,9 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 			m_level++;
 		}
 
-		System.out.println("Recreating result in testingoutput folder...");
+		log("Recreating result in testingoutput folder...");
 		executor.recreateCode(slicing);
-		System.out.println("############## FINISHED ##############");
+		log("############## FINISHED ##############");
 	}
 
 	private void printSlicingInfo(List<ICodeSlice> minConfig, List<ICodeSlice> slicing) {
@@ -59,7 +59,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 				sb.append(0);
 			}
 		}
-		System.out.println(sb);
+		log(sb);
 	}
 
 	@Override

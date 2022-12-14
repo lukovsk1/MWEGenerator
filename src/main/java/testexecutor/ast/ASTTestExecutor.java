@@ -69,13 +69,14 @@ public class ASTTestExecutor extends ATestExecutor {
 		Map<ASTNode, ASTCodeSlice> astNodeToSlice = new HashMap<>();
 		ASTCodeSlice rootSlice = new ASTCodeSlice(relativeFileName, sliceNr.getAndIncrement());
 		rootSlice.setLevel(0);
+		astNodeToSlice.put(javaAST, rootSlice);
 		// Combine all tokens that belong to the same AST node:
 		for (Token token : tokens) {
 			ASTCodeSlice slice = astNodeToSlice.get(token.node);
 			if (slice == null) {
 				slice = new ASTCodeSlice(relativeFileName, sliceNr.getAndIncrement());
 				astNodeToSlice.put(token.node, slice);
-				for(ASTNode additionalNode : token.additionalNodes) {
+				for (ASTNode additionalNode : token.additionalNodes) {
 					astNodeToSlice.put(additionalNode, slice);
 				}
 			}
@@ -135,6 +136,9 @@ public class ASTTestExecutor extends ATestExecutor {
 				.toList()) {
 			var slice = unassignedEntry.getValue();
 			var ancestorNode = unassignedEntry.getKey().getParent();
+			if (ancestorNode == null) {
+				throw new TestingException("Unable to calculate dependencies. Found unassignable node");
+			}
 			while (nodesToSlices.get(ancestorNode) == null) {
 				ancestorNode = ancestorNode.getParent();
 				if (ancestorNode == null) {

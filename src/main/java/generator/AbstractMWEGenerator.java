@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 public abstract class AbstractMWEGenerator {
 
 	protected final TestExecutorOptions m_testExecutorOptions;
+
 	public AbstractMWEGenerator(TestExecutorOptions options) {
 		m_testExecutorOptions = options;
 	}
@@ -23,23 +24,23 @@ public abstract class AbstractMWEGenerator {
 		int testNr = 1;
 		int totalSlices;
 		do {
-			System.out.println("############## RUNNING TEST NR. " + testNr++ + " ##############");
+			log("############## RUNNING TEST NR. " + testNr++ + " ##############");
 			slicing = executor.extractSlices();
 			totalSlices = slicing.size();
 			long start = System.currentTimeMillis();
 			slicing = runDDMin(executor, slicing, totalSlices);
 			long time = System.currentTimeMillis() - start;
-			System.out.println();
-			System.out.println("Found an (locally) minimal slicing (MWE) in " + time + " ms:");
-			System.out.println(getSlicingIdentifier(slicing, totalSlices));
+			log(null);
+			log("Found an (locally) minimal slicing (MWE) in " + time + " ms:");
+			log(getSlicingIdentifier(slicing, totalSlices));
 
 			// recreate mwe
-			System.out.println("Recreating result in testingoutput folder...");
+			log("Recreating result in testingoutput folder...");
 			executor.recreateCode(slicing);
 			executor.changeSourceToOutputFolder();
 		} while (multipleRuns && slicing.size() < totalSlices);
 
-		System.out.println("############## FINISHED ##############");
+		log("############## FINISHED ##############");
 	}
 
 	protected List<ICodeSlice> runDDMin(ITestExecutor executor, List<ICodeSlice> initialSlicing, int totalSlices) {
@@ -79,7 +80,7 @@ public abstract class AbstractMWEGenerator {
 	protected void checkPreconditions(ITestExecutor executor, List<ICodeSlice> initialSlicing, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
 		if (executeTest(executor, Collections.emptyList(), totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED
 				|| executeTest(executor, initialSlicing, totalSlices, resultMap) != ITestExecutor.ETestResult.FAILED) {
-			System.out.println("Initial testing conditions are not met.");
+			log("Initial testing conditions are not met.");
 			System.exit(1);
 		}
 	}
@@ -93,9 +94,7 @@ public abstract class AbstractMWEGenerator {
 
 		result = executor.test(slices);
 
-		System.out.print(slicingIdentifier);
-		System.out.print(" -> ");
-		System.out.println(result);
+		log(slicingIdentifier + " -> " + result);
 
 		resultMap.put(slicingIdentifier, result);
 
@@ -113,4 +112,14 @@ public abstract class AbstractMWEGenerator {
 	}
 
 	protected abstract ITestExecutor getTestExecutor();
+
+	protected void log(Object msg) {
+		if (m_testExecutorOptions.isLogging()) {
+			if (msg != null) {
+				System.out.println(msg);
+			} else {
+				System.out.println();
+			}
+		}
+	}
 }
