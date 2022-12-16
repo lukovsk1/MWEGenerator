@@ -62,9 +62,6 @@ public class JavaParserUtility {
 	 * @return The Java AST node to tokens mapping.
 	 */
 	public static List<Token> tokensToAST(String source, CompilationUnit unit) throws InvalidInputException {
-
-		// TODO: there is a problem with this logic because nodes can have parents with the same start and end. This has to be fixed.
-
 		// Sort tokens:
 		SortedMap<Integer, Token> sortedTokens = new TreeMap<>();
 		List<Token> scannedTokens = scan(source);

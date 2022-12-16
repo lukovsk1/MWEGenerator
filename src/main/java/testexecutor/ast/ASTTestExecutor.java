@@ -89,7 +89,6 @@ public class ASTTestExecutor extends ATestExecutor {
 
 	private void calculateDependencies(ASTNode rootNode, ASTCodeSlice rootSlice, Map<ASTNode, ASTCodeSlice> nodesToSlices) {
 		// For each node, calculate its children and its level
-		// TODO: a more efficient implementation might be possible
 		if (nodesToSlices.isEmpty()) {
 			return;
 		}

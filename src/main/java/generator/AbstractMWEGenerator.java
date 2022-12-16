@@ -31,7 +31,7 @@ public abstract class AbstractMWEGenerator {
 			slicing = runDDMin(executor, slicing, totalSlices);
 			long time = System.currentTimeMillis() - start;
 			log(null);
-			log("Found an (locally) minimal slicing (MWE) in " + time + " ms:");
+			log("Found a 1-minimal slicing in " + time + " ms:");
 			log(getSlicingIdentifier(slicing, totalSlices));
 
 			// recreate mwe
