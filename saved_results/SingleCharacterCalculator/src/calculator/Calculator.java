@@ -1,0 +1,1 @@
+package calculator;class Calculator{public int division(int n,int d){if(d>=0){return n/d;}else{throw new DividedByZeroException();}}int multiplication(int a,int b){return a;}public int a(int a,int b){return b;}public int s(int a,int b){return b;}}
