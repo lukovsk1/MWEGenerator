@@ -13,6 +13,7 @@ public class TestExecutorOptions {
 	private String m_expectedResult;
 	private ECompilationType m_compilationType = ECompilationType.IN_MEMORY;
 	private boolean m_logging = true;
+	private boolean m_multipleRuns = false;
 
 	public TestExecutorOptions withModulePath(String modulePath) {
 		m_modulePath = modulePath;
@@ -66,5 +67,14 @@ public class TestExecutorOptions {
 
 	public boolean isLogging() {
 		return m_logging;
+	}
+
+	public TestExecutorOptions withMultipleRuns(boolean multipleRuns) {
+		m_multipleRuns = multipleRuns;
+		return this;
+	}
+
+	public boolean isMultipleRuns() {
+		return m_multipleRuns;
 	}
 }

@@ -19,7 +19,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 		super(options);
 	}
 
-	public void runGenerator(boolean multipleRuns) {
+	public void runGenerator() {
 		// extract code slices
 		ASTTestExecutor executor = getTestExecutor();
 		var fullTree = executor.extractSlices();

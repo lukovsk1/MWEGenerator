@@ -17,7 +17,7 @@ public abstract class AbstractMWEGenerator {
 		m_testExecutorOptions = options;
 	}
 
-	public void runGenerator(boolean multipleRuns) {
+	public void runGenerator() {
 		// extract code slices
 		ITestExecutor executor = getTestExecutor();
 		List<ICodeSlice> slicing;
@@ -38,7 +38,7 @@ public abstract class AbstractMWEGenerator {
 			log("Recreating result in testingoutput folder...");
 			executor.recreateCode(slicing);
 			executor.changeSourceToOutputFolder();
-		} while (multipleRuns && slicing.size() < totalSlices);
+		} while (m_testExecutorOptions.isMultipleRuns() && slicing.size() < totalSlices);
 
 		log("############## FINISHED ##############");
 	}

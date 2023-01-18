@@ -1,7 +1,5 @@
 import generator.ASTMWEGenerator;
-import generator.CodeLineMWEGenerator;
 import org.apache.commons.io.FileUtils;
-import testexecutor.TestExecutorOptions;
 
 import java.io.File;
 import java.util.concurrent.*;
@@ -9,35 +7,27 @@ import java.util.concurrent.*;
 public class Main {
 
 	public static void main(String[] args) {
-		TestExecutorOptions calculatorOptions = new TestExecutorOptions()
-				.withModulePath(System.getProperty("user.dir") + "\\CalculatorExample")
-				.withUnitTestFilePath("test\\calculator\\CalculatorTest.java")
-				.withUnitTestMethod("calculator.CalculatorTest#testCalculator")
-				.withExpectedResult("org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>")
-				.withCompilationType(TestExecutorOptions.ECompilationType.IN_MEMORY)
-				.withLogging(true);
 
-		TestExecutorOptions fibonacciOptions = new TestExecutorOptions()
-				.withModulePath(System.getProperty("user.dir") + "\\FibonacciExample")
-				.withUnitTestFilePath("test\\FibonacciNumberTest.java")
-				.withUnitTestMethod("FibonacciNumberTest#testFibonacci")
-				.withExpectedResult("java.lang.StackOverflowError")
-				.withCompilationType(TestExecutorOptions.ECompilationType.IN_MEMORY)
-				.withLogging(true);
 
 		try (ExecutorService executor = Executors.newCachedThreadPool()) {
 			long start = System.currentTimeMillis();
 
 			executor.submit(() -> {
-				//new SingleCharacterMWEGenerator(calculatorOptions).runGenerator(false); // Timed out
-				new CodeLineMWEGenerator(calculatorOptions).runGenerator(false); // 6815ms 841 bytes
-				//new CodeLineMWEGenerator(calculatorOptions).runGenerator(true); // 8945ms 726 bytes
-				//new ASTMWEGenerator(calculatorOptions).runGenerator(false); // 6122ms 718 bytes
+				//new SingleCharacterMWEGenerator(Constants.CALCULATOR_OPTIONS).runGenerator(); // Timed out
+				//new CodeLineMWEGenerator(Constants.CALCULATOR_OPTIONS).runGenerator(); // 6815ms 841 bytes
+				//new CodeLineMWEGenerator(Constants.CALCULATOR_OPTIONS_MULTI).runGenerator(); // 8945ms 726 bytes
+				new ASTMWEGenerator(Constants.CALCULATOR_OPTIONS).runGenerator(); // 6122ms 718 bytes
 
-				//new SingleCharacterMWEGenerator(fibonacciOptions).runGenerator(false); // Timed out
-				//new CodeLineMWEGenerator(fibonacciOptions).runGenerator(false); // 3905ms 943 bytes
-				//new CodeLineMWEGenerator(fibonacciOptions).runGenerator(true); // 4194ms 943 bytes
-				//new ASTMWEGenerator(fibonacciOptions).runGenerator(false); // 3225ms 863 bytes
+				//new SingleCharacterMWEGenerator(Constants.FIBONACCI_OPTIONS).runGenerator(); // Timed out
+				//new CodeLineMWEGenerator(Constants.FIBONACCI_OPTIONS).runGenerator(); // 3905ms 943 bytes
+				//new CodeLineMWEGenerator(Constants.FIBONACCI_OPTIONS_MULTI).runGenerator(); // 4194ms 943 bytes
+				//new ASTMWEGenerator(Constants.FIBONACCI_OPTIONS).runGenerator(); // 3225ms 863 bytes
+
+
+				//new SingleCharacterMWEGenerator(Constants.SIMPLE_EXAMPLE_OPTIONS).runGenerator();
+				//new CodeLineMWEGenerator(Constants.SIMPLE_EXAMPLE_OPTIONS).runGenerator();
+				//new CodeLineMWEGenerator(Constants.SIMPLE_EXAMPLE_OPTIONS_MULTI).runGenerator();
+				//new ASTMWEGenerator(Constants.SIMPLE_EXAMPLE_OPTIONS).runGenerator();
 			}).get(5, TimeUnit.MINUTES);
 
 			long time = System.currentTimeMillis() - start;
