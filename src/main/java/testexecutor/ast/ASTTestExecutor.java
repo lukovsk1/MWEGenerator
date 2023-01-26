@@ -1,5 +1,6 @@
 package testexecutor.ast;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -51,6 +52,10 @@ public class ASTTestExecutor extends ATestExecutor {
 
 		AtomicInteger sliceNr = new AtomicInteger();
 		for (Path filePath : filePaths) {
+			if(!"java".equals(FilenameUtils.getExtension(filePath.toString()))) {
+				// skip non-java files
+				continue;
+			}
 			try {
 				String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
 				String code = FileUtility.readTextFile(filePath);

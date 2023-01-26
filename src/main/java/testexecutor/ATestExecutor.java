@@ -196,6 +196,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 		try {
 			classes = compiler.compileAll();
 		} catch (CompilationException e) {
+			if(m_options.isLogging()) {
+				System.out.println("Compilation error: " + e);
+			}
 			return ETestResult.ERROR_COMPILATION;
 		} catch (Exception e) {
 			throw new TestingException("Error during compilation", e);
