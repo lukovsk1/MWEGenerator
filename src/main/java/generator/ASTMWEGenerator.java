@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ASTMWEGenerator extends AbstractMWEGenerator {
 
@@ -22,7 +23,8 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	public void runGenerator() {
 		// extract code slices
 		ASTTestExecutor executor = getTestExecutor();
-		var fullTree = executor.extractSlices();
+		executor.initialize();
+		List<ICodeSlice> fullTree = executor.extractSlices();
 		List<ICodeSlice> slicing = new ArrayList<>(fullTree);
 		log("############## RUNNING TEST ##############");
 		m_level = 0;
@@ -30,7 +32,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 		while (true) {
 			log("############## EXECUTING LVL " + m_level + " ##############");
-			var minConfig = runDDMin(executor, slicing, slicing.size());
+			List<ICodeSlice> minConfig = runDDMin(executor, slicing, slicing.size());
 			printSlicingInfo(minConfig, slicing);
 			if (minConfig.isEmpty()) {
 				break;
@@ -41,7 +43,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 					.map(IHierarchicalCodeSlice::getChildren)
 					.flatMap(Collection::stream)
 					.map(sl -> (ICodeSlice) sl)
-					.toList();
+					.collect(Collectors.toList());
 			m_level++;
 		}
 
@@ -52,7 +54,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 	private void printSlicingInfo(List<ICodeSlice> minConfig, List<ICodeSlice> slicing) {
 		StringBuilder sb = new StringBuilder();
-		for (var sl : slicing) {
+		for (ICodeSlice sl : slicing) {
 			if (minConfig.contains(sl)) {
 				sb.append(1);
 			} else {
@@ -64,7 +66,9 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 	@Override
 	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
-		return executor.test(slices);
+		ITestExecutor.ETestResult result = executor.test(slices);
+		log(":::: " + result + " :::: " + slices.size() + " / " + totalSlices + " :::: " + slices.stream().map(sl -> String.valueOf(sl.getSliceNumber())).collect(Collectors.joining(", ")));
+		return result;
 	}
 
 	@Override

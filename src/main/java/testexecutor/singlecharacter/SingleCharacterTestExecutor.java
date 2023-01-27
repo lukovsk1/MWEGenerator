@@ -10,6 +10,7 @@ import testexecutor.TestExecutorOptions;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /*
@@ -30,15 +32,15 @@ public class SingleCharacterTestExecutor extends ATestExecutor {
 
 	@Override
 	public List<ICodeSlice> extractSlices() {
-		File sourceFolder = getSourceFolder(getOptions().getModulePath());
+		File sourceFolder = getSourceFolder(getTestSourcePath(), getOptions().getSourceFolderPath());
 		List<Path> filePaths;
-		String unitTestFolderPath = getOptions().getModulePath() + "\\" + getOptions().getUnitTestFolderPath();
-		try (Stream<Path> stream = Files.walk(Path.of(sourceFolder.getPath()))) {
+		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
+		try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
 			filePaths = stream
 					.filter(file -> Files.isRegularFile(file)
 							&& "java".equals(FilenameUtils.getExtension(file.toString()))
 							&& !file.toString().startsWith(unitTestFolderPath))
-					.toList();
+					.collect(Collectors.toList());
 
 		} catch (IOException e) {
 			throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);

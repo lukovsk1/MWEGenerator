@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ddminj" target="19" />
+      <module name="ddminj" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

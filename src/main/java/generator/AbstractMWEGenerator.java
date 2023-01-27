@@ -20,6 +20,7 @@ public abstract class AbstractMWEGenerator {
 	public void runGenerator() {
 		// extract code slices
 		ITestExecutor executor = getTestExecutor();
+		executor.initialize();
 		List<ICodeSlice> slicing;
 		int testNr = 1;
 		int totalSlices;

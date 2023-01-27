@@ -8,6 +8,7 @@ public class TestExecutorOptions {
 	}
 
 	private String m_modulePath;
+	private String m_sourceFolderPath;
 	private String m_unitTestFolderPath;
 	private String m_unitTestMethod;
 	private String m_expectedResult;
@@ -23,6 +24,14 @@ public class TestExecutorOptions {
 
 	public String getModulePath() {
 		return m_modulePath;
+	}
+	public String getSourceFolderPath() {
+		return m_sourceFolderPath;
+	}
+
+	public TestExecutorOptions withSourceFolderPath(String sourceFolderPath) {
+		m_sourceFolderPath = sourceFolderPath;
+		return this;
 	}
 
 	public String getUnitTestFolderPath() {

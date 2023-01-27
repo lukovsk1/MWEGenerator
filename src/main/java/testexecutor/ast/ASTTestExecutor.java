@@ -17,6 +17,8 @@ import utility.JavaParserUtility.Token;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -39,10 +41,10 @@ public class ASTTestExecutor extends ATestExecutor {
 
 	@Override
 	public List<ICodeSlice> extractSlices() {
-		File sourceFolder = getSourceFolder(getOptions().getModulePath());
+		File sourceFolder = getSourceFolder(getTestSourcePath(), getOptions().getSourceFolderPath());
 		List<Path> filePaths;
-		try (Stream<Path> stream = Files.walk(Path.of(sourceFolder.getPath()))) {
-			filePaths = stream.filter(Files::isRegularFile).toList();
+		try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
+			filePaths = stream.filter(Files::isRegularFile).collect(Collectors.toList());
 
 		} catch (IOException e) {
 			throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);
@@ -51,7 +53,7 @@ public class ASTTestExecutor extends ATestExecutor {
 		List<ICodeSlice> slices = new ArrayList<>();
 
 		AtomicInteger sliceNr = new AtomicInteger();
-		String unitTestFolderPath = getOptions().getModulePath() + "\\" + getOptions().getUnitTestFolderPath();
+		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
 		for (Path filePath : filePaths) {
 			if(!"java".equals(FilenameUtils.getExtension(filePath.toString()))
 			 || filePath.toString().startsWith(unitTestFolderPath) ) {
@@ -105,12 +107,12 @@ public class ASTTestExecutor extends ATestExecutor {
 		AtomicReference<ASTNode> parent = new AtomicReference<>(rootNode);
 		// check if we have a slice without a calculated level
 		while (true) {
-			var childNodes = nodesToSlices.keySet()
+			List<ASTNode> childNodes = nodesToSlices.keySet()
 					.stream()
 					.filter(node -> Objects.equals(node.getParent(), parent.get()))
 					.filter(node -> !Objects.equals(node, parent.get()))
-					.toList();
-			for (var child : childNodes) {
+					.collect(Collectors.toList());
+			for (ASTNode child : childNodes) {
 				ASTCodeSlice slice = nodesToSlices.get(child);
 				slice.setLevel(level);
 				nodesOnLevel.add(child);
@@ -135,13 +137,13 @@ public class ASTTestExecutor extends ATestExecutor {
 			nodesOnParentLevel.remove(parent.get());
 		}
 		// sometimes there are middle nodes, that are not assigned to a token in a slice
-		for (var unassignedEntry : nodesToSlices.entrySet()
+		for (Map.Entry<ASTNode, ASTCodeSlice> unassignedEntry : nodesToSlices.entrySet()
 				.stream()
 				.filter(e -> e.getValue().getLevel() < 0)
 				.sorted(Comparator.comparing(e -> e.getValue().getStart()))
-				.toList()) {
-			var slice = unassignedEntry.getValue();
-			var ancestorNode = unassignedEntry.getKey().getParent();
+				.collect(Collectors.toList())) {
+			ASTCodeSlice slice = unassignedEntry.getValue();
+			ASTNode ancestorNode = unassignedEntry.getKey().getParent();
 			if (ancestorNode == null) {
 				throw new TestingException("Unable to calculate dependencies. Found unassignable node");
 			}
@@ -151,11 +153,11 @@ public class ASTTestExecutor extends ATestExecutor {
 					throw new TestingException("Unable to calculate dependencies. Found unassignable node");
 				}
 			}
-			var parentSlice = nodesToSlices.get(ancestorNode);
+			ASTCodeSlice parentSlice = nodesToSlices.get(ancestorNode);
 			parentSlice.addChild(slice);
 			slice.setLevel(parentSlice.getLevel() + 1);
 		}
-		if (!nodesToSlices.entrySet().stream().filter(e -> e.getValue().getLevel() < 0).toList().isEmpty()) {
+		if (!nodesToSlices.entrySet().stream().filter(e -> e.getValue().getLevel() < 0).collect(Collectors.toList()).isEmpty()) {
 			throw new TestingException("Unable to calculate dependencies. Cannot fix unassigned nodes");
 		}
 	}
@@ -173,7 +175,7 @@ public class ASTTestExecutor extends ATestExecutor {
 
 		// add fixed slices without any children
 		m_fixedSlices.forEach(sl -> {
-			var f = slicesByFile.getOrDefault(sl.getPath(), new HashSet<>());
+			Set<ICodeSlice> f = slicesByFile.getOrDefault(sl.getPath(), new HashSet<>());
 			f.add(sl);
 			slicesByFile.put(sl.getPath(), f);
 		});

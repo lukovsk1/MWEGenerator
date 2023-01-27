@@ -47,7 +47,7 @@ public final class CollectionsUtility {
 		if (sl.getChildren().isEmpty()) {
 			return Collections.singleton(sl);
 		}
-		var returnValue = new HashSet<IHierarchicalCodeSlice>();
+		Set<IHierarchicalCodeSlice> returnValue = new HashSet<>();
 		returnValue.add(sl);
 		for (IHierarchicalCodeSlice child : sl.getChildren()) {
 			returnValue.addAll(getChildrenInDeep(child));

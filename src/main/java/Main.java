@@ -13,18 +13,19 @@ public class Main {
 	public static void main(String[] args) {
 
 		AbstractMWEGenerator generator;
-		if(args.length >= 4) {
+		if(args.length >= 5) {
 			TestExecutorOptions options = new TestExecutorOptions()
 					.withModulePath(args[0])
-					.withUnitTestFolderPath(args[1])
-					.withUnitTestMethod(args[2])
-					.withExpectedResult(args[3])
+					.withSourceFolderPath(args[1])
+					.withUnitTestFolderPath(args[2])
+					.withUnitTestMethod(args[3])
+					.withExpectedResult(args[4])
 					//.withCompilationType(TestExecutorOptions.ECompilationType.COMMAND_LINE)
-					.withLogCompilationErrors(true);
+					.withLogCompilationErrors(false);
 
 			generator = new ASTMWEGenerator(options);
 		} else {
-			generator = new ASTMWEGenerator(Constants.CALCULATOR_OPTIONS);
+			generator = new ASTMWEGenerator(Constants.CALCULATOR_OPTIONS_MULTI);
 		}
 
 		generator.runGenerator();

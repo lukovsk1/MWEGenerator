@@ -13,6 +13,8 @@ public interface ITestExecutor {
 		ERROR_RUNTIME
 	}
 
+	void initialize();
+
 	List<ICodeSlice> extractSlices();
 
 	void recreateCode(List<ICodeSlice> slices);

@@ -20,7 +20,7 @@ public class JavaParserUtility {
 	 * The AST's Java language specification used for parsing.
 	 */
 	@SuppressWarnings("deprecation")
-	public static int JAVA_LANGUAGE_SPECIFICATION = AST.JLS17; //getJLSLatest(); // Latest long term support version of Java.
+	public static int JAVA_LANGUAGE_SPECIFICATION = AST.JLS8; //getJLSLatest(); // Latest long term support version of Java.
 
 	/**
 	 * Represents a code token mapped to an AST node.
