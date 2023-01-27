@@ -1,5 +1,6 @@
 package testexecutor.singlecharacter;
 
+import org.apache.commons.io.FilenameUtils;
 import slice.ICodeSlice;
 import slice.SingleCharacterCodeSlice;
 import testexecutor.ATestExecutor;
@@ -31,8 +32,13 @@ public class SingleCharacterTestExecutor extends ATestExecutor {
 	public List<ICodeSlice> extractSlices() {
 		File sourceFolder = getSourceFolder(getOptions().getModulePath());
 		List<Path> filePaths;
+		String unitTestFolderPath = getOptions().getModulePath() + "\\" + getOptions().getUnitTestFolderPath();
 		try (Stream<Path> stream = Files.walk(Path.of(sourceFolder.getPath()))) {
-			filePaths = stream.filter(Files::isRegularFile).toList();
+			filePaths = stream
+					.filter(file -> Files.isRegularFile(file)
+							&& "java".equals(FilenameUtils.getExtension(file.toString()))
+							&& !file.toString().startsWith(unitTestFolderPath))
+					.toList();
 
 		} catch (IOException e) {
 			throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);

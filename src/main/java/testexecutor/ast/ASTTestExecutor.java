@@ -51,14 +51,16 @@ public class ASTTestExecutor extends ATestExecutor {
 		List<ICodeSlice> slices = new ArrayList<>();
 
 		AtomicInteger sliceNr = new AtomicInteger();
+		String unitTestFolderPath = getOptions().getModulePath() + "\\" + getOptions().getUnitTestFolderPath();
 		for (Path filePath : filePaths) {
-			if(!"java".equals(FilenameUtils.getExtension(filePath.toString()))) {
-				// skip non-java files
+			if(!"java".equals(FilenameUtils.getExtension(filePath.toString()))
+			 || filePath.toString().startsWith(unitTestFolderPath) ) {
+				// skip non-java and unit test files
 				continue;
 			}
 			try {
 				String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
-				String code = FileUtility.readTextFile(filePath);
+ 				String code = FileUtility.readTextFile(filePath);
 				CompilationUnit javaAST = JavaParserUtility.parse(code, true);
 				List<Token> tokens = JavaParserUtility.tokensToAST(code, javaAST);
 				slices.add(transformToSlices(javaAST, tokens, relativeFileName, sliceNr));

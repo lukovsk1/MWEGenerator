@@ -1,5 +1,6 @@
 package testexecutor;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.mdkt.compiler.CompilationException;
 import org.mdkt.compiler.InMemoryJavaCompiler;
@@ -90,9 +91,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 				.forEach(File::delete);
 	}
 
-	protected void copyFolderStructure(Path src, Path dest, boolean includeFiles) throws IOException {
+	protected void copyFolderStructure(Path src, Path dest, boolean includeJavaFiles) throws IOException {
 		try (Stream<Path> stream = Files.walk(src)) {
-			stream.filter(path -> includeFiles || !Files.isRegularFile(path))
+			stream.filter(path -> includeJavaFiles || !Files.isRegularFile(path) || !"java".equals(FilenameUtils.getExtension(path.toString())))
 					.forEach(source -> copy(source, dest.resolve(src.relativize(source))));
 		}
 	}
@@ -137,16 +138,15 @@ public abstract class ATestExecutor implements ITestExecutor {
 		try {
 			deleteFolder(testOutputPath);
 			copyFolderStructure(getTestSourcePath(), testOutputPath, false);
+
+			// Copy unit test file
+			String unitTestFolderPath = getOptions().getUnitTestFolderPath();
+			Path unitTestPath = Path.of(testOutputPath + "\\" + unitTestFolderPath);
+			deleteFolder(unitTestPath);
+			copyFolderStructure(Path.of(getTestSourcePath() + "\\" + unitTestFolderPath), unitTestPath, true);
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
 		}
-		// Copy unit test file
-		String unitTestFilePath = getOptions().getUnitTestFilePath();
-		if (!unitTestFilePath.endsWith(".java")) {
-			unitTestFilePath += ".java";
-		}
-		copy(Path.of(getTestSourcePath() + "\\" + unitTestFilePath),
-				Path.of(testOutputPath + "\\" + unitTestFilePath));
 
 		// write files to output folder
 		try {
@@ -170,21 +170,23 @@ public abstract class ATestExecutor implements ITestExecutor {
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
 		}
-		// Copy unit test file to source folder
-		String unitTestFilePath = getOptions().getUnitTestFilePath();
-		if (!unitTestFilePath.endsWith(".java")) {
-			unitTestFilePath += ".java";
-		}
-		copy(Path.of(getOptions().getModulePath() + "\\" + unitTestFilePath),
-				Path.of(testSourcePath + "\\" + unitTestFilePath));
 
 		InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
 
 		String[] unitTestName = getOptions().getUnitTestMethod().split("#");
 
 		try {
-			String unitTestFile = Files.readString(Path.of(getOptions().getModulePath() + "\\" + unitTestFilePath));
-			compiler.addSource(unitTestName[0], unitTestFile);
+			Path unitTestFolder = Path.of(getOptions().getModulePath() + "\\" + getOptions().getUnitTestFolderPath());
+			Files.walk(unitTestFolder)
+					.filter(path -> Files.isRegularFile(path) && "java".equals(FilenameUtils.getExtension(path.toString())))
+					.forEach(path -> {
+						try {
+							String className = path.toString().substring(unitTestFolder.toString().length()+1, path.toString().length() - 5).replaceAll("\\\\", ".");
+							compiler.addSource(className, Files.readString(path));
+						} catch (Exception e) {
+							throw new RuntimeException(e);
+						}
+					});
 			for (Map.Entry<String, String> file : mapSlicesToFiles(slices).entrySet()) {
 				compiler.addSource(fileNameToClassName(file.getKey()), file.getValue());
 			}
@@ -196,7 +198,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 		try {
 			classes = compiler.compileAll();
 		} catch (CompilationException e) {
-			if(m_options.isLogging()) {
+			if(m_options.isLogCompilationErrors()) {
 				System.out.println("Compilation error: " + e);
 			}
 			return ETestResult.ERROR_COMPILATION;
@@ -241,18 +243,15 @@ public abstract class ATestExecutor implements ITestExecutor {
 			deleteFolder(testSourcePath);
 			copyFolderStructure(Path.of(getOptions().getModulePath()), testSourcePath, true);
 			copyFolderStructure(Path.of(getOptions().getModulePath()), testFolderPath, false);
+
+			// Copy unit test folder
+			String unitTestFolderPath = getOptions().getUnitTestFolderPath();
+			Path unitTestPath = Path.of(testFolderPath + "\\" + unitTestFolderPath);
+			deleteFolder(unitTestPath);
+			copyFolderStructure(Path.of(getOptions().getModulePath() + "\\" + unitTestFolderPath), unitTestPath, true);
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
 		}
-		// Copy unit test file
-		String unitTestFilePath = getOptions().getUnitTestFilePath();
-		if (!unitTestFilePath.endsWith(".java")) {
-			unitTestFilePath += ".java";
-		}
-		copy(Path.of(getOptions().getModulePath() + "\\" + unitTestFilePath),
-				Path.of(testFolderPath + "\\" + unitTestFilePath));
-		copy(Path.of(getOptions().getModulePath() + "\\" + unitTestFilePath),
-				Path.of(testSourcePath + "\\" + unitTestFilePath));
 
 		// write files to testing folder
 		try {

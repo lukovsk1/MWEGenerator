@@ -1,12 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="defects4j cli_1" type="Application" factoryName="Application">
     <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
-    <envs>
-      <env name="defects4j.bugs" value="C:\Users\lubo9\Desktop\Workspace\defects4j\bugs" />
-    </envs>
     <option name="MAIN_CLASS_NAME" value="Main" />
     <module name="ddminj" />
-    <option name="PROGRAM_PARAMETERS" value="C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\cli_1_b src\test\org\apache\commons\cli\bug\BugCLI13Test org.apache.commons.cli.bug.BugCLI13Test#testCLI13" />
+    <option name="PROGRAM_PARAMETERS" value="C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\cli_1_b src\test\ org.apache.commons.cli.bug.BugCLI13Test#testCLI13 org.opentest4j.AssertionFailedError" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

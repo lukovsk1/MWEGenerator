@@ -8,11 +8,12 @@ public class TestExecutorOptions {
 	}
 
 	private String m_modulePath;
-	private String m_unitTestFilePath;
+	private String m_unitTestFolderPath;
 	private String m_unitTestMethod;
 	private String m_expectedResult;
 	private ECompilationType m_compilationType = ECompilationType.IN_MEMORY;
 	private boolean m_logging = true;
+	private boolean m_logCompilationErrors = false;
 	private boolean m_multipleRuns = false;
 
 	public TestExecutorOptions withModulePath(String modulePath) {
@@ -24,13 +25,13 @@ public class TestExecutorOptions {
 		return m_modulePath;
 	}
 
-	public TestExecutorOptions withUnitTestFilePath(String unitTestFilePath) {
-		m_unitTestFilePath = unitTestFilePath;
-		return this;
+	public String getUnitTestFolderPath() {
+		return m_unitTestFolderPath;
 	}
 
-	public String getUnitTestFilePath() {
-		return m_unitTestFilePath;
+	public TestExecutorOptions withUnitTestFolderPath(String unitTestFolderPath) {
+		m_unitTestFolderPath = unitTestFolderPath;
+		return this;
 	}
 
 	public TestExecutorOptions withExpectedResult(String expectedResult) {
@@ -67,6 +68,15 @@ public class TestExecutorOptions {
 
 	public boolean isLogging() {
 		return m_logging;
+	}
+
+	public TestExecutorOptions withLogCompilationErrors(boolean logCompilationErrors) {
+		m_logCompilationErrors = logCompilationErrors;
+		return this;
+	}
+
+	public boolean isLogCompilationErrors() {
+		return m_logCompilationErrors;
 	}
 
 	public TestExecutorOptions withMultipleRuns(boolean multipleRuns) {

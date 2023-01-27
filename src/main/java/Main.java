@@ -13,14 +13,14 @@ public class Main {
 	public static void main(String[] args) {
 
 		AbstractMWEGenerator generator;
-		if(args.length >= 3) {
+		if(args.length >= 4) {
 			TestExecutorOptions options = new TestExecutorOptions()
 					.withModulePath(args[0])
-					.withUnitTestFilePath(args[1])
+					.withUnitTestFolderPath(args[1])
 					.withUnitTestMethod(args[2])
-					.withExpectedResult("org.opentest4j.AssertionFailedError")
-					.withCompilationType(TestExecutorOptions.ECompilationType.IN_MEMORY)
-					.withLogging(true);
+					.withExpectedResult(args[3])
+					//.withCompilationType(TestExecutorOptions.ECompilationType.COMMAND_LINE)
+					.withLogCompilationErrors(true);
 
 			generator = new ASTMWEGenerator(options);
 		} else {
