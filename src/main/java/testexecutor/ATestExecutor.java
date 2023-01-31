@@ -1,10 +1,10 @@
 package testexecutor;
 
-import compiler.IMJCompiler;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.mdkt.compiler.CompilationException;
 import fragment.ICodeFragment;
+import org.mdkt.compiler.InMemoryJavaCompiler;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -162,7 +162,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 	}
 
 	protected ETestResult testInMemory(List<ICodeFragment> fragments) {
-		IMJCompiler compiler = IMJCompiler.newInstance();
+		InMemoryJavaCompiler compiler = InMemoryJavaCompiler
+				.newInstance()
+				.ignoreWarnings();
 		String[] unitTestName = getOptions().getUnitTestMethod().split("#");
 
 		try {
