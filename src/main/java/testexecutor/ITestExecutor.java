@@ -1,6 +1,6 @@
 package testexecutor;
 
-import slice.ICodeSlice;
+import fragment.ICodeFragment;
 
 import java.util.List;
 
@@ -13,11 +13,13 @@ public interface ITestExecutor {
 		ERROR_RUNTIME
 	}
 
-	List<ICodeSlice> extractSlices();
+	void initialize();
 
-	void recreateCode(List<ICodeSlice> slices);
+	List<ICodeFragment> extractFragments();
 
-	ETestResult test(List<ICodeSlice> slices);
+	void recreateCode(List<ICodeFragment> fragments);
+
+	ETestResult test(List<ICodeFragment> fragments);
 
 	// sets the source folder of the executor to the build folder
 	// in order to rerun the test with the previous result

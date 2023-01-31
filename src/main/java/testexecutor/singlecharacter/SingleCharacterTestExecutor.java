@@ -1,7 +1,8 @@
 package testexecutor.singlecharacter;
 
-import slice.ICodeSlice;
-import slice.SingleCharacterCodeSlice;
+import org.apache.commons.io.FilenameUtils;
+import fragment.ICodeFragment;
+import fragment.SingleCharacterCodeFragment;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
 import testexecutor.TestExecutorOptions;
@@ -9,6 +10,7 @@ import testexecutor.TestExecutorOptions;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -16,10 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /*
-    A simple extractor that considers each line as a separate slice
+    A simple test executor that considers each character as a separate fragment
  */
 public class SingleCharacterTestExecutor extends ATestExecutor {
 
@@ -28,25 +31,30 @@ public class SingleCharacterTestExecutor extends ATestExecutor {
 	}
 
 	@Override
-	public List<ICodeSlice> extractSlices() {
-		File sourceFolder = getSourceFolder(getOptions().getModulePath());
+	public List<ICodeFragment> extractFragments() {
+		File sourceFolder = getSourceFolder(getTestSourcePath(), getOptions().getSourceFolderPath());
 		List<Path> filePaths;
-		try (Stream<Path> stream = Files.walk(Path.of(sourceFolder.getPath()))) {
-			filePaths = stream.filter(Files::isRegularFile).toList();
+		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
+		try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
+			filePaths = stream
+					.filter(file -> Files.isRegularFile(file)
+							&& "java".equals(FilenameUtils.getExtension(file.toString()))
+							&& !file.toString().startsWith(unitTestFolderPath))
+					.collect(Collectors.toList());
 
 		} catch (IOException e) {
 			throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);
 		}
 
-		List<ICodeSlice> slices = new ArrayList<>();
+		List<ICodeFragment> fragments = new ArrayList<>();
 
-		int sliceNr = 0;
+		int fragmentNr = 0;
 		for (Path filePath : filePaths) {
 			try {
 				String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
 				byte[] file = Files.readAllBytes(filePath);
 				for (byte b : file) {
-					slices.add(new SingleCharacterCodeSlice(relativeFileName, b, sliceNr++));
+					fragments.add(new SingleCharacterCodeFragment(relativeFileName, b, fragmentNr++));
 				}
 
 			} catch (IOException e) {
@@ -54,11 +62,11 @@ public class SingleCharacterTestExecutor extends ATestExecutor {
 			}
 		}
 
-		return slices;
+		return fragments;
 	}
 
 	@Override
-	protected Map<String, String> mapSlicesToFiles(List<ICodeSlice> slices) {
+	protected Map<String, String> mapFragmentsToFiles(List<ICodeFragment> fragments) {
 		Map<String, String> files = new HashMap<>();
 		String fileName = null;
 		List<Byte> bytes = new ArrayList<>();
@@ -71,14 +79,14 @@ public class SingleCharacterTestExecutor extends ATestExecutor {
 				files.put(fn, new String(byteArray, StandardCharsets.UTF_8));
 			}
 		};
-		for (ICodeSlice sl : slices) {
-			SingleCharacterCodeSlice slice = (SingleCharacterCodeSlice) sl;
-			if (!slice.getPath().equals(fileName)) {
+		for (ICodeFragment fr : fragments) {
+			SingleCharacterCodeFragment fragment = (SingleCharacterCodeFragment) fr;
+			if (!fragment.getPath().equals(fileName)) {
 				byteWriter.accept(bytes, fileName);
-				fileName = slice.getPath();
+				fileName = fragment.getPath();
 				bytes = new ArrayList<>();
 			}
-			bytes.add(slice.getContent());
+			bytes.add(fragment.getContent());
 		}
 		byteWriter.accept(bytes, fileName);
 		return files;

@@ -1,11 +1,11 @@
-package slice;
+package fragment;
 
-public class CodeLineSlice extends ACodeSlice<String> {
+public class CodeLineFragment extends ACodeFragment<String> {
 
     private final int m_lineNumber;
 
-    public CodeLineSlice(String path, String codeLine, int lineNumber, int sliceNumber) {
-        super(path, codeLine, sliceNumber);
+    public CodeLineFragment(String path, String codeLine, int lineNumber, int fragmentNumber) {
+        super(path, codeLine, fragmentNumber);
         m_lineNumber = lineNumber;
     }
 

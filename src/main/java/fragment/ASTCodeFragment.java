@@ -1,18 +1,18 @@
-package slice;
+package fragment;
 
 import utility.JavaParserUtility.Token;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ASTCodeSlice extends ACodeSlice<Void> implements IHierarchicalCodeSlice {
+public class ASTCodeFragment extends ACodeFragment<Void> implements IHierarchicalCodeFragment {
 
 	private final List<Token> m_tokens = new ArrayList<>();
-	private final List<ASTCodeSlice> m_children = new ArrayList<>();
+	private final List<ASTCodeFragment> m_children = new ArrayList<>();
 	private int m_level = -1;
 
-	public ASTCodeSlice(String path, int sliceNumber) {
-		super(path, null, sliceNumber);
+	public ASTCodeFragment(String path, int fragmentNumber) {
+		super(path, null, fragmentNumber);
 	}
 
 	public void addToken(Token token) {
@@ -37,14 +37,14 @@ public class ASTCodeSlice extends ACodeSlice<Void> implements IHierarchicalCodeS
 		return m_tokens.get(m_tokens.size() - 1).end;
 	}
 
-	public void addChild(ASTCodeSlice child) {
+	public void addChild(ASTCodeFragment child) {
 		if (this != child) {
 			m_children.add(child);
 		}
 	}
 
 	@Override
-	public List<ASTCodeSlice> getChildren() {
+	public List<ASTCodeFragment> getChildren() {
 		return new ArrayList<>(m_children);
 	}
 
@@ -61,7 +61,7 @@ public class ASTCodeSlice extends ACodeSlice<Void> implements IHierarchicalCodeS
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("# ");
-		sb.append(getSliceNumber());
+		sb.append(getFragmentNumber());
 		sb.append(" # ");
 		if (!m_tokens.isEmpty()) {
 			sb.append(m_tokens.get(0).node);

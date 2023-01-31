@@ -1,34 +1,40 @@
 import generator.ASTMWEGenerator;
+import generator.AbstractMWEGenerator;
 import org.apache.commons.io.FileUtils;
+import testexecutor.TestExecutorOptions;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class Main {
 
 	public static void main(String[] args) {
 
+		AbstractMWEGenerator generator;
+		if(args.length >= 5) {
+			TestExecutorOptions options = new TestExecutorOptions()
+					.withModulePath(args[0])
+					.withSourceFolderPath(args[1])
+					.withUnitTestFolderPath(args[2])
+					.withUnitTestMethod(args[3])
+					.withExpectedResult(args[4])
+					//.withCompilationType(TestExecutorOptions.ECompilationType.COMMAND_LINE)
+					.withLogCompilationErrors(false)
+					.withLogging(TestExecutorOptions.ELogLevel.DEBUG);
 
+			generator = new ASTMWEGenerator(options);
+		} else {
+			generator = new ASTMWEGenerator(Constants.CALCULATOR_OPTIONS_MULTI);
+		}
+
+		generator.runGenerator();
+		/*
 		try (ExecutorService executor = Executors.newCachedThreadPool()) {
 			long start = System.currentTimeMillis();
 
-			executor.submit(() -> {
-				//new SingleCharacterMWEGenerator(Constants.CALCULATOR_OPTIONS).runGenerator(); // Timed out
-				//new CodeLineMWEGenerator(Constants.CALCULATOR_OPTIONS).runGenerator(); // 6815ms 841 bytes
-				//new CodeLineMWEGenerator(Constants.CALCULATOR_OPTIONS_MULTI).runGenerator(); // 8945ms 726 bytes
-				new ASTMWEGenerator(Constants.CALCULATOR_OPTIONS).runGenerator(); // 6122ms 718 bytes
-
-				//new SingleCharacterMWEGenerator(Constants.FIBONACCI_OPTIONS).runGenerator(); // Timed out
-				//new CodeLineMWEGenerator(Constants.FIBONACCI_OPTIONS).runGenerator(); // 3905ms 943 bytes
-				//new CodeLineMWEGenerator(Constants.FIBONACCI_OPTIONS_MULTI).runGenerator(); // 4194ms 943 bytes
-				//new ASTMWEGenerator(Constants.FIBONACCI_OPTIONS).runGenerator(); // 3225ms 863 bytes
-
-
-				//new SingleCharacterMWEGenerator(Constants.SIMPLE_EXAMPLE_OPTIONS).runGenerator();
-				//new CodeLineMWEGenerator(Constants.SIMPLE_EXAMPLE_OPTIONS).runGenerator();
-				//new CodeLineMWEGenerator(Constants.SIMPLE_EXAMPLE_OPTIONS_MULTI).runGenerator();
-				//new ASTMWEGenerator(Constants.SIMPLE_EXAMPLE_OPTIONS).runGenerator();
-			}).get(5, TimeUnit.MINUTES);
+			executor.submit(generator::runGenerator).get(10, TimeUnit.MINUTES);
 
 			long time = System.currentTimeMillis() - start;
 			System.out.println();
@@ -45,5 +51,7 @@ public class Main {
 		} catch (TimeoutException e) {
 			System.out.println("TIMED OUT:" + e);
 		}
+
+		 */
 	}
 }

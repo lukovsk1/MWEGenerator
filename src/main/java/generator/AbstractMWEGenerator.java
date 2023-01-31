@@ -1,6 +1,6 @@
 package generator;
 
-import slice.ICodeSlice;
+import fragment.ICodeFragment;
 import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import utility.CollectionsUtility;
@@ -18,48 +18,49 @@ public abstract class AbstractMWEGenerator {
 	}
 
 	public void runGenerator() {
-		// extract code slices
+		// extract code fragments
 		ITestExecutor executor = getTestExecutor();
-		List<ICodeSlice> slicing;
+		executor.initialize();
+		List<ICodeFragment> fragments;
 		int testNr = 1;
-		int totalSlices;
+		int totalFragments;
 		do {
-			log("############## RUNNING TEST NR. " + testNr++ + " ##############");
-			slicing = executor.extractSlices();
-			totalSlices = slicing.size();
+			logInfo("############## RUNNING TEST NR. " + testNr++ + " ##############");
+			fragments = executor.extractFragments();
+			totalFragments = fragments.size();
 			long start = System.currentTimeMillis();
-			slicing = runDDMin(executor, slicing, totalSlices);
+			fragments = runDDMin(executor, fragments, totalFragments);
 			long time = System.currentTimeMillis() - start;
-			log(null);
-			log("Found a 1-minimal slicing in " + time + " ms:");
-			log(getSlicingIdentifier(slicing, totalSlices));
+			logInfo(null);
+			logInfo("Found a 1-minimal configuration in " + time + " ms:");
+			logInfo(getConfigurationIdentifier(fragments, totalFragments));
 
 			// recreate mwe
-			log("Recreating result in testingoutput folder...");
-			executor.recreateCode(slicing);
+			logInfo("Recreating result in testingoutput folder...");
+			executor.recreateCode(fragments);
 			executor.changeSourceToOutputFolder();
-		} while (m_testExecutorOptions.isMultipleRuns() && slicing.size() < totalSlices);
+		} while (m_testExecutorOptions.isMultipleRuns() && fragments.size() < totalFragments);
 
-		log("############## FINISHED ##############");
+		logInfo("############## FINISHED ##############");
 	}
 
-	protected List<ICodeSlice> runDDMin(ITestExecutor executor, List<ICodeSlice> initialSlicing, int totalSlices) {
+	protected List<ICodeFragment> runDDMin(ITestExecutor executor, List<ICodeFragment> initialConfiguration, int totalFragments) {
 		Map<String, ITestExecutor.ETestResult> resultMap = new HashMap<>();
 
-		checkPreconditions(executor, initialSlicing, totalSlices, resultMap);
+		checkPreconditions(executor, initialConfiguration, totalFragments, resultMap);
 
-		List<ICodeSlice> slices = new ArrayList<>(initialSlicing);
+		List<ICodeFragment> fragments = new ArrayList<>(initialConfiguration);
 		int granularity = 2;
-		while (slices.size() >= 2) {
-			List<List<ICodeSlice>> subsets = CollectionsUtility.split(slices, granularity);
+		while (fragments.size() >= 2) {
+			List<List<ICodeFragment>> subsets = CollectionsUtility.split(fragments, granularity);
 			assert subsets.size() == granularity;
 
 			boolean someComplementIsFailing = false;
-			for (List<ICodeSlice> subset : subsets) {
-				List<ICodeSlice> complement = CollectionsUtility.listMinus(slices, subset);
+			for (List<ICodeFragment> subset : subsets) {
+				List<ICodeFragment> complement = CollectionsUtility.listMinus(fragments, subset);
 
-				if (executeTest(executor, complement, totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED) {
-					slices = complement;
+				if (executeTest(executor, complement, totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED) {
+					fragments = complement;
 					granularity = Math.max(granularity - 1, 2);
 					someComplementIsFailing = true;
 					break;
@@ -67,59 +68,69 @@ public abstract class AbstractMWEGenerator {
 			}
 
 			if (!someComplementIsFailing) {
-				if (granularity == slices.size()) {
+				if (granularity == fragments.size()) {
 					break;
 				}
 
-				granularity = Math.min(granularity * 2, slices.size());
+				granularity = Math.min(granularity * 2, fragments.size());
 			}
 		}
-		return slices;
+		return fragments;
 	}
 
-	protected void checkPreconditions(ITestExecutor executor, List<ICodeSlice> initialSlicing, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
-		if (executeTest(executor, Collections.emptyList(), totalSlices, resultMap) == ITestExecutor.ETestResult.FAILED
-				|| executeTest(executor, initialSlicing, totalSlices, resultMap) != ITestExecutor.ETestResult.FAILED) {
-			log("Initial testing conditions are not met.");
+	protected void checkPreconditions(ITestExecutor executor, List<ICodeFragment> initialConfiguration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
+		if (executeTest(executor, Collections.emptyList(), totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED
+				|| executeTest(executor, initialConfiguration, totalFragments, resultMap) != ITestExecutor.ETestResult.FAILED) {
+			logInfo("Initial testing conditions are not met.");
 			System.exit(1);
 		}
 	}
 
-	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
-		String slicingIdentifier = getSlicingIdentifier(slices, totalSlices);
-		ITestExecutor.ETestResult result = resultMap.get(slicingIdentifier);
+	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeFragment> configuration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
+		String configurationIdentifier = getConfigurationIdentifier(configuration, totalFragments);
+		ITestExecutor.ETestResult result = resultMap.get(configurationIdentifier);
 		if (result != null) {
 			return result;
 		}
 
-		result = executor.test(slices);
+		result = executor.test(configuration);
 
-		log(slicingIdentifier + " -> " + result);
+		logDebug(configurationIdentifier + " -> " + result);
 
-		resultMap.put(slicingIdentifier, result);
+		resultMap.put(configurationIdentifier, result);
 
 		return result;
 	}
 
-	protected String getSlicingIdentifier(List<ICodeSlice> slices, int totalSlices) {
-		List<Integer> activeSlices = IntStream.range(0, totalSlices)
+	protected String getConfigurationIdentifier(List<ICodeFragment> configuration, int totalFragments) {
+		List<Integer> activeFragments = IntStream.range(0, totalFragments)
 				.mapToObj(i -> 0)
 				.collect(Collectors.toList());
 
-		slices.forEach(sl -> activeSlices.set(sl.getSliceNumber(), 1));
+		configuration.forEach(fr -> activeFragments.set(fr.getFragmentNumber(), 1));
 
-		return activeSlices.stream().map(i -> Integer.toString(i)).collect(Collectors.joining());
+		return activeFragments.stream().map(i -> Integer.toString(i)).collect(Collectors.joining());
 	}
 
 	protected abstract ITestExecutor getTestExecutor();
 
-	protected void log(Object msg) {
-		if (m_testExecutorOptions.isLogging()) {
-			if (msg != null) {
-				System.out.println(msg);
-			} else {
-				System.out.println();
-			}
+	protected void logInfo(Object msg) {
+		log(msg, TestExecutorOptions.ELogLevel.INFO);
+	}
+
+	protected void logDebug(Object msg) {
+		log(msg, TestExecutorOptions.ELogLevel.DEBUG);
+	}
+
+	private void log(Object msg, TestExecutorOptions.ELogLevel level) {
+		if (!m_testExecutorOptions.getLogLevel().shouldLog(level)) {
+			return;
+		}
+
+		if (msg != null) {
+			System.out.println(msg);
+		} else {
+			System.out.println();
 		}
 	}
 }

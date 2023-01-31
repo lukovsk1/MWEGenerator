@@ -1,10 +1,11 @@
 package testexecutor.ast;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import slice.ASTCodeSlice;
-import slice.ICodeSlice;
+import fragment.ASTCodeFragment;
+import fragment.ICodeFragment;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
 import testexecutor.TestExecutorOptions;
@@ -16,6 +17,7 @@ import utility.JavaParserUtility.Token;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -25,11 +27,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /*
-    A simple extractor that considers each line as a separate slice
+    An executor that extracts the hierarchical code fragments from the AST of the source code
  */
 public class ASTTestExecutor extends ATestExecutor {
 
-	private final Set<ICodeSlice> m_fixedSlices = new HashSet<>();
+	private final Set<ICodeFragment> m_fixedFragments = new HashSet<>();
 	private boolean m_isRecreating = false;
 
 	public ASTTestExecutor(TestExecutorOptions options) {
@@ -37,80 +39,86 @@ public class ASTTestExecutor extends ATestExecutor {
 	}
 
 	@Override
-	public List<ICodeSlice> extractSlices() {
-		File sourceFolder = getSourceFolder(getOptions().getModulePath());
+	public List<ICodeFragment> extractFragments() {
+		File sourceFolder = getSourceFolder(getTestSourcePath(), getOptions().getSourceFolderPath());
 		List<Path> filePaths;
-		try (Stream<Path> stream = Files.walk(Path.of(sourceFolder.getPath()))) {
-			filePaths = stream.filter(Files::isRegularFile).toList();
+		try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
+			filePaths = stream.filter(Files::isRegularFile).collect(Collectors.toList());
 
 		} catch (IOException e) {
 			throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);
 		}
 
-		List<ICodeSlice> slices = new ArrayList<>();
+		List<ICodeFragment> fragments = new ArrayList<>();
 
-		AtomicInteger sliceNr = new AtomicInteger();
+		AtomicInteger fragmentNr = new AtomicInteger();
+		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
 		for (Path filePath : filePaths) {
+			if(!"java".equals(FilenameUtils.getExtension(filePath.toString()))
+			 || filePath.toString().startsWith(unitTestFolderPath) ) {
+				// skip non-java and unit test files
+				continue;
+			}
 			try {
 				String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
-				String code = FileUtility.readTextFile(filePath);
+ 				String code = FileUtility.readTextFile(filePath);
 				CompilationUnit javaAST = JavaParserUtility.parse(code, true);
 				List<Token> tokens = JavaParserUtility.tokensToAST(code, javaAST);
-				slices.add(transformToSlices(javaAST, tokens, relativeFileName, sliceNr));
+				fragments.add(transformToFragements(javaAST, tokens, relativeFileName, fragmentNr));
 			} catch (IOException | InvalidInputException e) {
-				throw new ExtractorException("Unable to create slices from file " + filePath, e);
+				throw new ExtractorException("Unable to create fragments from file " + filePath, e);
 			}
 		}
 
-		return slices;
+		return fragments;
 	}
 
-	private ASTCodeSlice transformToSlices(CompilationUnit javaAST, List<Token> tokens, String relativeFileName, AtomicInteger sliceNr) {
-		Map<ASTNode, ASTCodeSlice> astNodeToSlice = new HashMap<>();
-		ASTCodeSlice rootSlice = new ASTCodeSlice(relativeFileName, sliceNr.getAndIncrement());
-		rootSlice.setLevel(0);
-		astNodeToSlice.put(javaAST, rootSlice);
+	private ASTCodeFragment transformToFragements(CompilationUnit javaAST, List<Token> tokens, String relativeFileName, AtomicInteger fragmentNr) {
+		Map<ASTNode, ASTCodeFragment> astNodeToFragment = new HashMap<>();
+		ASTCodeFragment rootFragment = new ASTCodeFragment(relativeFileName, fragmentNr.getAndIncrement());
+		rootFragment.setLevel(0);
+		astNodeToFragment.put(javaAST, rootFragment);
 		// Combine all tokens that belong to the same AST node:
 		for (Token token : tokens) {
-			ASTCodeSlice slice = astNodeToSlice.get(token.node);
-			if (slice == null) {
-				slice = new ASTCodeSlice(relativeFileName, sliceNr.getAndIncrement());
-				astNodeToSlice.put(token.node, slice);
+			ASTCodeFragment fragment = astNodeToFragment.get(token.node);
+			if (fragment == null) {
+				fragment = new ASTCodeFragment(relativeFileName, fragmentNr.getAndIncrement());
+				astNodeToFragment.put(token.node, fragment);
 				for (ASTNode additionalNode : token.additionalNodes) {
-					astNodeToSlice.put(additionalNode, slice);
+					astNodeToFragment.put(additionalNode, fragment);
 				}
 			}
-			slice.addToken(token);
+			fragment.addToken(token);
 		}
-		calculateDependencies(javaAST.getRoot(), rootSlice, astNodeToSlice);
+		calculateDependencies(javaAST.getRoot(), rootFragment, astNodeToFragment);
 
-		return rootSlice;
+		return rootFragment;
 	}
 
-	private void calculateDependencies(ASTNode rootNode, ASTCodeSlice rootSlice, Map<ASTNode, ASTCodeSlice> nodesToSlices) {
+	private void calculateDependencies(ASTNode rootNode, ASTCodeFragment rootFragment, Map<ASTNode, ASTCodeFragment> nodesToFragments) {
 		// For each node, calculate its children and its level
-		if (nodesToSlices.isEmpty()) {
+		if (nodesToFragments.isEmpty()) {
 			return;
 		}
 		int level = 1;
 		Set<ASTNode> nodesOnParentLevel = Collections.emptySet();
 		Set<ASTNode> nodesOnLevel = new HashSet<>();
 		AtomicReference<ASTNode> parent = new AtomicReference<>(rootNode);
-		// check if we have a slice without a calculated level
+		// check if we have a fragment without a calculated level
 		while (true) {
-			var childNodes = nodesToSlices.keySet()
+			List<ASTNode> childNodes = nodesToFragments.keySet()
 					.stream()
 					.filter(node -> Objects.equals(node.getParent(), parent.get()))
 					.filter(node -> !Objects.equals(node, parent.get()))
-					.toList();
-			for (var child : childNodes) {
-				ASTCodeSlice slice = nodesToSlices.get(child);
-				slice.setLevel(level);
+					.collect(Collectors.toList());
+			for (ASTNode child : childNodes) {
+				ASTCodeFragment fragment = nodesToFragments.get(child);
+				fragment.setLevel(level);
 				nodesOnLevel.add(child);
-				if (parent.get() != null && nodesToSlices.get(parent.get()) != null) {
-					nodesToSlices.get(parent.get()).addChild(slice);
+				if (parent.get() != null && nodesToFragments.get(parent.get()) != null) {
+					nodesToFragments.get(parent.get()).addChild(fragment);
 				} else {
-					rootSlice.addChild(slice);
+					rootFragment.addChild(fragment);
 				}
 			}
 			// descend to next level
@@ -127,55 +135,55 @@ public class ASTTestExecutor extends ATestExecutor {
 			parent.set(nodesOnParentLevel.iterator().next());
 			nodesOnParentLevel.remove(parent.get());
 		}
-		// sometimes there are middle nodes, that are not assigned to a token in a slice
-		for (var unassignedEntry : nodesToSlices.entrySet()
+		// sometimes there are middle nodes, that are not assigned to a token in a fragment
+		for (Map.Entry<ASTNode, ASTCodeFragment> unassignedEntry : nodesToFragments.entrySet()
 				.stream()
 				.filter(e -> e.getValue().getLevel() < 0)
 				.sorted(Comparator.comparing(e -> e.getValue().getStart()))
-				.toList()) {
-			var slice = unassignedEntry.getValue();
-			var ancestorNode = unassignedEntry.getKey().getParent();
+				.collect(Collectors.toList())) {
+			ASTCodeFragment fragment = unassignedEntry.getValue();
+			ASTNode ancestorNode = unassignedEntry.getKey().getParent();
 			if (ancestorNode == null) {
 				throw new TestingException("Unable to calculate dependencies. Found unassignable node");
 			}
-			while (nodesToSlices.get(ancestorNode) == null) {
+			while (nodesToFragments.get(ancestorNode) == null) {
 				ancestorNode = ancestorNode.getParent();
 				if (ancestorNode == null) {
 					throw new TestingException("Unable to calculate dependencies. Found unassignable node");
 				}
 			}
-			var parentSlice = nodesToSlices.get(ancestorNode);
-			parentSlice.addChild(slice);
-			slice.setLevel(parentSlice.getLevel() + 1);
+			ASTCodeFragment parentFragment = nodesToFragments.get(ancestorNode);
+			parentFragment.addChild(fragment);
+			fragment.setLevel(parentFragment.getLevel() + 1);
 		}
-		if (!nodesToSlices.entrySet().stream().filter(e -> e.getValue().getLevel() < 0).toList().isEmpty()) {
+		if (nodesToFragments.entrySet().stream().anyMatch(e -> e.getValue().getLevel() < 0)) {
 			throw new TestingException("Unable to calculate dependencies. Cannot fix unassigned nodes");
 		}
 	}
 
 	@Override
-	protected Map<String, String> mapSlicesToFiles(List<ICodeSlice> activeSlices) {
+	protected Map<String, String> mapFragmentsToFiles(List<ICodeFragment> fragments) {
 		Map<String, String> files = new HashMap<>();
 
-		// add active slices and all their children
-		Map<String, Set<ICodeSlice>> slicesByFile = activeSlices.stream()
-				.map(sl -> ((ASTCodeSlice) sl))
-				.flatMap(sl -> m_isRecreating ? Stream.of(sl) : CollectionsUtility.getChildrenInDeep(sl).stream())
-				.map(sl -> (ICodeSlice) sl)
-				.collect(Collectors.groupingBy(ICodeSlice::getPath, Collectors.mapping(sl -> sl, Collectors.toSet())));
+		// add active fragments and all their children
+		Map<String, Set<ICodeFragment>> fragmentsByFile = fragments.stream()
+				.map(fr -> ((ASTCodeFragment) fr))
+				.flatMap(fr -> m_isRecreating ? Stream.of(fr) : CollectionsUtility.getChildrenInDeep(fr).stream())
+				.map(fr -> (ICodeFragment) fr)
+				.collect(Collectors.groupingBy(ICodeFragment::getPath, Collectors.mapping(fr -> fr, Collectors.toSet())));
 
-		// add fixed slices without any children
-		m_fixedSlices.forEach(sl -> {
-			var f = slicesByFile.getOrDefault(sl.getPath(), new HashSet<>());
-			f.add(sl);
-			slicesByFile.put(sl.getPath(), f);
+		// add fixed fragments without any children
+		m_fixedFragments.forEach(fr -> {
+			Set<ICodeFragment> f = fragmentsByFile.getOrDefault(fr.getPath(), new HashSet<>());
+			f.add(fr);
+			fragmentsByFile.put(fr.getPath(), f);
 		});
 
-		for (Map.Entry<String, Set<ICodeSlice>> entry : slicesByFile.entrySet()) {
+		for (Map.Entry<String, Set<ICodeFragment>> entry : fragmentsByFile.entrySet()) {
 			String fileName = entry.getKey();
 			StringBuilder sb = new StringBuilder();
 			entry.getValue().stream()
-					.flatMap(sl -> ((ASTCodeSlice) sl).getTokens().stream())
+					.flatMap(fr -> ((ASTCodeFragment) fr).getTokens().stream())
 					.sorted(Comparator.comparing(t -> t.start))
 					.forEach(token -> sb.append(token.code));
 
@@ -184,13 +192,13 @@ public class ASTTestExecutor extends ATestExecutor {
 		return files;
 	}
 
-	public void addFixedSlices(List<ICodeSlice> minConfig) {
-		m_fixedSlices.addAll(minConfig);
+	public void addFixedFragments(List<ICodeFragment> minConfig) {
+		m_fixedFragments.addAll(minConfig);
 	}
 
 	@Override
-	public void recreateCode(List<ICodeSlice> slices) {
+	public void recreateCode(List<ICodeFragment> fragments) {
 		m_isRecreating = true;
-		super.recreateCode(slices);
+		super.recreateCode(fragments);
 	}
 }
