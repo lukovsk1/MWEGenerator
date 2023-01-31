@@ -2,14 +2,36 @@
 
 Implementation of the DDmin algorithm to create a minimal working example (MWE) for Java and written in Java.
 
+## Current results
+
+It is possible to run the algorithm on problems extracted from `defects4j`. 
+Using the `defects4j` CLI, a project with a reproducible bug can be downloaded to a folder.
+Writing a corresponding run configuration will allow to run the MWEGenerator on this project. 
+It is necessary to specify the module-folder, the source folder, the testing folder, the unit-test method and its expected result.
+
+Example: defects4j cli_1
+``` 
+  C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\cli_1_b
+  src\java\
+  src\test\
+  org.apache.commons.cli.bug.BugCLI13Test#testCLI13
+  junit.framework.AssertionFailedError
+```
+
+Right now, the compilation of the code in each step of the ddmin algorithm dominates the runtime.
+
+![](images/cpu_sample.png)
+
 ## TODOs
 
-- [x] set up error example and unit-test
-- [x] basic implementation of DDmin algorithm
-- [x] code fragment extraction
-- [x] test executor
-- [ ] automatic code refactoring
-- [ ] input data reduction
+To improve the runtime, two improvements will be attempted:
+
+- [ ] Run the algorithm on a backward slicing of the unit-test run.
+  - only consider relevant parts of the code
+  - massively reduce the input of the algorithm
+- [ ] Integrate static code analysis to the workflow
+  - skip compilation if errors are present
+  - save time compiling obviously wrong code
 
 ## Compilation Type
 
