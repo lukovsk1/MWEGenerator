@@ -7,13 +7,29 @@ public class TestExecutorOptions {
 		IN_MEMORY
 	}
 
+	public enum ELogLevel {
+		NONE(0),
+		INFO(1),
+		DEBUG(2);
+
+		private final int m_index;
+
+		ELogLevel(int index) {
+			m_index = index;
+		}
+
+		public boolean shouldLog(ELogLevel lvl) {
+			return lvl.m_index <= m_index;
+		}
+	}
+
 	private String m_modulePath;
 	private String m_sourceFolderPath;
 	private String m_unitTestFolderPath;
 	private String m_unitTestMethod;
 	private String m_expectedResult;
 	private ECompilationType m_compilationType = ECompilationType.IN_MEMORY;
-	private boolean m_logging = true;
+	private ELogLevel m_logLevel = ELogLevel.INFO;
 	private boolean m_logCompilationErrors = false;
 	private boolean m_multipleRuns = false;
 
@@ -70,13 +86,13 @@ public class TestExecutorOptions {
 		return m_compilationType;
 	}
 
-	public TestExecutorOptions withLogging(boolean logging) {
-		m_logging = logging;
+	public TestExecutorOptions withLogging(ELogLevel logLevel) {
+		m_logLevel = logLevel;
 		return this;
 	}
 
-	public boolean isLogging() {
-		return m_logging;
+	public ELogLevel getLogLevel() {
+		return m_logLevel;
 	}
 
 	public TestExecutorOptions withLogCompilationErrors(boolean logCompilationErrors) {

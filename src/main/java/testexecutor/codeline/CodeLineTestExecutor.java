@@ -1,8 +1,8 @@
 package testexecutor.codeline;
 
 import org.apache.commons.io.FilenameUtils;
-import slice.CodeLineSlice;
-import slice.ICodeSlice;
+import fragment.CodeLineFragment;
+import fragment.ICodeFragment;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
 import testexecutor.TestExecutorOptions;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /*
-    A simple extractor that considers each line as a separate slice
+    A simple executor that considers each line as a separate fragment
  */
 public class CodeLineTestExecutor extends ATestExecutor {
 
@@ -29,7 +29,7 @@ public class CodeLineTestExecutor extends ATestExecutor {
 	}
 
 	@Override
-	public List<ICodeSlice> extractSlices() {
+	public List<ICodeFragment> extractFragments() {
 		File sourceFolder = getSourceFolder(getTestSourcePath(), getOptions().getSourceFolderPath());
 		List<Path> filePaths;
 		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
@@ -44,15 +44,15 @@ public class CodeLineTestExecutor extends ATestExecutor {
 			throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);
 		}
 
-		List<ICodeSlice> slices = new ArrayList<>();
+		List<ICodeFragment> fragments = new ArrayList<>();
 
-		int sliceNr = 0;
+		int fragmentNr = 0;
 		for (Path filePath : filePaths) {
 			try {
 				String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
 				List<String> lines = Files.readAllLines(filePath);
 				for (int i = 0; i < lines.size(); i++) {
-					slices.add(new CodeLineSlice(relativeFileName, lines.get(i), i, sliceNr++));
+					fragments.add(new CodeLineFragment(relativeFileName, lines.get(i), i, fragmentNr++));
 				}
 
 			} catch (IOException e) {
@@ -60,24 +60,24 @@ public class CodeLineTestExecutor extends ATestExecutor {
 			}
 		}
 
-		return slices;
+		return fragments;
 	}
 
 	@Override
-	protected Map<String, String> mapSlicesToFiles(List<ICodeSlice> slices) {
+	protected Map<String, String> mapFragmentsToFiles(List<ICodeFragment> fragments) {
 		Map<String, String> files = new HashMap<>();
 		String fileName = null;
 		StringBuilder sb = null;
-		for (ICodeSlice sl : slices) {
-			CodeLineSlice slice = (CodeLineSlice) sl;
-			if (!slice.getPath().equals(fileName)) {
+		for (ICodeFragment fr : fragments) {
+			CodeLineFragment fragment = (CodeLineFragment) fr;
+			if (!fragment.getPath().equals(fileName)) {
 				if (sb != null) {
 					files.put(fileName, sb.toString());
 				}
-				fileName = slice.getPath();
+				fileName = fragment.getPath();
 				sb = new StringBuilder();
 			}
-			sb.append(slice.getCodeLine());
+			sb.append(fragment.getCodeLine());
 			sb.append("\n");
 		}
 		if (sb != null) {

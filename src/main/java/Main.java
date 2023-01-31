@@ -21,7 +21,8 @@ public class Main {
 					.withUnitTestMethod(args[3])
 					.withExpectedResult(args[4])
 					//.withCompilationType(TestExecutorOptions.ECompilationType.COMMAND_LINE)
-					.withLogCompilationErrors(false);
+					.withLogCompilationErrors(false)
+					.withLogging(TestExecutorOptions.ELogLevel.DEBUG);
 
 			generator = new ASTMWEGenerator(options);
 		} else {

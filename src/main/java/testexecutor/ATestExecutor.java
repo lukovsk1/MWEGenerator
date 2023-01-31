@@ -4,8 +4,7 @@ import compiler.IMJCompiler;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.mdkt.compiler.CompilationException;
-import org.mdkt.compiler.InMemoryJavaCompiler;
-import slice.ICodeSlice;
+import fragment.ICodeFragment;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -34,9 +33,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 		return m_options;
 	}
 
-	protected void writeSlicesToTestingFolder(List<ICodeSlice> slices, Path folderPath) throws IOException {
+	protected void writeConfigurationToTestingFolder(List<ICodeFragment> fragments, Path folderPath) throws IOException {
 		File testSourceFolder = getSourceFolder(folderPath, getOptions().getSourceFolderPath());
-		for (Map.Entry<String, String> file : mapSlicesToFiles(slices).entrySet()) {
+		for (Map.Entry<String, String> file : mapFragmentsToFiles(fragments).entrySet()) {
 			String fileName = file.getKey();
 			File newFile = new File(testSourceFolder.getPath() + fileName);
 			if (!newFile.createNewFile()) {
@@ -49,7 +48,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 		}
 	}
 
-	protected abstract Map<String, String> mapSlicesToFiles(List<ICodeSlice> slices);
+	protected abstract Map<String, String> mapFragmentsToFiles(List<ICodeFragment> fragments);
 
 	protected File getSourceFolder(Path modulePath, String sourceFolderPath) {
 		File moduleFolder = new File(modulePath.toString());
@@ -123,18 +122,18 @@ public abstract class ATestExecutor implements ITestExecutor {
 	}
 
 	@Override
-	public ETestResult test(List<ICodeSlice> slices) {
+	public ETestResult test(List<ICodeFragment> fragments) {
 		switch (getOptions().getCompilationType().toString()) {
 			case "IN_MEMORY":
-				return testInMemory(slices);
+				return testInMemory(fragments);
 			case "COMMAND_LINE":
-				return testWithCommandLine(slices);
+				return testWithCommandLine(fragments);
 			default:
 				throw new TestingException("Unknown compilation type");
 		}
 	}
 
-	public void recreateCode(List<ICodeSlice> slices) {
+	public void recreateCode(List<ICodeFragment> fragments) {
 		Path testOutputPath = getTestOutputPath();
 		try {
 			deleteFolder(testOutputPath);
@@ -151,9 +150,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 		// write files to output folder
 		try {
-			writeSlicesToTestingFolder(slices, testOutputPath);
+			writeConfigurationToTestingFolder(fragments, testOutputPath);
 		} catch (IOException e) {
-			throw new TestingException("Unable to write slices to testing folder", e);
+			throw new TestingException("Unable to write configuration to testing folder", e);
 		}
 	}
 
@@ -162,7 +161,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 		getOptions().withModulePath(getTestOutputPath().toString());
 	}
 
-	protected ETestResult testInMemory(List<ICodeSlice> slices) {
+	protected ETestResult testInMemory(List<ICodeFragment> fragments) {
 		IMJCompiler compiler = IMJCompiler.newInstance();
 		String[] unitTestName = getOptions().getUnitTestMethod().split("#");
 
@@ -178,7 +177,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 							throw new RuntimeException(e);
 						}
 					});
-			for (Map.Entry<String, String> file : mapSlicesToFiles(slices).entrySet()) {
+			for (Map.Entry<String, String> file : mapFragmentsToFiles(fragments).entrySet()) {
 				compiler.addSource(fileNameToClassName(file.getKey()), file.getValue());
 			}
 		} catch (Exception e) {
@@ -224,7 +223,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 		return ETestResult.ERROR_RUNTIME;
 	}
 
-	protected ETestResult testWithCommandLine(List<ICodeSlice> slices) {
+	protected ETestResult testWithCommandLine(List<ICodeFragment> fragments) {
 		Path testSourcePath = getTestSourcePath();
 		Path testFolderPath = getTestFolderPath();
 		Path testBuildPath = getTestBuildPath();
@@ -244,9 +243,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 		// write files to testing folder
 		try {
-			writeSlicesToTestingFolder(slices, getTestFolderPath());
+			writeConfigurationToTestingFolder(fragments, getTestFolderPath());
 		} catch (IOException e) {
-			throw new TestingException("Unable to write slices to testing folder", e);
+			throw new TestingException("Unable to write configuration to testing folder", e);
 		}
 
 		// compile java classes for testing

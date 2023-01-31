@@ -1,7 +1,7 @@
 package generator;
 
-import slice.ICodeSlice;
-import slice.IHierarchicalCodeSlice;
+import fragment.ICodeFragment;
+import fragment.IHierarchicalCodeFragment;
 import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import testexecutor.ast.ASTTestExecutor;
@@ -21,61 +21,61 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	}
 
 	public void runGenerator() {
-		// extract code slices
+		// extract code fragments
 		ASTTestExecutor executor = getTestExecutor();
 		executor.initialize();
-		List<ICodeSlice> fullTree = executor.extractSlices();
-		List<ICodeSlice> slicing = new ArrayList<>(fullTree);
-		log("############## RUNNING TEST ##############");
+		List<ICodeFragment> fullTree = executor.extractFragments();
+		List<ICodeFragment> fragments = new ArrayList<>(fullTree);
+		logInfo("############## RUNNING TEST ##############");
 		m_level = 0;
 
 
 		while (true) {
-			log("############## EXECUTING LVL " + m_level + " ##############");
-			List<ICodeSlice> minConfig = runDDMin(executor, slicing, slicing.size());
-			printSlicingInfo(minConfig, slicing);
+			logInfo("############## EXECUTING LVL " + m_level + " ##############");
+			List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
+			printConfigurationInfo(minConfig, fragments);
 			if (minConfig.isEmpty()) {
 				break;
 			}
-			executor.addFixedSlices(minConfig);
-			slicing = minConfig.stream()
-					.map(sl -> (IHierarchicalCodeSlice) sl)
-					.map(IHierarchicalCodeSlice::getChildren)
+			executor.addFixedFragments(minConfig);
+			fragments = minConfig.stream()
+					.map(fr -> (IHierarchicalCodeFragment) fr)
+					.map(IHierarchicalCodeFragment::getChildren)
 					.flatMap(Collection::stream)
-					.map(sl -> (ICodeSlice) sl)
+					.map(fr -> (ICodeFragment) fr)
 					.collect(Collectors.toList());
 			m_level++;
 		}
 
-		log("Recreating result in testingoutput folder...");
-		executor.recreateCode(slicing);
-		log("############## FINISHED ##############");
+		logInfo("Recreating result in testingoutput folder...");
+		executor.recreateCode(fragments);
+		logInfo("############## FINISHED ##############");
 	}
 
-	private void printSlicingInfo(List<ICodeSlice> minConfig, List<ICodeSlice> slicing) {
+	private void printConfigurationInfo(List<ICodeFragment> minConfig, List<ICodeFragment> fragments) {
 		StringBuilder sb = new StringBuilder();
-		for (ICodeSlice sl : slicing) {
-			if (minConfig.contains(sl)) {
+		for (ICodeFragment fr : fragments) {
+			if (minConfig.contains(fr)) {
 				sb.append(1);
 			} else {
 				sb.append(0);
 			}
 		}
-		log(sb);
+		logInfo(sb);
 	}
 
 	@Override
-	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeSlice> slices, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
-		ITestExecutor.ETestResult result = executor.test(slices);
-		log(":::: " + result + " :::: " + slices.size() + " / " + totalSlices + " :::: " + slices.stream().map(sl -> String.valueOf(sl.getSliceNumber())).collect(Collectors.joining(", ")));
+	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeFragment> configuration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
+		ITestExecutor.ETestResult result = executor.test(configuration);
+		logDebug(":::: " + result + " :::: " + configuration.size() + " / " + totalFragments + " :::: " + configuration.stream().map(fr -> String.valueOf(fr.getFragmentNumber())).collect(Collectors.joining(", ")));
 		return result;
 	}
 
 	@Override
-	protected void checkPreconditions(ITestExecutor executor, List<ICodeSlice> initialSlicing, int totalSlices, Map<String, ITestExecutor.ETestResult> resultMap) {
+	protected void checkPreconditions(ITestExecutor executor, List<ICodeFragment> initialConfiguration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
 		// only check precondition of initial level
 		if (m_level == 0) {
-			super.checkPreconditions(executor, initialSlicing, totalSlices, resultMap);
+			super.checkPreconditions(executor, initialConfiguration, totalFragments, resultMap);
 		}
 	}
 

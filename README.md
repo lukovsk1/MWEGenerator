@@ -6,10 +6,9 @@ Implementation of the DDmin algorithm to create a minimal working example (MWE) 
 
 - [x] set up error example and unit-test
 - [x] basic implementation of DDmin algorithm
-- [x] code slice extraction
+- [x] code fragment extraction
 - [x] test executor
 - [ ] automatic code refactoring
-- [x] code slicing
 - [ ] input data reduction
 
 ## Compilation Type
@@ -21,9 +20,9 @@ The measured execution times on a simple example were
 
 while delivering the same result. The InMemoryCompiler should be preferred and will be used as the default.
 
-## Code Slicing 
+## Code Fragmentation 
 
-There are currently three different code slicing methods implemented:
+There are currently three different code fragmentation methods implemented:
 
 - Single Character
   - The DDmin algorithm is run on the set of all characters of the input problem.
