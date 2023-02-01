@@ -30,11 +30,10 @@ public class Main {
 		}
 
 		generator.runGenerator();
-		/*
-		try (ExecutorService executor = Executors.newCachedThreadPool()) {
+		try {
 			long start = System.currentTimeMillis();
 
-			executor.submit(generator::runGenerator).get(10, TimeUnit.MINUTES);
+			generator.runGenerator();
 
 			long time = System.currentTimeMillis() - start;
 			System.out.println();
@@ -44,14 +43,8 @@ public class Main {
 			String dir = System.getProperty("user.dir");
 			long outputSize = FileUtils.sizeOfDirectory(new File(dir + "/testingoutput"));
 			System.out.println("TOTAL OUTPUT SIZE: " + outputSize + " bytes");
-		} catch (ExecutionException e) {
+		} catch (Exception e) {
 			System.out.println("ERROR:" + e);
-		} catch (InterruptedException e) {
-			System.out.println("INTERRUPTED:" + e);
-		} catch (TimeoutException e) {
-			System.out.println("TIMED OUT:" + e);
 		}
-
-		 */
 	}
 }
