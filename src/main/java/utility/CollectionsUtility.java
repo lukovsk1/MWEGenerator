@@ -40,12 +40,6 @@ public final class CollectionsUtility {
 				.collect(Collectors.toList());
 	}
 
-	public static <T> Set<T> union(Collection<T> c1, Collection<T> c2) {
-		Set<T> result = new HashSet<>(c1);
-		result.addAll(c2);
-		return result;
-	}
-
 	public static Set<IHierarchicalCodeFragment> getChildrenInDeep(IHierarchicalCodeFragment fr) {
 		if (fr == null) {
 			return Collections.emptySet();

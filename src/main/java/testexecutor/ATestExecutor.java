@@ -1,11 +1,10 @@
 package testexecutor;
 
-import compiler.InMemoryJavaCompiler;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.mdkt.compiler.CompilationException;
 import fragment.ICodeFragment;
-import utility.CollectionsUtility;
+import org.mdkt.compiler.InMemoryJavaCompiler;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -17,19 +16,12 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class ATestExecutor implements ITestExecutor {
 
-
 	private final TestExecutorOptions m_options;
-
-	// in memory java compiler
-	private InMemoryJavaCompiler m_compiler;
-	private AtomicBoolean m_firstRun = new AtomicBoolean(true);
-	private Set<String> m_unitTestFileNames = new HashSet<>();
 
 	protected ATestExecutor(TestExecutorOptions options) {
 		m_options = options;
@@ -169,39 +161,25 @@ public abstract class ATestExecutor implements ITestExecutor {
 		getOptions().withModulePath(getTestOutputPath().toString());
 	}
 
-	protected InMemoryJavaCompiler getCompiler() {
-		if(m_compiler == null) {
-			m_compiler = compiler.InMemoryJavaCompiler
+	protected ETestResult testInMemory(List<ICodeFragment> fragments) {
+		InMemoryJavaCompiler compiler = InMemoryJavaCompiler
 				.newInstance()
 				.ignoreWarnings();
-		}
-		return m_compiler;
-	}
-
-	protected ETestResult testInMemory(List<ICodeFragment> fragments) {
-		InMemoryJavaCompiler compiler = getCompiler();
 		String[] unitTestName = getOptions().getUnitTestMethod().split("#");
 
 		try {
 			Path unitTestFolder = FileSystems.getDefault().getPath(getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath());
-			if(m_firstRun.compareAndSet(true, false)) {
-				Files.walk(unitTestFolder)
-						.filter(path -> Files.isRegularFile(path) && "java".equals(FilenameUtils.getExtension(path.toString())))
-						.forEach(path -> {
-							try {
-								String className = path.toString().substring(unitTestFolder.toString().length() + 1, path.toString().length() - 5).replaceAll("\\\\", ".");
-								compiler.addSource(className, new String(Files.readAllBytes(path)));
-								m_unitTestFileNames.add(className);
-							} catch (Exception e) {
-								throw new RuntimeException(e);
-							}
-						});
-			}
-			Map<String, String> fragmentsToFiles = mapFragmentsToFiles(fragments);
-			compiler.pruneSources(CollectionsUtility.union(m_unitTestFileNames, fragmentsToFiles.keySet().stream()
-					.map(this::fileNameToClassName)
-					.collect(Collectors.toList())));
-			for (Map.Entry<String, String> file : fragmentsToFiles.entrySet()) {
+			Files.walk(unitTestFolder)
+					.filter(path -> Files.isRegularFile(path) && "java".equals(FilenameUtils.getExtension(path.toString())))
+					.forEach(path -> {
+						try {
+							String className = path.toString().substring(unitTestFolder.toString().length()+1, path.toString().length() - 5).replaceAll("\\\\", ".");
+							compiler.addSource(className, new String(Files.readAllBytes(path)));
+						} catch (Exception e) {
+							throw new RuntimeException(e);
+						}
+					});
+			for (Map.Entry<String, String> file : mapFragmentsToFiles(fragments).entrySet()) {
 				compiler.addSource(fileNameToClassName(file.getKey()), file.getValue());
 			}
 		} catch (Exception e) {
