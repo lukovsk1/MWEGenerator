@@ -29,7 +29,6 @@ public class Main {
 			generator = new ASTMWEGenerator(Constants.CALCULATOR_OPTIONS_MULTI);
 		}
 
-		generator.runGenerator();
 		try {
 			long start = System.currentTimeMillis();
 

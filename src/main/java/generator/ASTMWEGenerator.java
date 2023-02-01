@@ -31,8 +31,10 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 
 		while (true) {
+			long start = System.currentTimeMillis();
 			logInfo("############## EXECUTING LVL " + m_level + " ##############");
 			List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
+			logInfo("Level " + m_level + " took " + (System.currentTimeMillis() - start) + "ms");
 			printConfigurationInfo(minConfig, fragments);
 			if (minConfig.isEmpty()) {
 				break;
