@@ -20,7 +20,7 @@ public class Main {
 					//.withCompilationType(TestExecutorOptions.ECompilationType.COMMAND_LINE)
 					.withLogCompilationErrors(false)
 					.withConcurrentExecution(true)
-					.withLogging(TestExecutorOptions.ELogLevel.INFO);
+					.withLogging(TestExecutorOptions.ELogLevel.DEBUG);
 
 			generator = new ASTMWEGenerator(options);
 		} else {
