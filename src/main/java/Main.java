@@ -4,9 +4,6 @@ import org.apache.commons.io.FileUtils;
 import testexecutor.TestExecutorOptions;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.*;
 
 public class Main {
 
@@ -22,7 +19,8 @@ public class Main {
 					.withExpectedResult(args[4])
 					//.withCompilationType(TestExecutorOptions.ECompilationType.COMMAND_LINE)
 					.withLogCompilationErrors(false)
-					.withLogging(TestExecutorOptions.ELogLevel.DEBUG);
+					.withConcurrentExecution(true)
+					.withLogging(TestExecutorOptions.ELogLevel.INFO);
 
 			generator = new ASTMWEGenerator(options);
 		} else {

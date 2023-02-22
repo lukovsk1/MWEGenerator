@@ -6,42 +6,66 @@ import testexecutor.TestExecutorOptions;
 import utility.CollectionsUtility;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class AbstractMWEGenerator {
 
 	protected final TestExecutorOptions m_testExecutorOptions;
+	protected final ExecutorService m_executorService;
 
 	public AbstractMWEGenerator(TestExecutorOptions options) {
 		m_testExecutorOptions = options;
+		if (options.isConcurrentExecution()) {
+			if (options.getCompilationType() == TestExecutorOptions.ECompilationType.COMMAND_LINE) {
+				System.out.println("Concurrent execution and command line are not compatible");
+				System.exit(1);
+			}
+			m_executorService = Executors.newCachedThreadPool();
+		} else {
+			m_executorService = null;
+		}
 	}
 
 	public void runGenerator() {
-		// extract code fragments
-		ITestExecutor executor = getTestExecutor();
-		executor.initialize();
-		List<ICodeFragment> fragments;
-		int testNr = 1;
-		int totalFragments;
-		do {
-			logInfo("############## RUNNING TEST NR. " + testNr++ + " ##############");
-			fragments = executor.extractFragments();
-			totalFragments = fragments.size();
-			long start = System.currentTimeMillis();
-			fragments = runDDMin(executor, fragments, totalFragments);
-			long time = System.currentTimeMillis() - start;
-			logInfo(null);
-			logInfo("Found a 1-minimal configuration in " + time + " ms:");
-			logInfo(getConfigurationIdentifier(fragments, totalFragments));
+		try {
+			// extract code fragments
+			ITestExecutor executor = getTestExecutor();
+			executor.initialize();
+			List<ICodeFragment> fragments;
+			int testNr = 1;
+			int totalFragments;
+			do {
+				logInfo("############## RUNNING TEST NR. " + testNr++ + " ##############");
+				fragments = executor.extractFragments();
+				totalFragments = fragments.size();
+				long start = System.currentTimeMillis();
+				fragments = runDDMin(executor, fragments, totalFragments);
+				long time = System.currentTimeMillis() - start;
+				logInfo(null);
+				logInfo("Found a 1-minimal configuration in " + time + " ms:");
+				logInfo(getConfigurationIdentifier(fragments, totalFragments));
 
-			// recreate mwe
-			logInfo("Recreating result in testingoutput folder...");
-			executor.recreateCode(fragments);
-			executor.changeSourceToOutputFolder();
-		} while (m_testExecutorOptions.isMultipleRuns() && fragments.size() < totalFragments);
+				// recreate mwe
+				logInfo("Recreating result in testingoutput folder...");
+				executor.recreateCode(fragments);
+				executor.changeSourceToOutputFolder();
+			} while (m_testExecutorOptions.isMultipleRuns() && fragments.size() < totalFragments);
 
-		logInfo("############## FINISHED ##############");
+			logInfo("############## FINISHED ##############");
+		} finally {
+			cleanup();
+		}
+	}
+
+	protected void cleanup() {
+		if (m_executorService != null) {
+			m_executorService.shutdown();
+		}
 	}
 
 	protected List<ICodeFragment> runDDMin(ITestExecutor executor, List<ICodeFragment> initialConfiguration, int totalFragments) {
@@ -56,18 +80,49 @@ public abstract class AbstractMWEGenerator {
 			assert subsets.size() == granularity;
 
 			boolean someComplementIsFailing = false;
+			List<Future<Map.Entry<ITestExecutor.ETestResult, List<ICodeFragment>>>> futures = new ArrayList<>();
 			for (List<ICodeFragment> subset : subsets) {
 				List<ICodeFragment> complement = CollectionsUtility.listMinus(fragments, subset);
 
-				if (executeTest(executor, complement, totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED) {
-					fragments = complement;
-					granularity = Math.max(granularity - 1, 2);
-					someComplementIsFailing = true;
-					break;
+				if (m_testExecutorOptions.isConcurrentExecution()) {
+					futures.add(m_executorService.submit(() -> {
+						ITestExecutor.ETestResult result = executeTest(executor, complement, totalFragments, resultMap);
+						return new AbstractMap.SimpleEntry<>(result, complement);
+					}));
+				} else {
+					if (executeTest(executor, complement, totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED) {
+						fragments = complement;
+						someComplementIsFailing = true;
+						break;
+					}
 				}
 			}
+			if (!futures.isEmpty()) {
+				while (!someComplementIsFailing && !futures.isEmpty()) {
+					Iterator<Future<Map.Entry<ITestExecutor.ETestResult, List<ICodeFragment>>>> it = futures.iterator();
+					while (it.hasNext()) {
+						Future<Map.Entry<ITestExecutor.ETestResult, List<ICodeFragment>>> future = it.next();
+						if (future.isDone()) {
+							it.remove();
+							try {
+								if (future.get().getKey() == ITestExecutor.ETestResult.FAILED) {
+									someComplementIsFailing = true;
+									fragments = future.get().getValue();
+									break;
+								}
+							} catch (InterruptedException | ExecutionException e) {
+								System.out.println("ERROR: Exception occured when running ddmin concurrently: " + e);
+								System.exit(1);
+							}
+						}
+					}
+				}
+				futures.forEach(f -> f.cancel(true));
+			}
 
-			if (!someComplementIsFailing) {
+			if (someComplementIsFailing) {
+				granularity = Math.max(granularity - 1, 2);
+			} else {
 				if (granularity == fragments.size()) {
 					break;
 				}
@@ -122,7 +177,7 @@ public abstract class AbstractMWEGenerator {
 		log(msg, TestExecutorOptions.ELogLevel.DEBUG);
 	}
 
-	private void log(Object msg, TestExecutorOptions.ELogLevel level) {
+	protected void log(Object msg, TestExecutorOptions.ELogLevel level) {
 		if (!m_testExecutorOptions.getLogLevel().shouldLog(level)) {
 			return;
 		}

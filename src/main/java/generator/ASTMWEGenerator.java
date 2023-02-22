@@ -21,37 +21,41 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	}
 
 	public void runGenerator() {
-		// extract code fragments
-		ASTTestExecutor executor = getTestExecutor();
-		executor.initialize();
-		List<ICodeFragment> fullTree = executor.extractFragments();
-		List<ICodeFragment> fragments = new ArrayList<>(fullTree);
-		logInfo("############## RUNNING TEST ##############");
-		m_level = 0;
+		try {
+			// extract code fragments
+			ASTTestExecutor executor = getTestExecutor();
+			executor.initialize();
+			List<ICodeFragment> fullTree = executor.extractFragments();
+			List<ICodeFragment> fragments = new ArrayList<>(fullTree);
+			logInfo("############## RUNNING TEST ##############");
+			m_level = 0;
 
 
-		while (true) {
-			long start = System.currentTimeMillis();
-			logInfo("############## EXECUTING LVL " + m_level + " ##############");
-			List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
-			logInfo("Level " + m_level + " took " + (System.currentTimeMillis() - start) + "ms");
-			printConfigurationInfo(minConfig, fragments);
-			if (minConfig.isEmpty()) {
-				break;
+			while (true) {
+				long start = System.currentTimeMillis();
+				logInfo("############## EXECUTING LVL " + m_level + " ##############");
+				List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
+				logInfo("Level " + m_level + " took " + (System.currentTimeMillis() - start) + "ms");
+				printConfigurationInfo(minConfig, fragments);
+				if (minConfig.isEmpty()) {
+					break;
+				}
+				executor.addFixedFragments(minConfig);
+				fragments = minConfig.stream()
+						.map(fr -> (IHierarchicalCodeFragment) fr)
+						.map(IHierarchicalCodeFragment::getChildren)
+						.flatMap(Collection::stream)
+						.map(fr -> (ICodeFragment) fr)
+						.collect(Collectors.toList());
+				m_level++;
 			}
-			executor.addFixedFragments(minConfig);
-			fragments = minConfig.stream()
-					.map(fr -> (IHierarchicalCodeFragment) fr)
-					.map(IHierarchicalCodeFragment::getChildren)
-					.flatMap(Collection::stream)
-					.map(fr -> (ICodeFragment) fr)
-					.collect(Collectors.toList());
-			m_level++;
-		}
 
-		logInfo("Recreating result in testingoutput folder...");
-		executor.recreateCode(fragments);
-		logInfo("############## FINISHED ##############");
+			logInfo("Recreating result in testingoutput folder...");
+			executor.recreateCode(fragments);
+			logInfo("############## FINISHED ##############");
+		} finally {
+			cleanup();
+		}
 	}
 
 	private void printConfigurationInfo(List<ICodeFragment> minConfig, List<ICodeFragment> fragments) {
@@ -69,7 +73,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	@Override
 	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeFragment> configuration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
 		ITestExecutor.ETestResult result = executor.test(configuration);
-		logDebug(":::: " + result + " :::: " + configuration.size() + " / " + totalFragments + " :::: " + configuration.stream().map(fr -> String.valueOf(fr.getFragmentNumber())).collect(Collectors.joining(", ")));
+		log(":::: " + result + " :::: " + configuration.size() + " / " + totalFragments + " :::: " + configuration.stream().map(fr -> String.valueOf(fr.getFragmentNumber())).collect(Collectors.joining(", ")), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
 		return result;
 	}
 

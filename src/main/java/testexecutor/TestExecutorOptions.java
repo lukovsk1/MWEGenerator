@@ -32,6 +32,7 @@ public class TestExecutorOptions {
 	private ELogLevel m_logLevel = ELogLevel.INFO;
 	private boolean m_logCompilationErrors = false;
 	private boolean m_multipleRuns = false;
+	private boolean m_concurrentExecution = false;
 
 	public TestExecutorOptions withModulePath(String modulePath) {
 		m_modulePath = modulePath;
@@ -111,5 +112,14 @@ public class TestExecutorOptions {
 
 	public boolean isMultipleRuns() {
 		return m_multipleRuns;
+	}
+
+	public TestExecutorOptions withConcurrentExecution(boolean concurrentExecution) {
+		m_concurrentExecution = concurrentExecution;
+		return this;
+	}
+
+	public boolean isConcurrentExecution() {
+		return m_concurrentExecution;
 	}
 }
