@@ -6,10 +6,10 @@ import testexecutor.TestExecutorOptions;
 import utility.CollectionsUtility;
 
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,7 +25,7 @@ public abstract class AbstractMWEGenerator {
 				System.out.println("Concurrent execution and command line are not compatible");
 				System.exit(1);
 			}
-			m_executorService = Executors.newCachedThreadPool();
+			m_executorService = Executors.newFixedThreadPool(16);
 		} else {
 			m_executorService = null;
 		}
@@ -80,15 +80,17 @@ public abstract class AbstractMWEGenerator {
 			assert subsets.size() == granularity;
 
 			boolean someComplementIsFailing = false;
-			List<Future<Map.Entry<ITestExecutor.ETestResult, List<ICodeFragment>>>> futures = new ArrayList<>();
+			List<Callable<List<ICodeFragment>>> taskList = new ArrayList<>();
 			for (List<ICodeFragment> subset : subsets) {
 				List<ICodeFragment> complement = CollectionsUtility.listMinus(fragments, subset);
 
 				if (m_testExecutorOptions.isConcurrentExecution()) {
-					futures.add(m_executorService.submit(() -> {
-						ITestExecutor.ETestResult result = executeTest(executor, complement, totalFragments, resultMap);
-						return new AbstractMap.SimpleEntry<>(result, complement);
-					}));
+					taskList.add(() -> {
+						if (executeTest(executor, complement, totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED) {
+							return complement;
+						}
+						throw new Exception("Test did not fail");
+					});
 				} else {
 					if (executeTest(executor, complement, totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED) {
 						fragments = complement;
@@ -97,29 +99,15 @@ public abstract class AbstractMWEGenerator {
 					}
 				}
 			}
-			if (!futures.isEmpty()) {
-				while (!someComplementIsFailing && !futures.isEmpty()) {
-					Iterator<Future<Map.Entry<ITestExecutor.ETestResult, List<ICodeFragment>>>> it = futures.iterator();
-					while (it.hasNext()) {
-						Future<Map.Entry<ITestExecutor.ETestResult, List<ICodeFragment>>> future = it.next();
-						if (future.isDone()) {
-							it.remove();
-							try {
-								if (future.get().getKey() == ITestExecutor.ETestResult.FAILED) {
-									someComplementIsFailing = true;
-									fragments = future.get().getValue();
-									break;
-								}
-							} catch (InterruptedException | ExecutionException e) {
-								System.out.println("ERROR: Exception occured when running ddmin concurrently: " + e);
-								System.exit(1);
-							}
-						}
-					}
-				}
-				for (Future<?> future : futures) {
-					boolean success = future.cancel(true);
-					logDebug("DDmin: Cancelled future " + future + " with" + (success ? "" : "out") + " success.");
+			if (m_testExecutorOptions.isConcurrentExecution()) {
+				try {
+					fragments = m_executorService.invokeAny(taskList);
+					someComplementIsFailing = true;
+				} catch (ExecutionException e) {
+					// no task completed successfully -> increase granularity
+				} catch (InterruptedException e) {
+					System.out.println("ERROR: Exception occured when running ddmin concurrently: " + e);
+					System.exit(1);
 				}
 			}
 
