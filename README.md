@@ -53,11 +53,19 @@ There are currently three different code fragmentation methods implemented:
 - Code Line
   - The DDmin algorithm is run on the set of code lines of the input problem.
   - It is possible to rerun the algorithm with the output of the previous run, which will improve the overall result.
-  - Measured execution time: 
+  - Measured execution time:
     - Single run: 8197ms
     - With multiple runs: 11726ms
 - AST
   - This algorithm is based on the Abstract-Syntax-Tree (AST) of the input problem.
-  - Syntactical dependencies of the code  are considered and allow for the usage of the more optimal Hierarchical DDmin (HDD) algorithm.
-  - The preprocessing is more involved than with the other algorithms but the actual execution of the algorithm is more efficient.
+  - Syntactical dependencies of the code are considered and allow for the usage of the more optimal Hierarchical DDmin (
+    HDD) algorithm.
+  - The preprocessing is more involved than with the other algorithms but the actual execution of the algorithm is more
+    efficient.
   - Measured execution time: 6287ms
+
+## Concurrent Execution
+
+TestExecutorOptions#withConcurrentExecution allows the DDmin algorithm to be run in currently 16 concurrent threads.
+Multiple subsets of code fragments are compiled and executed in parallel.
+For the defects4j example CLI 1 this reduces the runtime for a single execution of the algorithm from around 6h to 1.5h.
