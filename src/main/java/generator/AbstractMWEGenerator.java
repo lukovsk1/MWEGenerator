@@ -64,7 +64,7 @@ public abstract class AbstractMWEGenerator {
 
 	protected void cleanup() {
 		if (m_executorService != null) {
-			m_executorService.shutdown();
+			m_executorService.shutdownNow();
 		}
 	}
 

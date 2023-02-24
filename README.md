@@ -24,7 +24,7 @@ Right now, the compilation of the code in each step of the ddmin algorithm domin
 
 ## TODOs
 
-To improve the runtime, two improvements will be attempted:
+Next goals:
 
 - [ ] Run the algorithm on a backward slicing of the unit-test run.
   - only consider relevant parts of the code
@@ -32,6 +32,9 @@ To improve the runtime, two improvements will be attempted:
 - [ ] Integrate static code analysis to the workflow
   - skip compilation if errors are present
   - save time compiling obviously wrong code
+- [ ] Algorithm for all DAGs (not just trees)
+  - implementation
+  - recognizing more dependencies in java code
 
 ## Compilation Type
 
