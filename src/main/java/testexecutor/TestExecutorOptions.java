@@ -33,6 +33,7 @@ public class TestExecutorOptions {
 	private boolean m_logCompilationErrors = false;
 	private boolean m_multipleRuns = false;
 	private boolean m_concurrentExecution = false;
+	private boolean m_preSliceCode = true;
 
 	public TestExecutorOptions withModulePath(String modulePath) {
 		m_modulePath = modulePath;
@@ -121,5 +122,14 @@ public class TestExecutorOptions {
 
 	public boolean isConcurrentExecution() {
 		return m_concurrentExecution;
+	}
+
+	public TestExecutorOptions withPreSliceCode(boolean preSliceCode) {
+		m_preSliceCode = preSliceCode;
+		return this;
+	}
+
+	public boolean isPreSliceCode() {
+		return m_preSliceCode;
 	}
 }

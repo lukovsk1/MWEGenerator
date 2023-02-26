@@ -42,6 +42,9 @@ public class Main {
 			System.out.println("TOTAL OUTPUT SIZE: " + outputSize + " bytes");
 		} catch (Exception e) {
 			System.out.println("ERROR:" + e);
+			if (e.getCause() != null) {
+				System.out.println(e.getCause().toString());
+			}
 		}
 	}
 }
