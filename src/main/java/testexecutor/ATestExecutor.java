@@ -1,10 +1,11 @@
 package testexecutor;
 
+import fragment.ICodeFragment;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.mdkt.compiler.CompilationException;
-import fragment.ICodeFragment;
 import org.mdkt.compiler.InMemoryJavaCompiler;
+import utility.SlicerUtility;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -326,5 +327,10 @@ public abstract class ATestExecutor implements ITestExecutor {
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
 		}
+
+		if (m_options.isPreSliceCode()) {
+			SlicerUtility.doSlicing(testSourcePath, m_options.getUnitTestMethod());
+		}
+
 	}
 }
