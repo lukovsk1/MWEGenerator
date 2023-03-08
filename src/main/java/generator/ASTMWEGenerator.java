@@ -18,8 +18,6 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 	private int m_level = 0;
 	private int m_maxLevel = 0;
-	private int m_analyzedFragments = 0;
-	private int m_totalFragments = 0;
 
 	public ASTMWEGenerator(TestExecutorOptions options) {
 		super(options);
@@ -47,7 +45,6 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 					break;
 				}
 				executor.addFixedFragments(minConfig);
-				m_analyzedFragments += fragments.size();
 				fragments = minConfig.stream()
 						.map(fr -> (IHierarchicalCodeFragment) fr)
 						.map(IHierarchicalCodeFragment::getChildren)
@@ -80,7 +77,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	@Override
 	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeFragment> configuration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
 		ITestExecutor.ETestResult result = executor.test(configuration);
-		log((m_analyzedFragments / m_totalFragments) + "% :::: " + result + " :::: level: " + m_level + " / " + m_maxLevel + " size: " + configuration.size() + " / " + totalFragments + " :::: " + configuration.stream().map(fr -> String.valueOf(fr.getFragmentNumber())).collect(Collectors.joining(", ")), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
+		log(":::: " + result + " :::: level: " + m_level + " / " + m_maxLevel + " :::: size: " + configuration.size() + " / " + totalFragments + " :::: " + configuration.stream().map(fr -> String.valueOf(fr.getFragmentNumber())).collect(Collectors.joining(", ")), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
 		return result;
 	}
 
@@ -93,17 +90,17 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	}
 
 	private void analyzeTree(List<ICodeFragment> tree) {
-		m_analyzedFragments = 0;
 		m_maxLevel = tree.stream()
 				.map(fr -> ((ASTCodeFragment) fr))
 				.flatMap(fr -> CollectionsUtility.getChildrenInDeep(fr).stream())
-				.mapToInt(IHierarchicalCodeFragment::getLevel)
-				.min()
+				.collect(Collectors.groupingBy(IHierarchicalCodeFragment::getLevel, Collectors.counting()))
+				.entrySet()
+				.stream()
+				.sorted(Map.Entry.comparingByKey())
+				.peek(e -> System.out.println("Level: " + e.getKey() + " ### fragments: " + e.getValue()))
+				.mapToInt(Map.Entry::getKey)
+				.max()
 				.orElse(0);
-		m_totalFragments = tree.stream()
-				.map(fr -> ((ASTCodeFragment) fr))
-				.mapToInt(fr -> CollectionsUtility.getChildrenInDeep(fr).size())
-				.sum();
 	}
 
 	@Override
