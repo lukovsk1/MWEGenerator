@@ -31,8 +31,10 @@ public class TestExecutorOptions {
 	private ECompilationType m_compilationType = ECompilationType.IN_MEMORY;
 	private ELogLevel m_logLevel = ELogLevel.INFO;
 	private boolean m_logCompilationErrors = false;
+
+	private boolean m_logRuntimeErrors = false;
 	private boolean m_multipleRuns = false;
-	private boolean m_concurrentExecution = false;
+	private int m_numberOfThreads = 1;
 	private boolean m_preSliceCode = true;
 
 
@@ -107,6 +109,15 @@ public class TestExecutorOptions {
 		return m_logCompilationErrors;
 	}
 
+	public TestExecutorOptions withLogRuntimeErrors(boolean logRuntimeErrors) {
+		m_logRuntimeErrors = logRuntimeErrors;
+		return this;
+	}
+
+	public boolean isLogRuntimeErrors() {
+		return m_logRuntimeErrors;
+	}
+
 	public TestExecutorOptions withMultipleRuns(boolean multipleRuns) {
 		m_multipleRuns = multipleRuns;
 		return this;
@@ -116,13 +127,13 @@ public class TestExecutorOptions {
 		return m_multipleRuns;
 	}
 
-	public TestExecutorOptions withConcurrentExecution(boolean concurrentExecution) {
-		m_concurrentExecution = concurrentExecution;
+	public TestExecutorOptions withNumberOfThreads(int numberOfThreads) {
+		m_numberOfThreads = numberOfThreads;
 		return this;
 	}
 
-	public boolean isConcurrentExecution() {
-		return m_concurrentExecution;
+	public int getNumberOfThreads() {
+		return m_numberOfThreads;
 	}
 
 	public TestExecutorOptions withPreSliceCode(boolean preSliceCode) {

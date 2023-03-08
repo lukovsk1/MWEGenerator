@@ -1,10 +1,12 @@
 package generator;
 
+import fragment.ASTCodeFragment;
 import fragment.ICodeFragment;
 import fragment.IHierarchicalCodeFragment;
 import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import testexecutor.ast.ASTTestExecutor;
+import utility.CollectionsUtility;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 	private int m_level = 0;
+	private int m_maxLevel = 0;
+	private int m_analyzedFragments = 0;
+	private int m_totalFragments = 0;
 
 	public ASTMWEGenerator(TestExecutorOptions options) {
 		super(options);
@@ -27,20 +32,22 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 			executor.initialize();
 			List<ICodeFragment> fullTree = executor.extractFragments();
 			List<ICodeFragment> fragments = new ArrayList<>(fullTree);
+
+			analyzeTree(fullTree);
+
 			logInfo("############## RUNNING TEST ##############");
 			m_level = 0;
-
-
 			while (true) {
 				long start = System.currentTimeMillis();
-				logInfo("############## EXECUTING LVL " + m_level + " ##############");
+				logInfo("############## EXECUTING LVL " + m_level + " / " + m_maxLevel + " ##############");
 				List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
-				logInfo("Level " + m_level + " took " + (System.currentTimeMillis() - start) + "ms");
+				logInfo("Level " + m_level + " / " + m_maxLevel + " took " + (System.currentTimeMillis() - start) + "ms");
 				printConfigurationInfo(minConfig, fragments);
 				if (minConfig.isEmpty()) {
 					break;
 				}
 				executor.addFixedFragments(minConfig);
+				m_analyzedFragments += fragments.size();
 				fragments = minConfig.stream()
 						.map(fr -> (IHierarchicalCodeFragment) fr)
 						.map(IHierarchicalCodeFragment::getChildren)
@@ -73,7 +80,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	@Override
 	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeFragment> configuration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
 		ITestExecutor.ETestResult result = executor.test(configuration);
-		log(":::: " + result + " :::: " + configuration.size() + " / " + totalFragments + " :::: " + configuration.stream().map(fr -> String.valueOf(fr.getFragmentNumber())).collect(Collectors.joining(", ")), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
+		log((m_analyzedFragments / m_totalFragments) + "% :::: " + result + " :::: level: " + m_level + " / " + m_maxLevel + " size: " + configuration.size() + " / " + totalFragments + " :::: " + configuration.stream().map(fr -> String.valueOf(fr.getFragmentNumber())).collect(Collectors.joining(", ")), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
 		return result;
 	}
 
@@ -83,6 +90,20 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 		if (m_level == 0) {
 			super.checkPreconditions(executor, initialConfiguration, totalFragments, resultMap);
 		}
+	}
+
+	private void analyzeTree(List<ICodeFragment> tree) {
+		m_analyzedFragments = 0;
+		m_maxLevel = tree.stream()
+				.map(fr -> ((ASTCodeFragment) fr))
+				.flatMap(fr -> CollectionsUtility.getChildrenInDeep(fr).stream())
+				.mapToInt(IHierarchicalCodeFragment::getLevel)
+				.min()
+				.orElse(0);
+		m_totalFragments = tree.stream()
+				.map(fr -> ((ASTCodeFragment) fr))
+				.mapToInt(fr -> CollectionsUtility.getChildrenInDeep(fr).size())
+				.sum();
 	}
 
 	@Override

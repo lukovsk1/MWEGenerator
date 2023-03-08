@@ -19,7 +19,9 @@ public class Main {
 					.withExpectedResult(args[4])
 					//.withCompilationType(TestExecutorOptions.ECompilationType.COMMAND_LINE)
 					.withLogCompilationErrors(false)
-					.withConcurrentExecution(true)
+					.withLogRuntimeErrors(false)
+					.withNumberOfThreads(10)
+					.withPreSliceCode(false)
 					.withLogging(TestExecutorOptions.ELogLevel.INFO);
 
 			generator = new ASTMWEGenerator(options);
@@ -41,11 +43,7 @@ public class Main {
 			long outputSize = FileUtils.sizeOfDirectory(new File(dir + "/testingoutput"));
 			System.out.println("TOTAL OUTPUT SIZE: " + outputSize + " bytes");
 		} catch (Exception e) {
-			System.out.println("ERROR:" + e);
-			if (e.getCause() != null) {
-				System.out.println(e.getCause().toString());
-			}
-
+			e.printStackTrace(System.out);
 		}
 	}
 }

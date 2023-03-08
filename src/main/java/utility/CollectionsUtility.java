@@ -40,6 +40,7 @@ public final class CollectionsUtility {
 				.collect(Collectors.toList());
 	}
 
+	// returns a set of IHierarchicalCodeFragments including the fragment itself and all of its descendents
 	public static Set<IHierarchicalCodeFragment> getChildrenInDeep(IHierarchicalCodeFragment fr) {
 		if (fr == null) {
 			return Collections.emptySet();

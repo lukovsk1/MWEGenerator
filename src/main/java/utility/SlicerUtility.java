@@ -188,8 +188,8 @@ public final class SlicerUtility {
         FileUtility.addJavaFilesToCompiler(compiler, testSourcePath);
         try {
             compiler.compileAll();
-        } catch (Exception ex) {
-            System.out.println("ERROR: " + ex);
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
     }
 }

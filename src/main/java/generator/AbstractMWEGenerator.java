@@ -3,6 +3,7 @@ package generator;
 import fragment.ICodeFragment;
 import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
+import testexecutor.TestingException;
 import utility.CollectionsUtility;
 
 import java.util.*;
@@ -20,7 +21,7 @@ public abstract class AbstractMWEGenerator {
 
 	public AbstractMWEGenerator(TestExecutorOptions options) {
 		m_testExecutorOptions = options;
-		if (options.isConcurrentExecution()) {
+		if (options.getNumberOfThreads() > 1) {
 			if (options.getCompilationType() == TestExecutorOptions.ECompilationType.COMMAND_LINE) {
 				System.out.println("Concurrent execution and command line are not compatible");
 				System.exit(1);
@@ -84,7 +85,7 @@ public abstract class AbstractMWEGenerator {
 			for (List<ICodeFragment> subset : subsets) {
 				List<ICodeFragment> complement = CollectionsUtility.listMinus(fragments, subset);
 
-				if (m_testExecutorOptions.isConcurrentExecution()) {
+				if (m_testExecutorOptions.getNumberOfThreads() > 1) {
 					taskList.add(() -> {
 						if (executeTest(executor, complement, totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED) {
 							return complement;
@@ -99,15 +100,14 @@ public abstract class AbstractMWEGenerator {
 					}
 				}
 			}
-			if (m_testExecutorOptions.isConcurrentExecution()) {
+			if (m_testExecutorOptions.getNumberOfThreads() > 1) {
 				try {
 					fragments = m_executorService.invokeAny(taskList);
 					someComplementIsFailing = true;
 				} catch (ExecutionException e) {
 					// no task completed successfully -> increase granularity
 				} catch (InterruptedException e) {
-					System.out.println("ERROR: Exception occured when running ddmin concurrently: " + e);
-					System.exit(1);
+					throw new TestingException("Exception occured when running ddmin concurrently.", e);
 				}
 			}
 

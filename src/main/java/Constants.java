@@ -16,7 +16,7 @@ public final class Constants {
 			.withUnitTestMethod("calculator.CalculatorTest#testCalculator")
 			.withExpectedResult("org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>")
 			.withMultipleRuns(true)
-			.withConcurrentExecution(true);
+			.withNumberOfThreads(10);
 
 	public static final TestExecutorOptions FIBONACCI_OPTIONS = new TestExecutorOptions()
 			.withModulePath(System.getProperty("user.dir") + "\\FibonacciExample")

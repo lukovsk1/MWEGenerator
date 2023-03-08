@@ -4,12 +4,30 @@ Implementation of the DDmin algorithm to create a minimal working example (MWE) 
 
 ## Current results
 
-It is possible to run the algorithm on problems extracted from `defects4j`. 
+It is possible to run the algorithm on problems extracted from `defects4j`.
 Using the `defects4j` CLI, a project with a reproducible bug can be downloaded to a folder.
-Writing a corresponding run configuration will allow to run the MWEGenerator on this project. 
-It is necessary to specify the module-folder, the source folder, the testing folder, the unit-test method and its expected result.
+
+Example:
+
+```
+cd /mnt/c/Users/lubo9/Desktop/Workspace/defects4j/
+
+#  checking out bug 5 of commons-lang
+defects4j checkout -p Lang -v 5b -w bugs/lang_5_b
+
+cd bugs/lang_5_b
+
+defects4j compile
+
+defects4j test
+```
+
+Writing a corresponding run configuration will allow to run the MWEGenerator on this project.
+It is necessary to specify the module-folder, the source folder, the testing folder, the unit-test method and its
+expected result.
 
 Example: defects4j cli_1
+
 ``` 
   C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\cli_1_b
   src\java\

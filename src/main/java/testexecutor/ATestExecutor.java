@@ -10,16 +10,14 @@ import utility.SlicerUtility;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -156,6 +154,37 @@ public abstract class ATestExecutor implements ITestExecutor {
 		getOptions().withModulePath(getTestOutputPath().toString());
 	}
 
+	protected static Object instantiateUnitTest(Class<?> unitTestClass) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		Object unitTest;
+		Constructor<?>[] constructors = unitTestClass.getConstructors();
+		if (constructors.length == 0) {
+			throw new TestingException("Unit test has no constructor");
+		}
+		Constructor<?> noParamsConstructor = Stream.of(constructors)
+				.filter(c -> c.getParameterTypes().length == 0)
+				.findFirst()
+				.orElse(null);
+		if (noParamsConstructor != null) {
+			noParamsConstructor.setAccessible(true);
+			unitTest = noParamsConstructor.newInstance();
+		} else {
+			Constructor<?> firstConstructor = Stream.of(constructors)
+					.min(Comparator.comparing(c -> c.getParameterTypes().length))
+					.orElse(null);
+
+			Object[] args = new Object[firstConstructor.getParameterTypes().length];
+			for (int i = 0; i < firstConstructor.getParameterTypes().length; i++) {
+				Class<?> clz = firstConstructor.getParameterTypes()[i];
+				Constructor<?> constructor = clz.getDeclaredConstructor();
+				constructor.setAccessible(true);
+				args[i] = constructor.newInstance();
+			}
+			unitTest = firstConstructor.newInstance(args);
+
+		}
+		return unitTest;
+	}
+
 	protected ETestResult testInMemory(List<ICodeFragment> fragments) {
 		InMemoryJavaCompiler compiler = InMemoryJavaCompiler
 				.newInstance()
@@ -188,9 +217,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 		// execute unit test
 		Class<?> unitTestClass = classes.get(unitTestName[0]);
 		try {
-			Constructor<?> constructor = unitTestClass.getDeclaredConstructor();
-			constructor.setAccessible(true);
-			Object unitTest = constructor.newInstance();
+			Object unitTest = instantiateUnitTest(unitTestClass);
 
 			Method testingMethod = unitTestClass.getDeclaredMethod(unitTestName[1]);
 			testingMethod.setAccessible(true);
@@ -201,14 +228,17 @@ public abstract class ATestExecutor implements ITestExecutor {
 			} catch (Exception ex) {
 				if (ex.getCause().toString() != null && ex.getCause().toString().contains(getOptions().getExpectedResult())) {
 					return ETestResult.FAILED;
+				} else {
+					if (m_options.isLogRuntimeErrors()) {
+						System.out.println("Code execution runtime error:");
+						ex.printStackTrace(System.out);
+					}
+					return ETestResult.ERROR_RUNTIME;
 				}
 			}
 		} catch (Exception e) {
 			throw new TestingException("Error during test execution", e);
 		}
-
-
-		return ETestResult.ERROR_RUNTIME;
 	}
 
 	protected ETestResult testWithCommandLine(List<ICodeFragment> fragments) {

@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="defects4j lang_5" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+    <option name="MAIN_CLASS_NAME" value="Main" />
+    <module name="ddminj" />
+    <option name="PROGRAM_PARAMETERS" value="C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\lang_5_b src\main\java\ src\test\java\ org.apache.commons.lang3.LocaleUtilsTest#testLang865 junit.framework.AssertionFailedError" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
