@@ -61,7 +61,7 @@ public class ASTTestExecutor extends ATestExecutor {
 			}
 			try {
 				String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
- 				String code = FileUtility.readTextFile(filePath);
+				String code = FileUtility.readTextFile(filePath);
 				CompilationUnit javaAST = JavaParserUtility.parse(code, true);
 				List<Token> tokens = JavaParserUtility.tokensToAST(code, javaAST);
 				fragments.add(transformToFragements(javaAST, tokens, relativeFileName, fragmentNr));
@@ -70,10 +70,12 @@ public class ASTTestExecutor extends ATestExecutor {
 			}
 		}
 
-		return fragments;
+		return fragments.stream()
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
 	}
 
-	private ASTCodeFragment transformToFragements(CompilationUnit javaAST, List<Token> tokens, String relativeFileName, AtomicInteger fragmentNr) {
+	protected ASTCodeFragment transformToFragements(CompilationUnit javaAST, List<Token> tokens, String relativeFileName, AtomicInteger fragmentNr) {
 		Map<ASTNode, ASTCodeFragment> astNodeToFragment = new HashMap<>();
 		ASTCodeFragment rootFragment = new ASTCodeFragment(relativeFileName, fragmentNr.getAndIncrement());
 		rootFragment.setLevel(0);
@@ -95,7 +97,7 @@ public class ASTTestExecutor extends ATestExecutor {
 		return rootFragment;
 	}
 
-	private void calculateDependencies(ASTNode rootNode, ASTCodeFragment rootFragment, Map<ASTNode, ASTCodeFragment> nodesToFragments) {
+	protected void calculateDependencies(ASTNode rootNode, ASTCodeFragment rootFragment, Map<ASTNode, ASTCodeFragment> nodesToFragments) {
 		// For each node, calculate its children and its level
 		if (nodesToFragments.isEmpty()) {
 			return;
