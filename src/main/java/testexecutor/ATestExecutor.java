@@ -1,10 +1,11 @@
 package testexecutor;
 
+import compiler.InMemoryJavaCompiler;
 import fragment.ICodeFragment;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.mdkt.compiler.CompilationException;
-import org.mdkt.compiler.InMemoryJavaCompiler;
+import utility.FileUtility;
 import utility.SlicerUtility;
 
 import java.io.*;
@@ -15,7 +16,10 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -83,16 +87,6 @@ public abstract class ATestExecutor implements ITestExecutor {
 		return FileSystems.getDefault().getPath(dir + "/testingoutput");
 	}
 
-	protected void deleteFolder(Path folder) throws IOException {
-		if (!Files.exists(folder)) {
-			return;
-		}
-		Files.walk(folder)
-				.sorted(Comparator.reverseOrder())
-				.map(Path::toFile)
-				.forEach(File::delete);
-	}
-
 	protected void copyFolderStructure(Path src, Path dest, boolean includeJavaFiles) throws IOException {
 		try (Stream<Path> stream = Files.walk(src)) {
 			stream.filter(path -> includeJavaFiles || !Files.isRegularFile(path) || !"java".equals(FilenameUtils.getExtension(path.toString())))
@@ -137,13 +131,13 @@ public abstract class ATestExecutor implements ITestExecutor {
 	public void recreateCode(List<ICodeFragment> fragments) {
 		Path testOutputPath = getTestOutputPath();
 		try {
-			deleteFolder(testOutputPath);
+			FileUtility.deleteFolder(testOutputPath);
 			copyFolderStructure(getTestSourcePath(), testOutputPath, false);
 
 			// Copy unit test file
 			String unitTestFolderPath = getOptions().getUnitTestFolderPath();
 			Path unitTestPath = FileSystems.getDefault().getPath(testOutputPath + "\\" + unitTestFolderPath);
-			deleteFolder(unitTestPath);
+			FileUtility.deleteFolder(unitTestPath);
 			copyFolderStructure(FileSystems.getDefault().getPath(getTestSourcePath() + "\\" + unitTestFolderPath), unitTestPath, true);
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
@@ -170,16 +164,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 		try {
 			Path unitTestFolder = FileSystems.getDefault().getPath(getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath());
-			Files.walk(unitTestFolder)
-					.filter(path -> Files.isRegularFile(path) && "java".equals(FilenameUtils.getExtension(path.toString())))
-					.forEach(path -> {
-						try {
-							String className = path.toString().substring(unitTestFolder.toString().length()+1, path.toString().length() - 5).replaceAll("\\\\", ".");
-							compiler.addSource(className, new String(Files.readAllBytes(path)));
-						} catch (Exception e) {
-							throw new RuntimeException(e);
-						}
-					});
+			FileUtility.addJavaFilesToCompiler(compiler, unitTestFolder);
 			for (Map.Entry<String, String> file : mapFragmentsToFiles(fragments).entrySet()) {
 				compiler.addSource(fileNameToClassName(file.getKey()), file.getValue());
 			}
@@ -231,14 +216,14 @@ public abstract class ATestExecutor implements ITestExecutor {
 		Path testFolderPath = getTestFolderPath();
 		Path testBuildPath = getTestBuildPath();
 		try {
-			deleteFolder(testFolderPath);
-			deleteFolder(testBuildPath);
+			FileUtility.deleteFolder(testFolderPath);
+			FileUtility.deleteFolder(testBuildPath);
 			copyFolderStructure(testSourcePath, testFolderPath, false);
 
 			// Copy unit test folder
 			String unitTestFolderPath = getOptions().getUnitTestFolderPath();
 			Path unitTestPath = FileSystems.getDefault().getPath(testFolderPath + "\\" + unitTestFolderPath);
-			deleteFolder(unitTestPath);
+			FileUtility.deleteFolder(unitTestPath);
 			copyFolderStructure(FileSystems.getDefault().getPath(testSourcePath + "\\" + unitTestFolderPath), unitTestPath, true);
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
@@ -322,14 +307,14 @@ public abstract class ATestExecutor implements ITestExecutor {
 		// copy source folder
 		Path testSourcePath = getTestSourcePath();
 		try {
-			deleteFolder(testSourcePath);
+			FileUtility.deleteFolder(testSourcePath);
 			copyFolderStructure(FileSystems.getDefault().getPath(getOptions().getModulePath()), testSourcePath, true);
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
 		}
 
 		if (m_options.isPreSliceCode()) {
-			SlicerUtility.doSlicing(testSourcePath, m_options.getUnitTestMethod());
+			SlicerUtility.doSlicing(testSourcePath, m_options);
 		}
 
 	}
