@@ -26,7 +26,7 @@ public abstract class AbstractMWEGenerator {
 				System.out.println("Concurrent execution and command line are not compatible");
 				System.exit(1);
 			}
-			m_executorService = Executors.newFixedThreadPool(16);
+			m_executorService = Executors.newFixedThreadPool(options.getNumberOfThreads());
 		} else {
 			m_executorService = null;
 		}
