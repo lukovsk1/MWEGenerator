@@ -1,16 +1,30 @@
 import generator.ASTMWEGenerator;
 import generator.AbstractMWEGenerator;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.TeeOutputStream;
 import testexecutor.TestExecutorOptions;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		// write both to the console and a log file
+		String dir = System.getProperty("user.dir");
+		DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+		File logFile = new File(dir + "/logs/" + LocalDateTime.now().format(timeStampPattern) + ".log");
+		logFile.createNewFile();
+		FileOutputStream fos = new FileOutputStream(logFile);
+		TeeOutputStream newOut = new TeeOutputStream(System.out, fos);
+		System.setOut(new PrintStream(newOut, true));
 
 		AbstractMWEGenerator generator;
-		if(args.length >= 5) {
+		if (args.length >= 5) {
 			TestExecutorOptions options = new TestExecutorOptions()
 					.withModulePath(args[0])
 					.withSourceFolderPath(args[1])
@@ -39,7 +53,6 @@ public class Main {
 			System.out.println("TOTAL EXECUTION TIME: " + time + " ms.");
 
 			// check output size:
-			String dir = System.getProperty("user.dir");
 			long outputSize = FileUtils.sizeOfDirectory(new File(dir + "/testingoutput"));
 			System.out.println("TOTAL OUTPUT SIZE: " + outputSize + " bytes");
 		} catch (Exception e) {

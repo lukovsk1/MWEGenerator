@@ -113,14 +113,14 @@ public abstract class AbstractMWEGenerator {
 
 			if (someComplementIsFailing) {
 				granularity = Math.max(granularity - 1, 2);
-				logInfo("DDmin: granularity decreased to " + granularity + " / " + fragments.size());
+				logDebug("DDmin: granularity decreased to " + granularity + " / " + fragments.size());
 			} else {
 				if (granularity == fragments.size()) {
 					break;
 				}
 
 				granularity = Math.min(granularity * 2, fragments.size());
-				logInfo("DDmin: granularity increased to " + granularity + " / " + fragments.size());
+				logDebug("DDmin: granularity increased to " + granularity + " / " + fragments.size());
 			}
 		}
 		return fragments;

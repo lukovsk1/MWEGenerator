@@ -1,11 +1,11 @@
 package testexecutor.ast;
 
+import fragment.ASTCodeFragment;
+import fragment.ICodeFragment;
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import fragment.ASTCodeFragment;
-import fragment.ICodeFragment;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
 import testexecutor.TestExecutorOptions;
@@ -159,6 +159,13 @@ public class ASTTestExecutor extends ATestExecutor {
 		if (nodesToFragments.entrySet().stream().anyMatch(e -> e.getValue().getLevel() < 0)) {
 			throw new TestingException("Unable to calculate dependencies. Cannot fix unassigned nodes");
 		}
+
+		recalculateLevels(rootFragment, 0);
+	}
+
+	protected void recalculateLevels(ASTCodeFragment fragment, int level) {
+		fragment.setLevel(level);
+		fragment.getChildren().forEach(c -> recalculateLevels(c, level + 1));
 	}
 
 	@Override

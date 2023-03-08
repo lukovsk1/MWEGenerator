@@ -97,7 +97,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 				.entrySet()
 				.stream()
 				.sorted(Map.Entry.comparingByKey())
-				.peek(e -> System.out.println("Level: " + e.getKey() + " ### fragments: " + e.getValue()))
+				.peek(e -> System.out.println("Level: " + e.getKey() + " :::: fragments: " + e.getValue()))
 				.mapToInt(Map.Entry::getKey)
 				.max()
 				.orElse(0);
