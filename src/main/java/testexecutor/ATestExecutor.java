@@ -206,7 +206,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 			classes = compiler.compileAll();
 		} catch (CompilationException e) {
 			if(m_options.isLogCompilationErrors()) {
-				System.out.println("Compilation error: " + e);
+				System.out.println("############ Compilation error: ############ \n" + e);
 			}
 			return ETestResult.ERROR_COMPILATION;
 		} catch (Exception e) {

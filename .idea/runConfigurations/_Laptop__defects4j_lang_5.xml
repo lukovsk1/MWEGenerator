@@ -3,7 +3,7 @@
     <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
     <option name="MAIN_CLASS_NAME" value="Main" />
     <module name="ddminj" />
-    <option name="PROGRAM_PARAMETERS" value="C:\dev\workspace\defects4j\bugs\lang_5_b src\main\java\ src\test\java\ org.apache.commons.lang3.LocaleUtilsTest#testLang865 junit.framework.AssertionFailedError" />
+    <option name="PROGRAM_PARAMETERS" value="C:\dev\workspace\defects4j\bugs\lang_5_b src\main\java\ src\test\java\ org.apache.commons.lang3.LocaleUtilsTest#testLang865 java.lang.IllegalArgumentException: Invalid locale format: _GB" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

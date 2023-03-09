@@ -83,3 +83,4 @@ testingsource
 
 target
 *.class
+*.log

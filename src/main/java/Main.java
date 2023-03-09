@@ -31,7 +31,6 @@ public class Main {
 					.withUnitTestFolderPath(args[2])
 					.withUnitTestMethod(args[3])
 					.withExpectedResult(args[4])
-					//.withCompilationType(TestExecutorOptions.ECompilationType.COMMAND_LINE)
 					.withLogCompilationErrors(false)
 					.withLogRuntimeErrors(false)
 					.withNumberOfThreads(10)

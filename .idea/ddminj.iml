@@ -41,5 +41,8 @@
     <orderEntry type="library" name="Maven: com.ibm.wala:com.ibm.wala.cast:1.5.9" level="project" />
     <orderEntry type="library" name="Maven: com.ibm.wala:com.ibm.wala.cast.java:1.5.9" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.easymock:easymock:3.1" level="project" />
+    <orderEntry type="library" name="Maven: cglib:cglib-nodep:2.2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.objenesis:objenesis:1.2" level="project" />
   </component>
 </module>
