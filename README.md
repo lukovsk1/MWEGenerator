@@ -1,16 +1,18 @@
-# DDminJ
+# MWE Generator
 
 Implementation of the DDmin algorithm to create a minimal working example (MWE) for Java and written in Java.
 
-## Current results
+## Working with defects4j
 
 It is possible to run the algorithm on problems extracted from `defects4j`.
-Using the `defects4j` CLI, a project with a reproducible bug can be downloaded to a folder.
+Installing the `defects4j` CLI works best using a linux based system in WSL.
+Using the `defects4j` CLI, a project with a reproducible bug can be downloaded to a local folder to run the MWE
+Generator on it.
 
 Example:
 
 ```
-cd /mnt/c/Users/lubo9/Desktop/Workspace/defects4j/
+cd /mnt/c/dev/workspace/defects4j/
 
 #  checking out bug 5 of commons-lang
 defects4j checkout -p Lang -v 5b -w bugs/lang_5_b
@@ -23,18 +25,43 @@ defects4j test
 ```
 
 Writing a corresponding run configuration will allow to run the MWEGenerator on this project.
-It is necessary to specify the module-folder, the source folder, the testing folder, the unit-test method and its
-expected result.
+The following parameters are necessary:
 
-Example: defects4j cli_1
+- The module path
+  - The root folder of the project
+- The source folder path
+  - The relative path from the module to the java source code
+- The unit test folder path
+  - The relative path from the module to the unit tests
+- The unit test method
+  - The reference of the unit test method able to recreate the problem
+- The expected result
+  - The expected exception in the unit test
+
+Example: defects4j lang_5
 
 ``` 
-  C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\cli_1_b
-  src\java\
-  src\test\
-  org.apache.commons.cli.bug.BugCLI13Test#testCLI13
-  junit.framework.AssertionFailedError
+  C:\dev\workspace\defects4j\bugs\lang_5_b
+  src\main\java\
+  src\test\java\
+  org.apache.commons.lang3.LocaleUtilsTest#testLang865
+  "java.lang.IllegalArgumentException: Invalid locale format: _GB"
 ```
+
+The algorithm will first check if the defined unittest will indeed result in the expected exception.
+If this does not work, you will see the message "Initial testing conditions are not met." in the console.
+
+By enabling the options to log compilation and runtime errors, it is easy to see what went wrong.
+
+If you run into a compilation error, the project might miss a dependency.
+For now, they should be added to the `pom.xml` of the MWE Generator project.
+
+If you run into a runtime error instead, this usually means, that the thrown exception does not match the one you
+configured.
+Changing the run configuration usually helps.
+If there are any whitespaces in a line, it will be split up into mulitple lines, if the line isn't escaped.
+
+## Runtime and Optimization
 
 Right now, the compilation of the code in each step of the ddmin algorithm dominates the runtime.
 
@@ -51,8 +78,9 @@ Next goals:
   - skip compilation if errors are present
   - save time compiling obviously wrong code
 - [ ] Algorithm for all DAGs (not just trees)
-  - implementation
+  - initial implementation based on AST
   - recognizing more dependencies in java code
+- [ ] dynamically include dependencies of testes projects
 
 ## Compilation Type
 
@@ -87,6 +115,7 @@ There are currently three different code fragmentation methods implemented:
 
 ## Concurrent Execution
 
-TestExecutorOptions#withConcurrentExecution allows the DDmin algorithm to be run in currently 16 concurrent threads.
+TestExecutorOptions#withConcurrentExecution allows the DDmin algorithm to be run in currently in a configurable amount
+of concurrent threads.
 Multiple subsets of code fragments are compiled and executed in parallel.
 For the defects4j example CLI 1 this reduces the runtime for a single execution of the algorithm from around 6h to 1.5h.
