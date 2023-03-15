@@ -18,10 +18,13 @@ public class Main {
 		String dir = System.getProperty("user.dir");
 		DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 		File logFile = new File(dir + "/logs/" + LocalDateTime.now().format(timeStampPattern) + ".log");
-		logFile.createNewFile();
-		FileOutputStream fos = new FileOutputStream(logFile);
-		TeeOutputStream newOut = new TeeOutputStream(System.out, fos);
-		System.setOut(new PrintStream(newOut, true));
+		if (logFile.createNewFile()) {
+			FileOutputStream fos = new FileOutputStream(logFile);
+			TeeOutputStream newOut = new TeeOutputStream(System.out, fos);
+			System.setOut(new PrintStream(newOut, true));
+		} else {
+			System.out.println("ERROR: Unable to create log file " + logFile);
+		}
 
 		AbstractMWEGenerator generator;
 		if (args.length >= 5) {
@@ -33,7 +36,7 @@ public class Main {
 					.withExpectedResult(args[4])
 					.withLogCompilationErrors(false)
 					.withLogRuntimeErrors(false)
-					.withNumberOfThreads(10)
+					.withNumberOfThreads(16)
 					.withPreSliceCode(false)
 					.withLogging(TestExecutorOptions.ELogLevel.INFO);
 
