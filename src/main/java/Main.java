@@ -2,6 +2,7 @@ import generator.ASTMWEGenerator;
 import generator.AbstractMWEGenerator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.TeeOutputStream;
+import testexecutor.ExecutorConstants;
 import testexecutor.TestExecutorOptions;
 
 import java.io.File;
@@ -42,7 +43,7 @@ public class Main {
 
 			generator = new ASTMWEGenerator(options);
 		} else {
-			generator = new ASTMWEGenerator(Constants.CALCULATOR_OPTIONS_MULTI);
+			generator = new ASTMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
 		}
 
 		try {
