@@ -2,7 +2,9 @@ package utility;
 
 import com.ibm.wala.cast.java.client.impl.ZeroCFABuilderFactory;
 import com.ibm.wala.cast.java.ipa.modref.AstJavaModRef;
-import com.ibm.wala.classLoader.*;
+import com.ibm.wala.classLoader.BinaryDirectoryTreeModule;
+import com.ibm.wala.classLoader.ShrikeBTMethod;
+import com.ibm.wala.classLoader.SourceDirectoryTreeModule;
 import com.ibm.wala.core.util.warnings.Warnings;
 import com.ibm.wala.ipa.callgraph.*;
 import com.ibm.wala.ipa.callgraph.impl.DefaultEntrypoint;
@@ -22,18 +24,14 @@ import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 import com.ibm.wala.util.intset.IntSet;
 import compiler.InMemoryJavaCompiler;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import testexecutor.TestExecutorOptions;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.jar.JarFile;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class SlicerUtility {
     private SlicerUtility() {
@@ -100,10 +98,10 @@ public final class SlicerUtility {
             PointerAnalysis<InstanceKey> ptr = builder.getPointerAnalysis();
 
             // TODO: find correct slicing options
-            Slicer.DataDependenceOptions data = Slicer.DataDependenceOptions.NO_BASE_NO_HEAP_NO_EXCEPTIONS;
-            Slicer.ControlDependenceOptions control = Slicer.ControlDependenceOptions.NONE;
-            //Slicer.DataDependenceOptions data = Slicer.DataDependenceOptions.FULL;
-            //Slicer.ControlDependenceOptions control = Slicer.ControlDependenceOptions.FULL;
+            //Slicer.DataDependenceOptions data = Slicer.DataDependenceOptions.NO_BASE_NO_HEAP_NO_EXCEPTIONS;
+            //Slicer.ControlDependenceOptions control = Slicer.ControlDependenceOptions.NONE;
+            Slicer.DataDependenceOptions data = Slicer.DataDependenceOptions.FULL;
+            Slicer.ControlDependenceOptions control = Slicer.ControlDependenceOptions.FULL;
 
             SDG<InstanceKey> sdg = new SDG<>(cg, ptr, new AstJavaModRef<>(), data, control);
             System.out.println("Slicing: ... in " + (System.currentTimeMillis() - start) + "ms");
@@ -116,8 +114,8 @@ public final class SlicerUtility {
             System.out.println("Slicing: Extracted slicing with " + codeSlice.size() + " statements in " + (System.currentTimeMillis() - start) + "ms");
 
             // removing unused code from source folder
-            FileUtility.deleteFolder(targetDir.toPath());
             pruneSourceFolder(codeSlice, testSourcePath);
+            FileUtility.deleteFolder(targetDir.toPath());
         } catch (Exception e) {
             throw new SlicingException("Error while pre-slicing code", e);
         }
@@ -147,49 +145,35 @@ public final class SlicerUtility {
 
 
     public static void pruneSourceFolder(Collection<Statement> slice, Path testSourcePath) throws IOException {
-        Map<IClass, Set<IMethod>> methodsByClass = slice.stream()
-                .map(Statement::getNode)
-                .map(CGNode::getMethod)
-                .collect(Collectors.groupingBy(IMember::getDeclaringClass, Collectors.mapping(fr -> fr, Collectors.toSet())));
+        Map<String, Set<Integer>> sourceLinesPerFile = new HashMap<>();
 
-        System.out.println("Slicing: created slicing");
-        for (Map.Entry<IClass, Set<IMethod>> entry : methodsByClass.entrySet()) {
-            System.out.println("Slicing: Class " + entry.getKey().getName().toString());
-            for (IMethod method : entry.getValue()) {
-                System.out.println("Slicing: \tMethod " + method.getSelector().toString());
+        for (Statement s : slice) {
+            if (s.getKind() == Statement.Kind.NORMAL) { // ignore special kinds of statements
+                int bcIndex, instructionIndex = ((NormalStatement) s).getInstructionIndex();
+                try {
+                    bcIndex = ((ShrikeBTMethod) s.getNode().getMethod()).getBytecodeIndex(instructionIndex);
+                    try {
+                        String fileName = s.getNode().getMethod().getDeclaringClass().getName().toString().substring(1);
+                        int src_line_number = s.getNode().getMethod().getLineNumber(bcIndex);
+                        sourceLinesPerFile.computeIfAbsent(fileName, f -> new HashSet<>()).add(src_line_number);
+                    } catch (Exception e) {
+                        System.err.println("Bytecode index no good");
+                        System.err.println(e.getMessage());
+                    }
+                } catch (Exception e) {
+                    // fail silently
+                }
             }
         }
 
-        // TODO: early exit
-        if (1 == 1) {
-            return;
+        System.out.println("Slicing: created slicing");
+        for (Map.Entry<String, Set<Integer>> entry : sourceLinesPerFile.entrySet()) {
+            System.out.println("Slicing: Class " + entry.getKey());
+            entry.getValue().stream().sorted().forEach(ln -> {
+                System.out.println("Slicing: \tLinenumber " + ln);
+            });
         }
 
-        List<String> classes = methodsByClass.keySet().stream()
-                .filter(cl -> cl.getClassLoader().getReference().equals(ClassLoaderReference.Application))
-                .map(cl -> cl.getReference().getName().toString().substring(1))
-                .map(name -> name.replace("/", "\\"))
-                .map(name -> name + ".java")
-                .collect(Collectors.toList());
-
-        // TODO extract more dependencies from slice
-        try (Stream<Path> walk = Files.walk(testSourcePath)) {
-            walk.sorted(Comparator.reverseOrder())
-                    .filter(path -> Files.isRegularFile(path) && "java".equals(FilenameUtils.getExtension(path.toString())))
-                    .filter(path -> classes.stream().noneMatch(fn -> path.toString().endsWith(fn)))
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-        }
-
-        // TODO remove unused methods
-
-        // retry compilation
-        InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance().ignoreWarnings();
-        FileUtility.addJavaFilesToCompiler(compiler, testSourcePath);
-        try {
-            compiler.compileAll();
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
+        // do something with this
     }
 }

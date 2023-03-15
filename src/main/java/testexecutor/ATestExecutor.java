@@ -157,13 +157,15 @@ public abstract class ATestExecutor implements ITestExecutor {
 	protected static Object instantiateUnitTest(Class<?> unitTestClass) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Object unitTest;
 		Constructor<?>[] constructors = unitTestClass.getConstructors();
+		Constructor<?> noParamsConstructor;
 		if (constructors.length == 0) {
-			throw new TestingException("Unit test has no constructor");
+			noParamsConstructor = unitTestClass.getDeclaredConstructor();
+		} else {
+			noParamsConstructor = Stream.of(constructors)
+					.filter(c -> c.getParameterTypes().length == 0)
+					.findFirst()
+					.orElse(null);
 		}
-		Constructor<?> noParamsConstructor = Stream.of(constructors)
-				.filter(c -> c.getParameterTypes().length == 0)
-				.findFirst()
-				.orElse(null);
 		if (noParamsConstructor != null) {
 			noParamsConstructor.setAccessible(true);
 			unitTest = noParamsConstructor.newInstance();
