@@ -25,5 +25,11 @@ match (a) delete a;
 Get whole graph for run "20230315_125558"
 
 ```
-MATCH (n:Fragment_20230315_125558), (m:Token_20230315_125558) RETURN *
+MATCH (n:Fragment_20230315_125558), (m:Token_20230315_125558) RETURN *;
+```
+
+Find root nodes
+
+```
+match (f:Fragment_20230315_133249) where not exists((f)-[:DEPENDS_ON]->(:Fragment_20230315_133249)) return f;
 ```
