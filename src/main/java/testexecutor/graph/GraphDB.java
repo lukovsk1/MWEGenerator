@@ -146,7 +146,7 @@ public class GraphDB {
 				.append(" SET n ")
 				.append(LABEL_FIXED)
 				.append(" REMOVE n")
-				.append(LABEL_FREE)
+				.append(LABEL_ACTIVE)
 				.append(";");
 		params.put("nodeIds", nodeIds);
 
@@ -155,6 +155,9 @@ public class GraphDB {
 	}
 
 	public void discardFragmentNodes(Set<Long> nodeIds) {
+		if (nodeIds.isEmpty()) {
+			return;
+		}
 		Map<String, Object> params = new HashMap<>();
 		params.put("nodeIds", nodeIds);
 		Session session = m_driver.session();
@@ -203,38 +206,44 @@ public class GraphDB {
 	public Map<String, String> mapFragmentsToFiles(Set<Long> selectedActiveNodes) {
 		/*
 			CALL {
-				MATCH (a:Fragment_20230316_152014:Active), (a)<-[:DEPENDS_ON*]-(p:Fragment_20230316_152014:Free)
-				WHERE ID(a) IN [1984]
-				UNWIND [a,p] as f
+				MATCH (f:Fragment_20230316_231802:Active)
+				WHERE ID(f) IN [123]
 				RETURN f
-
 				UNION
-
-				MATCH (f:Fragment_20230316_152014:Fixed)
+				MATCH (a:Fragment_20230316_231802:Active), (a)<-[:DEPENDS_ON*]-(f:Fragment_20230316_231802:Free)
+				WHERE ID(a) IN [123]
+				RETURN f
+				UNION
+				MATCH (f:Fragment_20230316_231802:Fixed)
 				RETURN f
 			}
 			WITH f
-			MATCH (f)-[:HAS_TOKEN]->(t)
+			MATCH (f)-[:HAS_TOKEN]->(t:Token_20230316_231802)
 			WITH f.fileName as fileName, t ORDER BY t.start
-			WITH fileName, collect(t.code) as codes
-			WITH fileName, REDUCE(s=HEAD(codes), n IN TAIL(codes) | s + n) AS code
-			RETURN fileName, code
+			WITH fileName, COLLECT(t.code) as c
+			WITH fileName, REDUCE(s=HEAD(c), n IN TAIL(c) | s + n) AS code
+			RETURN fileName, code;
 		 */
 		StringBuilder sb = new StringBuilder();
 		Map<String, Object> params = new HashMap<>();
 		sb.append("CALL { ")
+				.append("MATCH (f")
+				.append(LABEL_PREFIX_FRAGMENT)
+				.append(m_nodeIdentifierSuffix)
+				.append(") WHERE ID(f) IN $nodeIds")
+				.append(" RETURN f")
+				.append(" UNION ")
 				.append("MATCH (a")
 				.append(LABEL_PREFIX_FRAGMENT)
 				.append(m_nodeIdentifierSuffix)
 				.append(LABEL_ACTIVE)
 				.append("), (a)<-[")
 				.append(RELATIONSHIP_LABEL_DEPENDS_ON)
-				.append("*]-(p")
+				.append("*]-(f")
 				.append(LABEL_PREFIX_FRAGMENT)
 				.append(m_nodeIdentifierSuffix)
 				.append(LABEL_FREE)
 				.append(") WHERE ID(a) IN $nodeIds")
-				.append(" UNWIND [a,p] as f")
 				.append(" RETURN f")
 				.append(" UNION ")
 				.append("MATCH (f")

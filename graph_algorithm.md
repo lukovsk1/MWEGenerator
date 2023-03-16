@@ -50,8 +50,7 @@ sudo docker run --publish=7474:7474 --publish=7687:7687 --env=NEO4J_AUTH=none ne
 Delete everything
 
 ```
-match (a)-[r]->() delete a, r;
-match (a) delete a;
+match (a) detach delete a;
 ```
 
 Get whole graph for run "20230315_125558"

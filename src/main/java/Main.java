@@ -32,6 +32,10 @@ public class Main {
 		AbstractMWEGenerator generator = null;
 		if (args.length == 0) {
 			generator = new GraphMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
+		} else if (args.length == 1) {
+			Class<?> generatorClass = Class.forName(args[0]);
+			Constructor<?> constructor = generatorClass.getConstructor(TestExecutorOptions.class);
+			generator = (AbstractMWEGenerator) constructor.newInstance(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
 		} else if (args.length >= 6) {
 			Class<?> generatorClass = Class.forName(args[0]);
 			Constructor<?> constructor = generatorClass.getConstructor(TestExecutorOptions.class);

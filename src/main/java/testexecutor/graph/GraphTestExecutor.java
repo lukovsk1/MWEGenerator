@@ -6,7 +6,6 @@ import fragment.GraphCodeFragment;
 import fragment.ICodeFragment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.neo4j.driver.types.Node;
-import testexecutor.ExecutorConstants;
 import testexecutor.TestExecutorOptions;
 import testexecutor.ast.ASTTestExecutor;
 import utility.JavaParserUtility;
@@ -29,12 +28,6 @@ public class GraphTestExecutor extends ASTTestExecutor {
         m_graphDB = new GraphDB(nodeIdentifierSuffix);
         System.out.println("Manually query the graph in the neo4j browser: http://localhost:7474/browser/");
         System.out.println("Example Query: \"MATCH (f:Fragment" + nodeIdentifierSuffix + ") RETURN *;\"");
-    }
-
-    public static void main(String[] args) {
-        GraphTestExecutor extractor = new GraphTestExecutor(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
-        extractor.initialize();
-        extractor.extractFragments();
     }
 
     @Override
