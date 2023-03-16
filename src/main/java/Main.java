@@ -1,5 +1,5 @@
-import generator.ASTMWEGenerator;
 import generator.AbstractMWEGenerator;
+import generator.GraphMWEGenerator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.TeeOutputStream;
 import testexecutor.ExecutorConstants;
@@ -31,7 +31,7 @@ public class Main {
 
 		AbstractMWEGenerator generator = null;
 		if (args.length == 0) {
-			generator = new ASTMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
+			generator = new GraphMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
 		} else if (args.length >= 6) {
 			Class<?> generatorClass = Class.forName(args[0]);
 			Constructor<?> constructor = generatorClass.getConstructor(TestExecutorOptions.class);

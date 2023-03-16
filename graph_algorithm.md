@@ -2,7 +2,39 @@
 
 ## Idea
 
-The main idea of this algorithm
+The main idea of this algorithm is to run a generalized version of the
+HDD algorithm on any directed acyclic graph representing the code and its internal dependencies.
+
+## Pseudocode algorithm
+
+- G = (V,E)
+  - the graph
+- V
+  - the set of code fragments
+- E
+  - the set of dependencies between the fragments.
+  - i.e. (v,w) in E means that fragment v depends on fragment w
+
+```
+free := V
+fixed := {}
+discarded := {}
+
+while free != {}
+    active := {f in free | s.t. not exists (f,v) in E with v in free}
+    free := free \ active
+    minconfig := ddmin(active)
+    fixed := fixed u minconfig
+    discarded := discarded u (active \ minconfig)
+
+return fixed
+```
+
+The code that the ddmin algorithm tests on will always contain all the fixed fragments, never contain any discarded
+fragments
+and will contain all fragments in free that are dependent on the current configuration (a subset of active).
+
+The set of fixed fragments that is returned at the end of the run, is an MWE.
 
 ## Graph DB
 

@@ -145,4 +145,21 @@ public class TestExecutorOptions {
 		return m_preSliceCode;
 	}
 
+	@Override
+	public String toString() {
+		return "{\n" +
+				"\tm_modulePath='" + m_modulePath + "',\n" +
+				"\tm_sourceFolderPath='" + m_sourceFolderPath + "',\n" +
+				"\tm_unitTestFolderPath='" + m_unitTestFolderPath + "',\n" +
+				"\tm_unitTestMethod='" + m_unitTestMethod + "',\n" +
+				"\tm_expectedResult='" + m_expectedResult + "',\n" +
+				"\tm_compilationType=" + m_compilationType + ",\n" +
+				"\tm_logLevel=" + m_logLevel + ",\n" +
+				"\tm_logCompilationErrors=" + m_logCompilationErrors + ",\n" +
+				"\tm_logRuntimeErrors=" + m_logRuntimeErrors + ",\n" +
+				"\tm_multipleRuns=" + m_multipleRuns + ",\n" +
+				"\tm_numberOfThreads=" + m_numberOfThreads + ",\n" +
+				"\tm_preSliceCode=" + m_preSliceCode + ",\n" +
+				'}';
+	}
 }

@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 public abstract class AbstractMWEGenerator {
 
@@ -151,16 +151,28 @@ public abstract class AbstractMWEGenerator {
 	}
 
 	protected String getConfigurationIdentifier(List<ICodeFragment> configuration, int totalFragments) {
-		List<Integer> activeFragments = IntStream.range(0, totalFragments)
-				.mapToObj(i -> 0)
+		List<Long> activeFragments = LongStream.range(0, totalFragments)
+				.mapToObj(i -> 0L)
 				.collect(Collectors.toList());
 
-		configuration.forEach(fr -> activeFragments.set(fr.getFragmentNumber(), 1));
+		configuration.forEach(fr -> activeFragments.set((int) fr.getFragmentNumber(), 1L));
 
-		return activeFragments.stream().map(i -> Integer.toString(i)).collect(Collectors.joining());
+		return activeFragments.stream().map(i -> Long.toString(i)).collect(Collectors.joining());
 	}
 
 	protected abstract ITestExecutor getTestExecutor();
+
+	protected void printConfigurationInfo(List<ICodeFragment> minConfig, List<ICodeFragment> fragments) {
+		StringBuilder sb = new StringBuilder();
+		for (ICodeFragment fr : fragments) {
+			if (minConfig.contains(fr)) {
+				sb.append(1);
+			} else {
+				sb.append(0);
+			}
+		}
+		logInfo(sb);
+	}
 
 	protected void logInfo(Object msg) {
 		log(msg, TestExecutorOptions.ELogLevel.INFO);

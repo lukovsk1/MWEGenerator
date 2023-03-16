@@ -62,18 +62,6 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 		}
 	}
 
-	private void printConfigurationInfo(List<ICodeFragment> minConfig, List<ICodeFragment> fragments) {
-		StringBuilder sb = new StringBuilder();
-		for (ICodeFragment fr : fragments) {
-			if (minConfig.contains(fr)) {
-				sb.append(1);
-			} else {
-				sb.append(0);
-			}
-		}
-		logInfo(sb);
-	}
-
 	@Override
 	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeFragment> configuration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
 		ITestExecutor.ETestResult result = executor.test(configuration);

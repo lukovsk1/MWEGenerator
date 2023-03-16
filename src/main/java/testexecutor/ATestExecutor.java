@@ -29,7 +29,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 	protected ATestExecutor(TestExecutorOptions options) {
 		m_options = options;
 
-		System.out.println("Create executor of class " + this.getClass().getName() + " with compilation type " + options.getCompilationType());
+		System.out.println("Using executor " + this.getClass().getSimpleName() + " with executor options:\n" + options.toString());
 	}
 
 	protected TestExecutorOptions getOptions() {

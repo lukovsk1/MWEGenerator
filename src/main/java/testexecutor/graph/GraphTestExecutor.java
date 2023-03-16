@@ -1,6 +1,8 @@
 package testexecutor.graph;
 
+import fragment.ACodeFragment;
 import fragment.ASTCodeFragment;
+import fragment.GraphCodeFragment;
 import fragment.ICodeFragment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.neo4j.driver.types.Node;
@@ -13,18 +15,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class GraphTestExecutor extends ASTTestExecutor {
     private final GraphDB m_graphDB;
-    private final String m_nodeIdentifierSuffix;
 
     public GraphTestExecutor(TestExecutorOptions options) {
         super(options);
-        m_graphDB = GraphDB.getInstance();
         DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-        m_nodeIdentifierSuffix = "_" + LocalDateTime.now().format(timeStampPattern);
-        System.out.println("Intialized GraphExtractor with node identifier suffix " + m_nodeIdentifierSuffix);
+        String nodeIdentifierSuffix = "_" + LocalDateTime.now().format(timeStampPattern);
+        m_graphDB = new GraphDB(nodeIdentifierSuffix);
+        System.out.println("Manually query the graph in the neo4j browser: http://localhost:7474/browser/");
+        System.out.println("Example Query: \"MATCH (f:Fragment" + nodeIdentifierSuffix + ") RETURN *;\"");
     }
 
     public static void main(String[] args) {
@@ -41,7 +45,7 @@ public class GraphTestExecutor extends ASTTestExecutor {
     }
 
     protected void writeFragmentToDatabase(ASTCodeFragment fragment, Node parentFragmentNode) {
-        Node fragmentNode = m_graphDB.addFragmentNode(m_nodeIdentifierSuffix, fragment);
+        Node fragmentNode = m_graphDB.addFragmentNode(fragment);
         if (parentFragmentNode != null) {
             m_graphDB.addDependency(fragmentNode, parentFragmentNode);
         }
@@ -50,9 +54,36 @@ public class GraphTestExecutor extends ASTTestExecutor {
 
     @Override
     protected Map<String, String> mapFragmentsToFiles(List<ICodeFragment> fragments) {
-        // ignore input. reading fragments from graph db
+        Set<Long> selectedActiveNodes = fragments.stream()
+                .map(f -> (GraphCodeFragment) f)
+                .map(ACodeFragment::getFragmentNumber)
+                .collect(Collectors.toSet());
+        return m_graphDB.mapFragmentsToFiles(selectedActiveNodes);
+    }
 
-        //TODO impl
-        return null;
+    // returns the fragments that the ddmin algorithm should be run on at this moment
+    public List<ICodeFragment> getActiveFragments() {
+        return m_graphDB.calculateActiveFragments();
+    }
+
+    @Override
+    public void addFixedFragments(List<ICodeFragment> fragments) {
+        Set<Long> fixedNodes = fragments.stream()
+                .map(f -> (GraphCodeFragment) f)
+                .map(ACodeFragment::getFragmentNumber)
+                .collect(Collectors.toSet());
+        m_graphDB.markFragmentNodesAsFixed(fixedNodes);
+    }
+
+    public void addDiscardedFragments(List<ICodeFragment> fragments) {
+        Set<Long> nodesToDiscard = fragments.stream()
+                .map(f -> (GraphCodeFragment) f)
+                .map(ACodeFragment::getFragmentNumber)
+                .collect(Collectors.toSet());
+        m_graphDB.discardFragmentNodes(nodesToDiscard);
+    }
+
+    public int getNumberOfFragmentsInDB() {
+        return m_graphDB.getNumberOfFragments();
     }
 }

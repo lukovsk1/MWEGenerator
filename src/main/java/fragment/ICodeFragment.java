@@ -2,7 +2,7 @@ package fragment;
 
 public interface ICodeFragment {
 
-	int getFragmentNumber();
+	long getFragmentNumber();
 
 	String getPath();
 }

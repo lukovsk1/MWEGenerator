@@ -5,9 +5,9 @@ public abstract class ACodeFragment<T> implements ICodeFragment {
 	private final String m_path;
 
 	private final T m_content;
-	private final int m_fragmentNumber;
+	private final long m_fragmentNumber;
 
-	public ACodeFragment(String path, T content, int fragmentNumber) {
+	public ACodeFragment(String path, T content, long fragmentNumber) {
 		m_path = path;
 		m_content = content;
 		m_fragmentNumber = fragmentNumber;
@@ -22,7 +22,7 @@ public abstract class ACodeFragment<T> implements ICodeFragment {
 	}
 
 	@Override
-	public int getFragmentNumber() {
+	public long getFragmentNumber() {
 		return m_fragmentNumber;
 	}
 }
