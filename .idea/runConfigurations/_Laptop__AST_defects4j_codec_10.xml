@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="[Laptop] AST defects4j codec_10" type="Application" factoryName="Application" folderName="Laptop">
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+    <option name="MAIN_CLASS_NAME" value="Main" />
+    <module name="ddminj" />
+    <option name="PROGRAM_PARAMETERS" value="generator.ASTMWEGenerator C:\dev\workspace\defects4j\bugs\codec_10_b src\java\ src\test\ org.apache.commons.codec.language.CaverphoneTest#testEndMb &quot;junit.framework.ComparisonFailure: Source: mbmb expected:&lt;M[PM]1111111&gt; but was:&lt;M[MP]1111111&gt;&quot;" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
