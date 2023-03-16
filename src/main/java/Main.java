@@ -9,12 +9,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 		// write both to the console and a log file
 		String dir = System.getProperty("user.dir");
 		DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -27,23 +29,28 @@ public class Main {
 			System.out.println("ERROR: Unable to create log file " + logFile);
 		}
 
-		AbstractMWEGenerator generator;
-		if (args.length >= 5) {
+		AbstractMWEGenerator generator = null;
+		if (args.length == 0) {
+			generator = new ASTMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
+		} else if (args.length >= 6) {
+			Class<?> generatorClass = Class.forName(args[0]);
+			Constructor<?> constructor = generatorClass.getConstructor(TestExecutorOptions.class);
 			TestExecutorOptions options = new TestExecutorOptions()
-					.withModulePath(args[0])
-					.withSourceFolderPath(args[1])
-					.withUnitTestFolderPath(args[2])
-					.withUnitTestMethod(args[3])
-					.withExpectedResult(args[4])
+					.withModulePath(args[1])
+					.withSourceFolderPath(args[2])
+					.withUnitTestFolderPath(args[3])
+					.withUnitTestMethod(args[4])
+					.withExpectedResult(args[5])
 					.withLogCompilationErrors(false)
 					.withLogRuntimeErrors(false)
 					.withNumberOfThreads(16)
 					.withPreSliceCode(false)
 					.withLogging(TestExecutorOptions.ELogLevel.INFO);
 
-			generator = new ASTMWEGenerator(options);
+			generator = (AbstractMWEGenerator) constructor.newInstance(options);
 		} else {
-			generator = new ASTMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
+			System.out.println("ERROR: Invalid number of arguments");
+			System.exit(1);
 		}
 
 		try {

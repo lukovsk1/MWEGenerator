@@ -1,4 +1,4 @@
-package graph;
+package testexecutor.graph;
 
 import fragment.ASTCodeFragment;
 import fragment.ICodeFragment;
@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GraphExtractor extends ASTTestExecutor {
+public class GraphTestExecutor extends ASTTestExecutor {
     private final GraphDB m_graphDB;
     private final String m_nodeIdentifierSuffix;
 
-    public GraphExtractor(TestExecutorOptions options) {
+    public GraphTestExecutor(TestExecutorOptions options) {
         super(options);
         m_graphDB = GraphDB.getInstance();
         DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -28,7 +28,7 @@ public class GraphExtractor extends ASTTestExecutor {
     }
 
     public static void main(String[] args) {
-        GraphExtractor extractor = new GraphExtractor(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
+        GraphTestExecutor extractor = new GraphTestExecutor(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
         extractor.initialize();
         extractor.extractFragments();
     }
