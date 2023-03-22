@@ -28,14 +28,14 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
             // extract code fragments
             GraphTestExecutor executor = getTestExecutor();
             executor.initialize();
+            long start = System.currentTimeMillis();
             executor.extractFragments();
-
             int numberOfFragments = executor.getNumberOfFragmentsInDB();
-            logInfo("Extracted " + numberOfFragments + " fragments to graph database");
+            logInfo("Extracted " + numberOfFragments + " fragments to graph database in " + (System.currentTimeMillis() - start) + "ms");
 
             logInfo("############## RUNNING TEST ##############");
             while (true) {
-                long start = System.currentTimeMillis();
+                start = System.currentTimeMillis();
                 List<ICodeFragment> fragments = executor.getActiveFragments();
                 if (fragments.isEmpty()) {
                     break;
@@ -61,7 +61,7 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
     @Override
     protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeFragment> configuration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
         ITestExecutor.ETestResult result = executor.test(configuration);
-        log(":::: " + result + " :::: level: " + m_level + " :::: size: " + configuration.size() + " / " + totalFragments + " :::: ", result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
+        log(":::: " + result + " :::: level: " + m_level + " :::: size: " + configuration.size() + " / " + totalFragments + " :::: " + executor.getStatistics(), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
         return result;
     }
 

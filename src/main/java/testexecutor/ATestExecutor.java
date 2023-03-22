@@ -19,12 +19,18 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class ATestExecutor implements ITestExecutor {
 
 	private final TestExecutorOptions m_options;
+	protected final AtomicInteger m_compilerCalls = new AtomicInteger();
+	protected final AtomicInteger m_compilationErrors = new AtomicInteger();
+	protected final AtomicInteger m_runtimeErrors = new AtomicInteger();
+	protected final AtomicInteger m_failedRuns = new AtomicInteger();
+	protected final AtomicInteger m_okRuns = new AtomicInteger();
 
 	protected ATestExecutor(TestExecutorOptions options) {
 		m_options = options;
@@ -205,11 +211,13 @@ public abstract class ATestExecutor implements ITestExecutor {
 		Map<String, Class<?>> classes;
 
 		try {
+			m_compilerCalls.incrementAndGet();
 			classes = compiler.compileAll();
 		} catch (CompilationException e) {
 			if(m_options.isLogCompilationErrors()) {
 				System.out.println("############ Compilation error: ############ \n" + e);
 			}
+			m_compilationErrors.incrementAndGet();
 			return ETestResult.ERROR_COMPILATION;
 		} catch (Exception e) {
 			throw new TestingException("Error during compilation", e);
@@ -226,15 +234,18 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 			try {
 				testingMethod.invoke(unitTest);
+				m_okRuns.incrementAndGet();
 				return ETestResult.OK;
 			} catch (Exception ex) {
 				if (ex.getCause().toString() != null && ex.getCause().toString().contains(getOptions().getExpectedResult())) {
+					m_failedRuns.incrementAndGet();
 					return ETestResult.FAILED;
 				} else {
 					if (m_options.isLogRuntimeErrors()) {
 						System.out.println("Code execution runtime error:");
 						ex.printStackTrace(System.out);
 					}
+					m_runtimeErrors.incrementAndGet();
 					return ETestResult.ERROR_RUNTIME;
 				}
 			}
@@ -349,5 +360,10 @@ public abstract class ATestExecutor implements ITestExecutor {
 			SlicerUtility.doSlicing(testSourcePath, m_options);
 		}
 
+	}
+
+	public String getStatistics() {
+		return String.format("Compiler calls: %d, compilation errors: %d, runtime errors: %d, failed runs: %d, ok runs: %d",
+				m_compilerCalls.get(), m_compilationErrors.get(), m_runtimeErrors.get(), m_failedRuns.get(), m_okRuns.get());
 	}
 }

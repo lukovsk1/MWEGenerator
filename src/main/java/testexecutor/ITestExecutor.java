@@ -24,4 +24,6 @@ public interface ITestExecutor {
 	// sets the source folder of the executor to the build folder
 	// in order to rerun the test with the previous result
 	void changeSourceToOutputFolder();
+
+	String getStatistics();
 }
