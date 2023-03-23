@@ -106,20 +106,6 @@ public abstract class ATestExecutor implements ITestExecutor {
 		}
 	}
 
-	protected String fileNameToClassName(String fileName) {
-		if (fileName == null || fileName.isEmpty()) {
-			return null;
-		}
-
-		if (fileName.matches("^[.\\\\/].+")) {
-			fileName = fileName.substring(1);
-		}
-		if (fileName.endsWith(".java")) {
-			fileName = fileName.substring(0, fileName.length() - 5);
-		}
-		return fileName.replaceAll("[\\\\/]", ".");
-	}
-
 	@Override
 	public ETestResult test(List<ICodeFragment> fragments) {
 		switch (getOptions().getCompilationType().toString()) {
@@ -203,7 +189,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 			Path unitTestFolder = FileSystems.getDefault().getPath(getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath());
 			FileUtility.addJavaFilesToCompiler(compiler, unitTestFolder);
 			for (Map.Entry<String, String> file : mapFragmentsToFiles(fragments).entrySet()) {
-				compiler.addSource(fileNameToClassName(file.getKey()), file.getValue());
+				compiler.addSource(FileUtility.fileNameToClassName(file.getKey()), file.getValue());
 			}
 		} catch (Exception e) {
 			throw new TestingException("Error while adding files", e);

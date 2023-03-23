@@ -50,4 +50,18 @@ public class FileUtility {
 		}
 	}
 
+	public static String fileNameToClassName(String fileName) {
+		if (fileName == null || fileName.isEmpty()) {
+			return null;
+		}
+
+		if (fileName.matches("^[.\\\\/].+")) {
+			fileName = fileName.substring(1);
+		}
+		if (fileName.endsWith(".java")) {
+			fileName = fileName.substring(0, fileName.length() - 5);
+		}
+		return fileName.replaceAll("[\\\\/]", ".");
+	}
+
 }

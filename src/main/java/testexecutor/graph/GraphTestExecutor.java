@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class GraphTestExecutor extends ASTTestExecutor {
     private final GraphDB m_graphDB;
     private final Map<Long, GraphCodeFragment> m_fragments;
-    private final Set<ICodeFragment> m_fixedFragments;
+    private Set<Long> m_activeFragments;
 
     public GraphTestExecutor(TestExecutorOptions options) {
         super(options);
@@ -30,7 +30,14 @@ public class GraphTestExecutor extends ASTTestExecutor {
         System.out.println("Example Query: \"MATCH (f:Fragment" + nodeIdentifierSuffix + ") RETURN *;\"");
 
         m_fragments = new HashMap<>();
-        m_fixedFragments = new HashSet<>();
+        m_activeFragments = new HashSet<>();
+    }
+
+    @Override
+    public List<ICodeFragment> extractFragments() {
+        super.extractFragments();
+        m_graphDB.calculateCrossTreeDependencies();
+        return Collections.emptyList();
     }
 
     @Override
@@ -44,26 +51,25 @@ public class GraphTestExecutor extends ASTTestExecutor {
         Node fragmentNode = m_graphDB.addFragmentNode(fragment);
         m_fragments.put(fragmentNode.id(), new GraphCodeFragment(fragment.getPath(), fragmentNode.id(), fragment.getTokens()));
         if (parentFragmentNode != null) {
-            m_graphDB.addDependency(fragmentNode, parentFragmentNode);
+            m_graphDB.addASTDependency(fragmentNode, parentFragmentNode);
         }
         fragment.getChildren().forEach(f -> writeFragmentToDatabase(f, fragmentNode));
     }
 
     @Override
-    protected Map<String, String> mapFragmentsToFiles(List<ICodeFragment> activeFragments) {
-        List<ICodeFragment> fragments = new ArrayList<>(activeFragments);
-        fragments.addAll(m_fixedFragments);
-        Set<Long> selectedActiveNodes = activeFragments.stream()
+    protected Map<String, String> mapFragmentsToFiles(List<ICodeFragment> selectedFragments) {
+        Set<Long> selectedActiveNodes = selectedFragments.stream()
                 .map(GraphCodeFragment.class::cast)
                 .map(ACodeFragment::getFragmentNumber)
                 .collect(Collectors.toSet());
-        fragments.addAll((m_graphDB.getIdsOfDependentNodes(selectedActiveNodes)
-                .stream()
-                .map(m_fragments::get)
-                .filter(Objects::nonNull).collect(Collectors.toList())));
+        Set<Long> excluded = new HashSet<>(m_activeFragments);
+        excluded.removeAll(selectedActiveNodes);
+        excluded.addAll(m_graphDB.getExcludedNodeIds(selectedActiveNodes));
 
-        Map<String, Set<GraphCodeFragment>> fragmentsByFile = fragments
+        Map<String, Set<GraphCodeFragment>> fragmentsByFile = m_fragments.entrySet()
                 .stream()
+                .filter(e -> !excluded.contains(e.getKey()))
+                .map(Map.Entry::getValue)
                 .map(GraphCodeFragment.class::cast)
                 .collect(Collectors.groupingBy(ICodeFragment::getPath, Collectors.mapping(fr -> fr, Collectors.toSet())));
 
@@ -84,7 +90,8 @@ public class GraphTestExecutor extends ASTTestExecutor {
 
     // returns the fragments that the ddmin algorithm should be run on at this moment
     public List<ICodeFragment> getActiveFragments() {
-        return m_graphDB.calculateActiveFragments().stream()
+        m_activeFragments = m_graphDB.calculateActiveFragments();
+        return m_activeFragments.stream()
                 .map(m_fragments::get)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -92,7 +99,6 @@ public class GraphTestExecutor extends ASTTestExecutor {
 
     @Override
     public void addFixedFragments(List<ICodeFragment> fragments) {
-        m_fixedFragments.addAll(fragments);
         Set<Long> fixedNodes = fragments.stream()
                 .map(f -> (GraphCodeFragment) f)
                 .map(ACodeFragment::getFragmentNumber)

@@ -31,8 +31,8 @@ return fixed
 ```
 
 The code that the ddmin algorithm tests on will always contain all the fixed fragments, never contain any discarded
-fragments
-and will contain all fragments in free that are dependent on the current configuration (a subset of active).
+fragments and will contain all fragments in free that not dependent on any fragment missing in the current
+configuration (a subset of active).
 
 The set of fixed fragments that is returned at the end of the run, is an MWE.
 
