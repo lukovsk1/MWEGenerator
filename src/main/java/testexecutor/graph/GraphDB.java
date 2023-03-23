@@ -100,7 +100,12 @@ public class GraphDB {
 		} else if (node instanceof SimpleType) {
 			addAttribute(sb, parameters, ATTR_SIMPLE_NAME, ((SimpleType) node).getName().toString());
 		} else if (node instanceof MethodInvocation) {
-			addAttribute(sb, parameters, ATTR_METHOD_NAME, ((MethodInvocation) node).getName().toString());
+			MethodInvocation n = (MethodInvocation) node;
+			addAttribute(sb, parameters, ATTR_METHOD_NAME, n.getName().toString());
+			Expression expr = n.getExpression();
+			if (expr instanceof SimpleName) {
+				addAttribute(sb, parameters, ATTR_SIMPLE_NAME, expr.toString());
+			}
 		} else if (node instanceof ImportDeclaration) {
 			addAttribute(sb, parameters, ATTR_IMPORT_NAME, ((ImportDeclaration) node).getName().toString());
 		} else if (node instanceof PackageDeclaration) {
@@ -235,6 +240,7 @@ public class GraphDB {
 		calculateImportToUnitDependencies();
 		calculateClassToImportDependencies();
 		calculateClassToUnitInPackageDependencies();
+		calculateLocalMethodInvocations();
 	}
 
 	public void calculateInstantiationToDeclarationDependencies() {
@@ -365,5 +371,15 @@ public class GraphDB {
 		Session session = m_driver.session();
 		Result res = session.run(query, params);
 		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " class to unit in package cross tree dependencies.");
+	}
+
+	public void calculateLocalMethodInvocations() {
+		/*
+		MATCH (f:Fragment_20230323_171737 {nodeType:'MethodInvocation'}), (d:Fragment_20230323_171737 {nodeType:'MethodDeclaration'})
+		WHERE f.simpleName IS NULL AND f.className = d.className AND f.methodName = d.methodName
+		RETURN f, d;
+		 */
+
+		// TODO implement and restrict further. Overloaded methods will be added as false dependencies
 	}
 }
