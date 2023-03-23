@@ -11,10 +11,7 @@ import org.neo4j.driver.types.Node;
 import utility.FileUtility;
 import utility.JavaParserUtility;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -166,21 +163,30 @@ public class GraphDB {
 		session.run(query, params);
 	}
 
-	public void discardFragmentNodes(Set<Long> nodeIds) {
+	public Set<Long> discardFragmentNodes(Set<Long> nodeIds) {
 		if (nodeIds.isEmpty()) {
-			return;
+			return Collections.emptySet();
 		}
+		Set<Long> allDiscardedNodeIds = new HashSet<>();
 		Map<String, Object> params = new HashMap<>();
 		params.put("nodeIds", nodeIds);
 		Session session = m_driver.session();
 
 		// delete all dependent fragments
-		String query1 = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + ")<-[" + RELATIONSHIP_LABEL_DEPENDS_ON + "*]-(u) WHERE ID(f) IN $nodeIds DETACH DELETE u";
-		session.run(query1, params).consume();
+		String query1 = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + ")<-[" + RELATIONSHIP_LABEL_DEPENDS_ON + "*]-(u) WHERE ID(f) IN $nodeIds DETACH DELETE u RETURN ID(u)";
+		Result res = session.run(query1, params);
+		allDiscardedNodeIds.addAll(res.stream()
+				.map(rec -> rec.get(0).asLong())
+				.collect(Collectors.toSet()));
 
 		// delete the fragments to discard
-		String query2 = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + ") WHERE ID(f) IN $nodeIds DETACH DELETE f";
-		session.run(query2, params).consume();
+		String query2 = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + ") WHERE ID(f) IN $nodeIds DETACH DELETE f RETURN ID(f)";
+		res = session.run(query2, params);
+		allDiscardedNodeIds.addAll(res.stream()
+				.map(rec -> rec.get(0).asLong())
+				.collect(Collectors.toSet()));
+
+		return allDiscardedNodeIds;
 	}
 
 	public int getNumberOfFragments() {
@@ -206,10 +212,10 @@ public class GraphDB {
 				.collect(Collectors.toSet());
 	}
 
-	public Set<Long> getExcludedNodeIds(Set<Long> selectedActiveNodes) {
+	public Set<Long> getAllExcludedNodeIds(Set<Long> deselectedActiveNodes) {
 		/*
 			MATCH (a:Fragment_20230323_140604:Active), (a)<-[:DEPENDS_ON*]-(f:Fragment_20230323_140604:Free)
-			WHERE NOT ID(a) IN [123]
+			WHERE ID(a) IN [123]
 			RETURN ID(f);
 		 */
 		Map<String, Object> params = new HashMap<>();
@@ -223,10 +229,10 @@ public class GraphDB {
 				LABEL_PREFIX_FRAGMENT +
 				m_nodeIdentifierSuffix +
 				LABEL_FREE +
-				") WHERE NOT ID(a) IN $nodeIds" +
+				") WHERE ID(a) IN $nodeIds" +
 				" RETURN ID(f)";
 
-		params.put("nodeIds", selectedActiveNodes);
+		params.put("nodeIds", deselectedActiveNodes);
 
 		Session session = m_driver.session();
 		Result res = session.run(query, params);
