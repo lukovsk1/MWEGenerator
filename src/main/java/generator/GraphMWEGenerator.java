@@ -40,7 +40,7 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
                 if (fragments.isEmpty()) {
                     break;
                 }
-                logInfo("############## EXECUTING LVL " + m_level + " ##############");
+                logInfo("############## EXECUTING LVL " + m_level + " with " + fragments.size() + " active fragments ##############");
                 List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
                 logInfo("Level " + m_level + " took " + (System.currentTimeMillis() - start) + "ms");
                 printConfigurationInfo(minConfig, fragments);
@@ -51,7 +51,7 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
 
             logInfo("Recreating result in testingoutput folder...");
             executor.recreateCode(Collections.emptyList());
-            logInfo("############## FINISHED ##############");
+            logInfo("############## FINISHED :::: " + executor.getStatistics() + " ##############");
         } finally {
             cleanup();
         }

@@ -37,6 +37,8 @@ public class GraphTestExecutor extends ASTTestExecutor {
     public List<ICodeFragment> extractFragments() {
         super.extractFragments();
         m_graphDB.calculateCrossTreeDependencies();
+
+        // TODO maybe check for cycles in graph
         return Collections.emptyList();
     }
 
@@ -64,7 +66,7 @@ public class GraphTestExecutor extends ASTTestExecutor {
                 .collect(Collectors.toSet());
         Set<Long> excluded = new HashSet<>(m_activeFragments);
         excluded.removeAll(selectedActiveNodes);
-        excluded.addAll(m_graphDB.getExcludedNodeIds(selectedActiveNodes));
+        excluded.addAll(m_graphDB.getAllExcludedNodeIds(excluded));
 
         Map<String, Set<GraphCodeFragment>> fragmentsByFile = m_fragments.entrySet()
                 .stream()
@@ -110,9 +112,10 @@ public class GraphTestExecutor extends ASTTestExecutor {
         Set<Long> nodesToDiscard = fragments.stream()
                 .map(f -> (GraphCodeFragment) f)
                 .map(ACodeFragment::getFragmentNumber)
-                .peek(m_fragments::remove)
                 .collect(Collectors.toSet());
-        m_graphDB.discardFragmentNodes(nodesToDiscard);
+        Set<Long> allDiscardedNodes = m_graphDB.discardFragmentNodes(nodesToDiscard);
+        allDiscardedNodes.forEach(m_fragments::remove);
+        System.out.println("Discarded " + fragments.size() + " active fragments. " + allDiscardedNodes.size() + " fragments, including dependent nodes");
     }
 
     public int getNumberOfFragmentsInDB() {
