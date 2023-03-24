@@ -121,4 +121,12 @@ public class GraphTestExecutor extends ASTTestExecutor {
     public int getNumberOfFragmentsInDB() {
         return m_graphDB.getNumberOfFragments();
     }
+
+    @Override
+    public void changeSourceToOutputFolder() {
+        super.changeSourceToOutputFolder();
+
+        // mark all nodes as free for another run of the algorithm
+        m_graphDB.freeAllFragmentNodes();
+    }
 }

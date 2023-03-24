@@ -163,6 +163,22 @@ public class GraphDB {
 		session.run(query, params);
 	}
 
+	public void freeAllFragmentNodes() {
+		String query = "MATCH (n" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				") SET n " +
+				LABEL_FREE +
+				" REMOVE n" +
+				LABEL_ACTIVE +
+				" REMOVE n" +
+				LABEL_FIXED +
+				";";
+
+		Session session = m_driver.session();
+		session.run(query);
+	}
+
 	public Set<Long> discardFragmentNodes(Set<Long> nodeIds) {
 		if (nodeIds.isEmpty()) {
 			return Collections.emptySet();

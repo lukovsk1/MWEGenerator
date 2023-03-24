@@ -28,30 +28,40 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
             // extract code fragments
             GraphTestExecutor executor = getTestExecutor();
             executor.initialize();
-            long start = System.currentTimeMillis();
+            long extractionStart = System.currentTimeMillis();
             executor.extractFragments();
-            int numberOfFragments = executor.getNumberOfFragmentsInDB();
-            logInfo("Extracted " + numberOfFragments + " fragments to graph database in " + (System.currentTimeMillis() - start) + "ms");
-
-            logInfo("############## RUNNING TEST ##############");
+            final int numberOfFragments = executor.getNumberOfFragmentsInDB();
+            logInfo("Extracted " + numberOfFragments + " fragments to graph database in " + (System.currentTimeMillis() - extractionStart) + "ms");
+            int numberOfFixedFragments = 0;
+            int testNr = 1;
             while (true) {
-                start = System.currentTimeMillis();
-                List<ICodeFragment> fragments = executor.getActiveFragments();
-                if (fragments.isEmpty()) {
+                long runStart = System.currentTimeMillis();
+                logInfo("############## RUNNING TEST NR. " + testNr + " ##############");
+                while (true) {
+                    long levelStart = System.currentTimeMillis();
+                    List<ICodeFragment> fragments = executor.getActiveFragments();
+                    if (fragments.isEmpty()) {
+                        break;
+                    }
+                    logInfo("############## EXECUTING LVL " + m_level + " with " + fragments.size() + " active fragments ##############");
+                    List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
+                    logInfo("Level " + m_level + " took " + (System.currentTimeMillis() - levelStart) + "ms");
+                    printConfigurationInfo(minConfig, fragments);
+                    executor.addFixedFragments(minConfig);
+                    executor.addDiscardedFragments(CollectionsUtility.listMinus(fragments, minConfig));
+                    m_level++;
+                }
+
+                logInfo("Recreating result in testingoutput folder...");
+                executor.recreateCode(Collections.emptyList());
+                int numberOfFragmentsLeft = executor.getNumberOfFragmentsInDB();
+                logInfo("############## FINISHED NR. " + testNr++ + " in " + (System.currentTimeMillis() - runStart) + "ms :::: Reduced to " + numberOfFragmentsLeft + " out of " + numberOfFragments + " :::: " + executor.getStatistics() + " ##############");
+                if (!m_testExecutorOptions.isMultipleRuns() || numberOfFixedFragments == numberOfFragmentsLeft) {
                     break;
                 }
-                logInfo("############## EXECUTING LVL " + m_level + " with " + fragments.size() + " active fragments ##############");
-                List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
-                logInfo("Level " + m_level + " took " + (System.currentTimeMillis() - start) + "ms");
-                printConfigurationInfo(minConfig, fragments);
-                executor.addFixedFragments(minConfig);
-                executor.addDiscardedFragments(CollectionsUtility.listMinus(fragments, minConfig));
-                m_level++;
+                numberOfFixedFragments = numberOfFragmentsLeft;
+                executor.changeSourceToOutputFolder();
             }
-
-            logInfo("Recreating result in testingoutput folder...");
-            executor.recreateCode(Collections.emptyList());
-            logInfo("############## FINISHED :::: " + executor.getStatistics() + " ##############");
         } finally {
             cleanup();
         }
