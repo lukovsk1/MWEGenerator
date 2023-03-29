@@ -31,11 +31,11 @@ public class Main {
 
 		AbstractMWEGenerator generator = null;
 		if (args.length == 0) {
-			generator = new GraphMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
+			generator = new GraphMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS);
 		} else if (args.length == 1) {
 			Class<?> generatorClass = Class.forName(args[0]);
 			Constructor<?> constructor = generatorClass.getConstructor(TestExecutorOptions.class);
-			generator = (AbstractMWEGenerator) constructor.newInstance(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
+			generator = (AbstractMWEGenerator) constructor.newInstance(ExecutorConstants.CALCULATOR_OPTIONS);
 		} else if (args.length >= 6) {
 			Class<?> generatorClass = Class.forName(args[0]);
 			Constructor<?> constructor = generatorClass.getConstructor(TestExecutorOptions.class);
@@ -48,8 +48,8 @@ public class Main {
 					.withLogCompilationErrors(false)
 					.withLogRuntimeErrors(false)
 					.withNumberOfThreads(16)
-					.withPreSliceCode(false)
-					.withLogging(TestExecutorOptions.ELogLevel.INFO);
+					.withLogging(TestExecutorOptions.ELogLevel.INFO)
+					.withMultipleRuns(true);
 
 			generator = (AbstractMWEGenerator) constructor.newInstance(options);
 		} else {

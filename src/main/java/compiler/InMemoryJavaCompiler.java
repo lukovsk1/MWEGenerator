@@ -2,8 +2,6 @@ package compiler;
 
 import org.mdkt.compiler.CompilationException;
 import org.mdkt.compiler.CompiledCode;
-import org.mdkt.compiler.DynamicClassLoader;
-import org.mdkt.compiler.SourceCode;
 
 import javax.tools.*;
 import java.io.Writer;
@@ -65,7 +63,7 @@ public class InMemoryJavaCompiler {
             }
 
             DiagnosticCollector<JavaFileObject> collector = new DiagnosticCollector();
-            fileManager = new compiler.ExtendedStandardJavaFileManager(this.javac.getStandardFileManager((DiagnosticListener) null, (Locale) null, (Charset) null), this.classLoader);
+            fileManager = new ExtendedStandardJavaFileManager(this.javac.getStandardFileManager((DiagnosticListener) null, (Locale) null, (Charset) null), this.classLoader);
             JavaCompiler.CompilationTask task = this.javac.getTask((Writer) null, fileManager, collector, this.options, (Iterable) null, compilationUnits);
             boolean result = task.call();
             if (!result || collector.getDiagnostics().size() > 0) {
@@ -110,6 +108,9 @@ public class InMemoryJavaCompiler {
                 classes.put(className, this.classLoader.loadClass(className));
             }
 
+            // clear sources after successful compilation
+            this.sourceCodes.entrySet().removeIf(e -> !e.getValue().isFixed());
+
             return classes;
         }
     }
@@ -119,7 +120,22 @@ public class InMemoryJavaCompiler {
     }
 
     public InMemoryJavaCompiler addSource(String className, String sourceCode) throws Exception {
-        this.sourceCodes.put(className, new SourceCode(className, sourceCode));
+        return addSource(className, sourceCode, false);
+    }
+
+    public InMemoryJavaCompiler addSource(String className, String sourceCode, boolean fixed) throws Exception {
+        SourceCode sc = new SourceCode(className, sourceCode, fixed);
+        SourceCode saved = this.sourceCodes.get(className);
+        if (saved != null && saved.getContentHash() == sc.getContentHash()) {
+            // file did not change
+            return this;
+        }
+        this.sourceCodes.put(className, sc);
         return this;
+    }
+
+    public void removeInactiveClasses(Collection<String> classesToRemove) {
+        classesToRemove.forEach(className -> this.sourceCodes.remove(className));
+        classLoader.removeFiles(classesToRemove);
     }
 }
