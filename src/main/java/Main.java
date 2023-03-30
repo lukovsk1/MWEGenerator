@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -20,9 +21,11 @@ public class Main {
 		// write both to the console and a log file
 		String dir = System.getProperty("user.dir");
 		DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-		File logFile = new File(dir + "/logs/" + LocalDateTime.now().format(timeStampPattern) + ".log");
+		String formattedDate = LocalDateTime.now().format(timeStampPattern);
+		File logFile = new File(dir + "/logs/_" + formattedDate + ".log");
+		FileOutputStream fos = null;
 		if (logFile.createNewFile()) {
-			FileOutputStream fos = new FileOutputStream(logFile);
+			fos = new FileOutputStream(logFile);
 			TeeOutputStream newOut = new TeeOutputStream(System.out, fos);
 			System.setOut(new PrintStream(newOut, true));
 		} else {
@@ -71,6 +74,12 @@ public class Main {
 			System.out.println("TOTAL OUTPUT SIZE: " + outputSize + " bytes");
 		} catch (Exception e) {
 			e.printStackTrace(System.out);
+		}
+
+		if (fos != null) {
+			fos.close();
+			File finalLogFile = new File(dir + "/logs/" + formattedDate + ".log");
+			Files.move(logFile.toPath(), finalLogFile.toPath());
 		}
 	}
 }

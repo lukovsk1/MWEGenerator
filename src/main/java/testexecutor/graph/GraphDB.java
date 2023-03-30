@@ -23,6 +23,8 @@ public class GraphDB {
 	private static final String LABEL_FREE = ":Free";
 	private static final String LABEL_ACTIVE = ":Active";
 	private final static String RELATIONSHIP_LABEL_DEPENDS_ON = ":DEPENDS_ON";
+
+	private final static String RELATIONSHIP_LABEL_GUARANTEES = ":GUARANTEES";
 	private static final String ATTR_DEPENDENCY_TYPE = "dependencyType";
 
 	private static final String ATTR_FILENAME = "fileName";
@@ -39,6 +41,10 @@ public class GraphDB {
 	private static final String DEPENDENCY_TYPE_IMPORT_TO_UNIT = "IMPORT_TO_UNIT";
 	private static final String DEPENDENCY_TYPE_CLASS_TO_IMPORT = "CLASS_TO_IMPORT";
 	private static final String DEPENDENCY_TYPE_CLASS_TO_UNIT_IN_PACKAGE = "CLASS_TO_UNIT_IN_PACKAGE";
+
+	private static final String GUARANTEE_TYPE_UNIT_TO_PACKAGE = "UNIT_TO_PACKAGE";
+	private static final String GUARANTEE_TYPE_UNIT_TO_TYPE_DEFINITION = "UNIT_TO_TYPE_DEFINITION";
+	private static final String GUARANTEE_TYPE_PACKAGE_INTERNAL = "PACKAGE_INTERNAL";
 
 
 	private static final AtomicInteger parameterNumber = new AtomicInteger();
@@ -147,6 +153,7 @@ public class GraphDB {
 		}
 		Map<String, Object> params = new HashMap<>();
 
+		// fix minimal configuration of active nodes
 		String query = "MATCH (n" +
 				LABEL_PREFIX_FRAGMENT +
 				m_nodeIdentifierSuffix +
@@ -158,9 +165,28 @@ public class GraphDB {
 				LABEL_ACTIVE +
 				";";
 		params.put("nodeIds", nodeIds);
-
 		Session session = m_driver.session();
-		session.run(query, params);
+		Result res = session.run(query, params);
+		int fixedNodes = res.consume().counters().labelsAdded();
+
+		// fix all nodes that are guaranteed by the minimal configuration
+		String query2 = "MATCH (n" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				")-[" +
+				RELATIONSHIP_LABEL_GUARANTEES +
+				"*]->(f" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				LABEL_FREE +
+				") WHERE ID(n) IN $nodeIds" +
+				" SET f " +
+				LABEL_FIXED +
+				" REMOVE f" +
+				LABEL_FREE +
+				";";
+		Result res2 = session.run(query2, params);
+		System.out.println("Fixed " + fixedNodes + " active nodes and " + res2.consume().counters().labelsAdded() + " free nodes guaranteed by them.");
 	}
 
 	public void freeAllFragmentNodes() {
@@ -183,7 +209,6 @@ public class GraphDB {
 		if (nodeIds.isEmpty()) {
 			return Collections.emptySet();
 		}
-		Set<Long> allDiscardedNodeIds = new HashSet<>();
 		Map<String, Object> params = new HashMap<>();
 		params.put("nodeIds", nodeIds);
 		Session session = m_driver.session();
@@ -191,9 +216,8 @@ public class GraphDB {
 		// delete all dependent fragments
 		String query1 = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + ")<-[" + RELATIONSHIP_LABEL_DEPENDS_ON + "*]-(u) WHERE ID(f) IN $nodeIds DETACH DELETE u RETURN ID(u)";
 		Result res = session.run(query1, params);
-		allDiscardedNodeIds.addAll(res.stream()
-				.map(rec -> rec.get(0).asLong())
-				.collect(Collectors.toSet()));
+		Set<Long> allDiscardedNodeIds = res.stream()
+				.map(rec -> rec.get(0).asLong()).collect(Collectors.toSet());
 
 		// delete the fragments to discard
 		String query2 = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + ") WHERE ID(f) IN $nodeIds DETACH DELETE f RETURN ID(f)";
@@ -229,7 +253,7 @@ public class GraphDB {
 	}
 
 	public Set<Long> getAllExcludedNodeIds(Set<Long> deselectedActiveNodes) {
-		/*
+        /*
 			MATCH (a:Fragment_20230323_140604:Active), (a)<-[:DEPENDS_ON*]-(f:Fragment_20230323_140604:Free)
 			WHERE ID(a) IN [123]
 			RETURN ID(f);
@@ -257,15 +281,54 @@ public class GraphDB {
 				.collect(Collectors.toSet());
 	}
 
-	public void calculateCrossTreeDependencies() {
-		calculateInstantiationToDeclarationDependencies();
-		calculateImportToUnitDependencies();
-		calculateClassToImportDependencies();
-		calculateClassToUnitInPackageDependencies();
-		calculateLocalMethodInvocations();
+	public Set<Long> deleteUnneccessaryFragments() {
+		return deleteJavadocFragments();
 	}
 
-	public void calculateInstantiationToDeclarationDependencies() {
+	private Set<Long> deleteJavadocFragments() {
+        /*
+        MATCH (f:Fragment_20230330_114817 {nodeType:'Javadoc'})
+        DETACH DELETE f;
+         */
+		Map<String, Object> params = new HashMap<>();
+		String query = "MATCH (f" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				"{" +
+				ATTR_NODE_TYPE +
+				":$javadoc})" +
+				" DETACH DELETE f" +
+				" RETURN ID(f);";
+
+		params.put("javadoc", Javadoc.class.getSimpleName());
+		Session session = m_driver.session();
+		Result res = session.run(query, params);
+		Set<Long> deletedNodeIds = res.stream()
+				.map(rec -> rec.get(0).asLong())
+				.collect(Collectors.toSet());
+		System.out.println("Removed " + deletedNodeIds.size() + " javadoc fragments.");
+		return deletedNodeIds;
+	}
+
+	public void calculateCrossTreeDependencies() {
+		// calculate cross tree dependencies depending on node types
+		addInstantiationToDeclarationDependencies();
+		addImportToUnitDependencies();
+		addClassToImportDependencies();
+		addClassToUnitInPackageDependencies();
+		addLocalMethodInvocationsDependencies();
+	}
+
+	public void calculateGuarantees() {
+		// calculate required children
+		// i.e. a compilation unit is dependent on its package declaration and vice versa
+		// to prevent circular dependencies with the :DEPENDS_ON relation we use another edge label :GUARANTEES
+		addUnitToPackageGuarantee();
+		addInternalPackageGuarantee();
+		addUnitToTypeDefinitionGuarantee();
+	}
+
+	private void addInstantiationToDeclarationDependencies() {
 		Map<String, Object> params = new HashMap<>();
 		String query = "MATCH (t" +
 				LABEL_PREFIX_FRAGMENT +
@@ -295,7 +358,7 @@ public class GraphDB {
 		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " instantiation to declaration cross tree dependencies.");
 	}
 
-	public void calculateImportToUnitDependencies() {
+	private void addImportToUnitDependencies() {
 		Map<String, Object> params = new HashMap<>();
 		String query = "MATCH (i" +
 				LABEL_PREFIX_FRAGMENT +
@@ -325,7 +388,12 @@ public class GraphDB {
 		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " import to unit cross tree dependencies.");
 	}
 
-	public void calculateClassToImportDependencies() {
+	private void addClassToImportDependencies() {
+        /*
+         MATCH (s:Fragment_20230323_090434 {nodeType:'SimpleType'}), (i:Fragment_20230323_090434 {nodeType:'ImportDeclaration'})
+         WHERE LAST(SPLIT(i.importName, '.')) = s.simpleName
+         CREATE (s)-[:DEPENDS_ON]->(i);
+         */
 		Map<String, Object> params = new HashMap<>();
 		String query = "MATCH (i" +
 				LABEL_PREFIX_FRAGMENT +
@@ -355,7 +423,7 @@ public class GraphDB {
 		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " class to import cross tree dependencies.");
 	}
 
-	public void calculateClassToUnitInPackageDependencies() {
+	private void addClassToUnitInPackageDependencies() {
 		Map<String, Object> params = new HashMap<>();
 		String query = "MATCH (s" +
 				LABEL_PREFIX_FRAGMENT +
@@ -395,13 +463,125 @@ public class GraphDB {
 		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " class to unit in package cross tree dependencies.");
 	}
 
-	public void calculateLocalMethodInvocations() {
-		/*
-		MATCH (f:Fragment_20230323_171737 {nodeType:'MethodInvocation'}), (d:Fragment_20230323_171737 {nodeType:'MethodDeclaration'})
-		WHERE f.simpleName IS NULL AND f.className = d.className AND f.methodName = d.methodName
-		RETURN f, d;
-		 */
+	private void addLocalMethodInvocationsDependencies() {
+        /*
+        MATCH (f:Fragment_20230323_171737 {nodeType:'MethodInvocation'}), (d:Fragment_20230323_171737 {nodeType:'MethodDeclaration'})
+        WHERE f.simpleName IS NULL AND f.className = d.className AND f.methodName = d.methodName
+        RETURN f, d;
+         */
 
 		// TODO implement and restrict further. Overloaded methods will be added as false dependencies
+	}
+
+	private void addUnitToPackageGuarantee() {
+        /*
+        MATCH (c:Fragment_20230330_092703 {nodeType:'CompilationUnit'})<-[:DEPENDS_ON {dependencyType:'AST_TREE'}]-(p:Fragment_20230330_092703 {nodeType:'PackageDeclaration'})
+        CREATE (c)-[:GUARANTEES]->(p);
+         */
+		Map<String, Object> params = new HashMap<>();
+		String query = "MATCH (c" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				"{" +
+				ATTR_NODE_TYPE +
+				":$compilationUnit})<-[" +
+				RELATIONSHIP_LABEL_DEPENDS_ON +
+				" {" +
+				ATTR_DEPENDENCY_TYPE +
+				":'" +
+				DEPENDENCY_TYPE_AST_TREE +
+				"'}]-(p" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				"{" +
+				ATTR_NODE_TYPE +
+				":$packageDeclaration}) " +
+				" CREATE (c)-[" +
+				RELATIONSHIP_LABEL_GUARANTEES +
+				"{" +
+				ATTR_DEPENDENCY_TYPE +
+				":$dependenceType}]->(p);";
+
+		params.put("compilationUnit", CompilationUnit.class.getSimpleName());
+		params.put("packageDeclaration", PackageDeclaration.class.getSimpleName());
+		params.put("dependenceType", GUARANTEE_TYPE_UNIT_TO_PACKAGE);
+		Session session = m_driver.session();
+		Result res = session.run(query, params);
+		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " unit to package declaration guarantees.");
+	}
+
+	private void addInternalPackageGuarantee() {
+        /*
+        MATCH (p:Fragment_20230330_092703 {nodeType:'PackageDeclaration'})<-[:DEPENDS_ON* {dependencyType:'AST_TREE'}]-(s:Fragment_20230330_092703)
+        CREATE (p)-[:GUARANTEES]->(s)
+         */
+		Map<String, Object> params = new HashMap<>();
+		String query = "MATCH (p" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				"{" +
+				ATTR_NODE_TYPE +
+				":$packageDeclaration})<-[" +
+				RELATIONSHIP_LABEL_DEPENDS_ON +
+				"* {" +
+				ATTR_DEPENDENCY_TYPE +
+				":'" +
+				DEPENDENCY_TYPE_AST_TREE +
+				"'}]-(s" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				") CREATE (p)-[" +
+				RELATIONSHIP_LABEL_GUARANTEES +
+				"{" +
+				ATTR_DEPENDENCY_TYPE +
+				":$dependenceType}]->(s);";
+
+		params.put("packageDeclaration", PackageDeclaration.class.getSimpleName());
+		params.put("dependenceType", GUARANTEE_TYPE_PACKAGE_INTERNAL);
+		Session session = m_driver.session();
+		Result res = session.run(query, params);
+		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " internal package declaration guarantees.");
+	}
+
+	private void addUnitToTypeDefinitionGuarantee() {
+        /*
+        MATCH (c:Fragment_20230330_092703 {nodeType:'CompilationUnit'})<-[:DEPENDS_ON {dependencyType:'AST_TREE'}]-(p:Fragment_20230330_092703 {nodeType:'TypeDeclaration'})
+        WHERE LAST(SPLIT(c.className, '.')) = p.simpleName
+        CREATE (c)-[:GUARANTEES]->(p);
+         */
+		Map<String, Object> params = new HashMap<>();
+		String query = "MATCH (c" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				"{" +
+				ATTR_NODE_TYPE +
+				":$compilationUnit})<-[" +
+				RELATIONSHIP_LABEL_DEPENDS_ON +
+				" {" +
+				ATTR_DEPENDENCY_TYPE +
+				":'" +
+				DEPENDENCY_TYPE_AST_TREE +
+				"'}]-(p" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				"{" +
+				ATTR_NODE_TYPE +
+				":$typeDeclaration})" +
+				" WHERE LAST(SPLIT(c." +
+				ATTR_CLASS_NAME +
+				", '.')) = p." +
+				ATTR_SIMPLE_NAME +
+				" CREATE (c)-[" +
+				RELATIONSHIP_LABEL_GUARANTEES +
+				"{" +
+				ATTR_DEPENDENCY_TYPE +
+				":$dependenceType}]->(p);";
+
+		params.put("compilationUnit", CompilationUnit.class.getSimpleName());
+		params.put("typeDeclaration", TypeDeclaration.class.getSimpleName());
+		params.put("dependenceType", GUARANTEE_TYPE_UNIT_TO_TYPE_DEFINITION);
+		Session session = m_driver.session();
+		Result res = session.run(query, params);
+		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " unit to type definition guarantees.");
 	}
 }

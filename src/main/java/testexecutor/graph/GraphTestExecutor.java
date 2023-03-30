@@ -36,7 +36,10 @@ public class GraphTestExecutor extends ASTTestExecutor {
     @Override
     public List<ICodeFragment> extractFragments() {
         super.extractFragments();
+        Set<Long> removedFragments = m_graphDB.deleteUnneccessaryFragments();
+        m_fragments.entrySet().removeIf(e -> removedFragments.contains(e.getKey()));
         m_graphDB.calculateCrossTreeDependencies();
+        m_graphDB.calculateGuarantees();
 
         // TODO maybe check for cycles in graph
         return Collections.emptyList();
@@ -128,5 +131,6 @@ public class GraphTestExecutor extends ASTTestExecutor {
 
         // mark all nodes as free for another run of the algorithm
         m_graphDB.freeAllFragmentNodes();
+        m_activeFragments.clear();
     }
 }

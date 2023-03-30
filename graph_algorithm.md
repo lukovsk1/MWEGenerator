@@ -30,6 +30,8 @@ while free != {}
 return fixed
 ```
 
+TODO: document function of guaranteed nodes
+
 The code that the ddmin algorithm tests on will always contain all the fixed fragments, never contain any discarded
 fragments and will contain all fragments in free that not dependent on any fragment missing in the current
 configuration (a subset of active).
@@ -40,6 +42,16 @@ The set of fixed fragments that is returned at the end of the run, is an MWE.
 
 As a graph database, we use [Neo4j](https://neo4j.com/) and its [driver](https://github.com/neo4j/neo4j-java-driver)  
 Version 4.4 is the last one that supports Java 8.
+
+Running neo4j as a [Windows service](https://neo4j.com/docs/operations-manual/4.4/installation/windows/) seems to be
+much more performant than using the docker image.
+To disable authentication for the graph database, add the following line to `neo4j.conf`:
+
+```
+dbms.security.auth_enabled=false
+```
+
+Alternatively, if you want to use docker:
 
 ```
 sudo docker run --publish=7474:7474 --publish=7687:7687 --env=NEO4J_AUTH=none neo4j:4.4
