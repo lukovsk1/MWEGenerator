@@ -5,7 +5,6 @@ import fragment.ICodeFragment;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.mdkt.compiler.CompilationException;
-import utility.CollectionsUtility;
 import utility.FileUtility;
 import utility.SlicerUtility;
 
@@ -20,7 +19,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,10 +31,6 @@ public abstract class ATestExecutor implements ITestExecutor {
 	protected final AtomicInteger m_runtimeErrors = new AtomicInteger();
 	protected final AtomicInteger m_failedRuns = new AtomicInteger();
 	protected final AtomicInteger m_okRuns = new AtomicInteger();
-
-	protected ThreadLocal<InMemoryJavaCompiler> m_compiler = new ThreadLocal<>();
-	protected ThreadLocal<AtomicBoolean> m_firstRun = ThreadLocal.withInitial(() -> new AtomicBoolean(true));
-	protected ThreadLocal<Set<String>> m_allSourceClassNames = ThreadLocal.withInitial(HashSet::new);
 
 	protected ATestExecutor(TestExecutorOptions options) {
 		m_options = options;
@@ -186,37 +180,27 @@ public abstract class ATestExecutor implements ITestExecutor {
 	}
 
 	protected ETestResult testInMemory(List<ICodeFragment> fragments) {
-		InMemoryJavaCompiler compiler = m_compiler.get();
-		if (compiler == null) {
-			compiler = InMemoryJavaCompiler
-					.newInstance()
-					.ignoreWarnings();
-			m_compiler.set(compiler);
-		}
+		InMemoryJavaCompiler compiler = InMemoryJavaCompiler
+				.newInstance()
+				.ignoreWarnings();
+		String[] unitTestName = getOptions().getUnitTestMethod().split("#");
+
 		try {
-			if (m_firstRun.get().compareAndSet(true, false)) {
-				Path unitTestFolder = FileSystems.getDefault().getPath(getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath());
-				FileUtility.addJavaFilesToCompiler(compiler, unitTestFolder);
-			}
-			Set<String> activeClassNames = new HashSet<>();
+			Path unitTestFolder = FileSystems.getDefault().getPath(getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath());
+			FileUtility.addJavaFilesToCompiler(compiler, unitTestFolder);
 			for (Map.Entry<String, String> file : mapFragmentsToFiles(fragments).entrySet()) {
-				String className = FileUtility.fileNameToClassName(file.getKey());
-				activeClassNames.add(className);
-				m_allSourceClassNames.get().add(className);
-				compiler.addSource(className, file.getValue());
+				compiler.addSource(FileUtility.fileNameToClassName(file.getKey()), file.getValue());
 			}
-			compiler.removeInactiveClasses(CollectionsUtility.listMinus(m_allSourceClassNames.get(), activeClassNames));
 		} catch (Exception e) {
 			throw new TestingException("Error while adding files", e);
 		}
-
 		Map<String, Class<?>> classes;
 
 		try {
 			m_compilerCalls.incrementAndGet();
 			classes = compiler.compileAll();
 		} catch (CompilationException e) {
-			if (m_options.isLogCompilationErrors()) {
+			if(m_options.isLogCompilationErrors()) {
 				System.out.println("############ Compilation error: ############ \n" + e);
 			}
 			m_compilationErrors.incrementAndGet();
@@ -227,7 +211,6 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 
 		// execute unit test
-		String[] unitTestName = getOptions().getUnitTestMethod().split("#");
 		Class<?> unitTestClass = classes.get(unitTestName[0]);
 		try {
 			Object unitTest = instantiateUnitTest(unitTestClass);

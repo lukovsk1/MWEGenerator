@@ -1,9 +1,9 @@
 package compiler;
 
 import org.mdkt.compiler.CompiledCode;
+import org.mdkt.compiler.DynamicClassLoader;
 
 import javax.tools.FileObject;
-import javax.tools.ForwardingJavaFileManager;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import java.io.File;
@@ -15,15 +15,14 @@ import java.util.List;
 /**
  * Adapted from {@link org.mdkt.compiler.ExtendedStandardJavaFileManager}.
  * Expose constructor.
- * Use own class loader
  */
-public class ExtendedStandardJavaFileManager extends ForwardingJavaFileManager<JavaFileManager> {
+public class ExtendedStandardJavaFileManager extends org.mdkt.compiler.ExtendedStandardJavaFileManager {
 
     private List<CompiledCode> compiledCode = new ArrayList<>();
     private DynamicClassLoader cl;
 
     protected ExtendedStandardJavaFileManager(JavaFileManager fileManager, DynamicClassLoader cl) {
-        super(fileManager);
+        super(fileManager, cl);
         this.cl = cl;
     }
 
@@ -51,9 +50,5 @@ public class ExtendedStandardJavaFileManager extends ForwardingJavaFileManager<J
                 throw new RuntimeException("Unable to create new file for compiled code");
             }
         }
-    }
-
-    public ClassLoader getClassLoader(JavaFileManager.Location location) {
-        return this.cl;
     }
 }

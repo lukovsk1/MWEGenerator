@@ -128,6 +128,5 @@ public class GraphTestExecutor extends ASTTestExecutor {
 
         // mark all nodes as free for another run of the algorithm
         m_graphDB.freeAllFragmentNodes();
-        m_activeFragments.clear();
     }
 }
