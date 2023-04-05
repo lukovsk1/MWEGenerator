@@ -4,7 +4,7 @@ Implementation of the DDmin algorithm to create a minimal working example (MWE) 
 
 ## Working with defects4j
 
-It is possible to run the algorithm on problems extracted from `defects4j`.
+It is possible to run the algorithm on problems extracted from [defects4j](https://github.com/rjust/defects4j).
 Installing the `defects4j` CLI works best using a linux based system in WSL.
 Using the `defects4j` CLI, a project with a reproducible bug can be downloaded to a local folder to run the MWE
 Generator on it.

@@ -75,6 +75,36 @@
             <artifactId>easymock</artifactId>
             <version>3.1</version>
         </dependency>
+        <!-- TODO: this is a dependency of defects4j/chart. Dependencies of tested projects should be added dynamically to the classpath -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <version>1.0.21</version>
+        </dependency>
+        <!-- TODO: this is a dependency of defects4j/chart. Dependencies of tested projects should be added dynamically to the classpath -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.3</version>
+        </dependency>
+        <!-- TODO: this is a dependency of defects4j/jxpath. Dependencies of tested projects should be added dynamically to the classpath -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- TODO: this is a dependency of defects4j/jxpath. Dependencies of tested projects should be added dynamically to the classpath -->
+        <dependency>
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!-- TODO: this is a dependency of defects4j/time. Dependencies of tested projects should be added dynamically to the classpath -->
+        <dependency>
+            <groupId>org.joda</groupId>
+            <artifactId>joda-convert</artifactId>
+            <version>1.2</version>
+        </dependency>
     </dependencies>
 
     <properties>

@@ -1,8 +1,8 @@
 package testexecutor.codeline;
 
-import org.apache.commons.io.FilenameUtils;
 import fragment.CodeLineFragment;
 import fragment.ICodeFragment;
+import org.apache.commons.io.FilenameUtils;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
 import testexecutor.TestExecutorOptions;
@@ -35,10 +35,11 @@ public class CodeLineTestExecutor extends ATestExecutor {
 		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
 		try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
 			filePaths = stream
-				.filter(file -> Files.isRegularFile(file)
-					&& "java".equals(FilenameUtils.getExtension(file.toString()))
-					&& !file.toString().startsWith(unitTestFolderPath))
-				.collect(Collectors.toList());
+					.filter(file -> Files.isRegularFile(file)
+							&& isExcludedFile(file)
+							&& "java".equals(FilenameUtils.getExtension(file.toString()))
+							&& !file.toString().startsWith(unitTestFolderPath))
+					.collect(Collectors.toList());
 
 		} catch (IOException e) {
 			throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);

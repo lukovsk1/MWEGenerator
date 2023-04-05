@@ -215,7 +215,13 @@ public abstract class ATestExecutor implements ITestExecutor {
 		try {
 			Object unitTest = instantiateUnitTest(unitTestClass);
 
-			Method testingMethod = unitTestClass.getDeclaredMethod(unitTestName[1]);
+			Method testingMethod;
+			try {
+				testingMethod = unitTestClass.getDeclaredMethod(unitTestName[1]);
+			} catch (NoSuchMethodException e) {
+				// method might be declared on a parent class
+				testingMethod = unitTestClass.getMethod(unitTestName[1]);
+			}
 			testingMethod.setAccessible(true);
 
 			try {
@@ -351,5 +357,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 	public String getStatistics() {
 		return String.format("Compiler calls: %d, compilation errors: %d, runtime errors: %d, failed runs: %d, ok runs: %d",
 				m_compilerCalls.get(), m_compilationErrors.get(), m_runtimeErrors.get(), m_failedRuns.get(), m_okRuns.get());
+	}
+
+	protected boolean isExcludedFile(Path path) {
+		return path == null || path.endsWith("package-info.java");
 	}
 }

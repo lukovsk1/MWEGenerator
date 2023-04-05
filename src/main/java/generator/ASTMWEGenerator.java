@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class ASTMWEGenerator extends AbstractMWEGenerator {
@@ -65,7 +66,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	@Override
 	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeFragment> configuration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
 		ITestExecutor.ETestResult result = executor.test(configuration);
-		log(":::: " + result + " :::: level: " + m_level + " / " + m_maxLevel + " :::: size: " + configuration.size() + " / " + totalFragments + " :::: " + configuration.stream().map(fr -> String.valueOf(fr.getFragmentNumber())).collect(Collectors.joining(", ")), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
+		log(":::: " + result + " :::: level: " + m_level + " / " + m_maxLevel + " :::: size: " + configuration.size() + " / " + totalFragments + " :::: " + executor.getStatistics(), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
 		return result;
 	}
 
@@ -78,6 +79,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	}
 
 	private void analyzeTree(List<ICodeFragment> tree) {
+		AtomicLong numberOfFragments = new AtomicLong();
 		m_maxLevel = tree.stream()
 				.map(fr -> ((ASTCodeFragment) fr))
 				.flatMap(fr -> CollectionsUtility.getChildrenInDeep(fr).stream())
@@ -86,9 +88,11 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 				.stream()
 				.sorted(Map.Entry.comparingByKey())
 				.peek(e -> System.out.println("Level: " + e.getKey() + " :::: fragments: " + e.getValue()))
+				.peek(e -> numberOfFragments.addAndGet(e.getValue()))
 				.mapToInt(Map.Entry::getKey)
 				.max()
 				.orElse(0);
+		System.out.println("Total :::: fragments: " + numberOfFragments.get());
 	}
 
 	@Override

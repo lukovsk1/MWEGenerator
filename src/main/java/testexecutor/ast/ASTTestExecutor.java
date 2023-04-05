@@ -43,7 +43,9 @@ public class ASTTestExecutor extends ATestExecutor {
 		File sourceFolder = getSourceFolder(getTestSourcePath(), getOptions().getSourceFolderPath());
 		List<Path> filePaths;
 		try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
-			filePaths = stream.filter(Files::isRegularFile).collect(Collectors.toList());
+			filePaths = stream
+					.filter(f -> Files.isRegularFile(f) && !isExcludedFile(f))
+					.collect(Collectors.toList());
 
 		} catch (IOException e) {
 			throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);
@@ -55,7 +57,7 @@ public class ASTTestExecutor extends ATestExecutor {
 		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
 		for (Path filePath : filePaths) {
 			if(!"java".equals(FilenameUtils.getExtension(filePath.toString()))
-			 || filePath.toString().startsWith(unitTestFolderPath) ) {
+					|| filePath.toString().startsWith(unitTestFolderPath) ) {
 				// skip non-java and unit test files
 				continue;
 			}
