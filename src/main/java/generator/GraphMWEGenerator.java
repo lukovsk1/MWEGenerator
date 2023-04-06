@@ -49,6 +49,7 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
                     printConfigurationInfo(minConfig, fragments);
                     executor.addFixedFragments(minConfig);
                     executor.addDiscardedFragments(CollectionsUtility.listMinus(fragments, minConfig));
+                    logInfo("############## After level " + m_level + " there are " + executor.getNumberOfFragmentsInDB() + " / " + numberOfFragments + " fragments left :::: " + executor.getStatistics());
                     m_level++;
                 }
 

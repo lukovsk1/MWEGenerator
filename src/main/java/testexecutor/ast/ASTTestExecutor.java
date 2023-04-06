@@ -207,6 +207,10 @@ public class ASTTestExecutor extends ATestExecutor {
 		m_fixedFragments.addAll(minConfig);
 	}
 
+	public Set<ICodeFragment> getFixedFragments() {
+		return m_fixedFragments;
+	}
+
 	@Override
 	public void recreateCode(List<ICodeFragment> fragments) {
 		m_isRecreating = true;

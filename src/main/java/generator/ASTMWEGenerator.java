@@ -19,6 +19,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 	private int m_level = 0;
 	private int m_maxLevel = 0;
+	private long m_initialNumberOfFragments = 0;
 
 	public ASTMWEGenerator(TestExecutorOptions options) {
 		super(options);
@@ -35,6 +36,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 			analyzeTree(fullTree);
 
 			logInfo("############## RUNNING TEST ##############");
+			long runStart = System.currentTimeMillis();
 			m_level = 0;
 			while (true) {
 				long start = System.currentTimeMillis();
@@ -46,18 +48,21 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 					break;
 				}
 				executor.addFixedFragments(minConfig);
+				AtomicLong numberOfFragments = new AtomicLong();
 				fragments = minConfig.stream()
 						.map(fr -> (IHierarchicalCodeFragment) fr)
 						.map(IHierarchicalCodeFragment::getChildren)
 						.flatMap(Collection::stream)
+						.peek(fr -> numberOfFragments.addAndGet(CollectionsUtility.getChildrenInDeep(fr).size()))
 						.map(fr -> (ICodeFragment) fr)
 						.collect(Collectors.toList());
+				logInfo("############## After level " + m_level + " there are " + (executor.getFixedFragments().size() + numberOfFragments.get()) + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
 				m_level++;
 			}
 
 			logInfo("Recreating result in testingoutput folder...");
 			executor.recreateCode(fragments);
-			logInfo("############## FINISHED ##############");
+			logInfo("############## FINISHED in " + (System.currentTimeMillis() - runStart) + "ms :::: Reduced to " + executor.getFixedFragments().size() + " out of " + m_initialNumberOfFragments + " :::: " + executor.getStatistics() + " ##############");
 		} finally {
 			cleanup();
 		}
@@ -92,7 +97,8 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 				.mapToInt(Map.Entry::getKey)
 				.max()
 				.orElse(0);
-		System.out.println("Total :::: fragments: " + numberOfFragments.get());
+		m_initialNumberOfFragments = numberOfFragments.get();
+		System.out.println("Total :::: fragments: " + m_initialNumberOfFragments);
 	}
 
 	@Override
