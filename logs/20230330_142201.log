@@ -1,0 +1,132 @@
+Using executor GraphTestExecutor with executor options:
+{
+	m_modulePath='C:\Users\lubo9\Desktop\Workspace\ddminj\CalculatorExample',
+	m_sourceFolderPath='src',
+	m_unitTestFolderPath='test',
+	m_unitTestMethod='calculator.CalculatorTest#testCalculator',
+	m_expectedResult='org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <calculator.DividedByZeroException> but was: <java.lang.ArithmeticException>',
+	m_compilationType=IN_MEMORY,
+	m_logLevel=INFO,
+	m_logCompilationErrors=false,
+	m_logRuntimeErrors=false,
+	m_multipleRuns=true,
+	m_numberOfThreads=10,
+	m_preSliceCode=false,
+}
+Manually query the graph in the neo4j browser: http://localhost:7474/browser/
+Example Query: "MATCH (f:Fragment_20230330_142201) RETURN *;"
+Removed 0 javadoc fragments.
+Added 1 instantiation to declaration cross tree dependencies.
+Added 0 import to unit cross tree dependencies.
+Added 0 class to import cross tree dependencies.
+Added 1 class to unit in package cross tree dependencies.
+Added 2 unit to package declaration guarantees.
+Added 2 internal package declaration guarantees.
+Added 2 unit to type definition guarantees.
+Extracted 86 fragments to graph database in 2595ms
+############## RUNNING TEST NR. 1 ##############
+############## EXECUTING LVL 0 with 2 active fragments ##############
+:::: FAILED :::: level: 0 :::: size: 2 / 2 :::: Compiler calls: 2, compilation errors: 1, runtime errors: 0, failed runs: 1, ok runs: 0
+Level 0 took 42531ms
+11
+Fixed 2 active nodes and 6 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 1 with 14 active fragments ##############
+:::: FAILED :::: level: 1 :::: size: 12 / 14 :::: Compiler calls: 18, compilation errors: 15, runtime errors: 0, failed runs: 2, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 13 / 14 :::: Compiler calls: 25, compilation errors: 19, runtime errors: 0, failed runs: 3, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 11 / 14 :::: Compiler calls: 25, compilation errors: 21, runtime errors: 0, failed runs: 4, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 10 / 14 :::: Compiler calls: 42, compilation errors: 32, runtime errors: 0, failed runs: 5, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 9 / 14 :::: Compiler calls: 52, compilation errors: 39, runtime errors: 0, failed runs: 6, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 10 / 14 :::: Compiler calls: 56, compilation errors: 41, runtime errors: 0, failed runs: 7, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 9 / 14 :::: Compiler calls: 58, compilation errors: 42, runtime errors: 0, failed runs: 8, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 10 / 14 :::: Compiler calls: 58, compilation errors: 43, runtime errors: 0, failed runs: 9, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 10 / 14 :::: Compiler calls: 61, compilation errors: 45, runtime errors: 0, failed runs: 10, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 9 / 14 :::: Compiler calls: 61, compilation errors: 46, runtime errors: 0, failed runs: 11, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 8 / 14 :::: Compiler calls: 61, compilation errors: 48, runtime errors: 0, failed runs: 12, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 8 / 14 :::: Compiler calls: 61, compilation errors: 48, runtime errors: 0, failed runs: 13, ok runs: 0
+:::: FAILED :::: level: 1 :::: size: 7 / 14 :::: Compiler calls: 69, compilation errors: 55, runtime errors: 0, failed runs: 14, ok runs: 0
+Level 1 took 1145ms
+10100100010111
+Fixed 7 active nodes and 0 free nodes guaranteed by them.
+Discarded 7 active fragments. 36 fragments, including dependent nodes
+############## EXECUTING LVL 2 with 18 active fragments ##############
+:::: FAILED :::: level: 2 :::: size: 17 / 18 :::: Compiler calls: 106, compilation errors: 90, runtime errors: 0, failed runs: 15, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 17 / 18 :::: Compiler calls: 121, compilation errors: 103, runtime errors: 0, failed runs: 16, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 16 / 18 :::: Compiler calls: 121, compilation errors: 104, runtime errors: 0, failed runs: 17, ok runs: 0
+Level 2 took 201ms
+111111011011111111
+Fixed 16 active nodes and 0 free nodes guaranteed by them.
+Discarded 2 active fragments. 2 fragments, including dependent nodes
+############## EXECUTING LVL 3 with 2 active fragments ##############
+Level 3 took 99ms
+11
+Fixed 2 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 4 with 4 active fragments ##############
+Level 4 took 17ms
+1111
+Fixed 4 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 5 with 6 active fragments ##############
+Level 5 took 81ms
+111111
+Fixed 6 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 6 with 2 active fragments ##############
+Level 6 took 8ms
+11
+Fixed 2 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 7 with 3 active fragments ##############
+Level 7 took 14ms
+111
+Fixed 3 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+Recreating result in testingoutput folder...
+############## FINISHED NR. 1 in 44223ms :::: Reduced to 48 out of 86 :::: Compiler calls: 178, compilation errors: 161, runtime errors: 0, failed runs: 17, ok runs: 0 ##############
+############## RUNNING TEST NR. 2 ##############
+############## EXECUTING LVL 8 with 2 active fragments ##############
+Level 8 took 57ms
+11
+Fixed 2 active nodes and 6 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 9 with 7 active fragments ##############
+Level 9 took 88ms
+1111111
+Fixed 7 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 10 with 16 active fragments ##############
+Level 10 took 43ms
+1111111111111111
+Fixed 16 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 11 with 2 active fragments ##############
+Level 11 took 45ms
+11
+Fixed 2 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 12 with 4 active fragments ##############
+Level 12 took 12ms
+1111
+Fixed 4 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 13 with 6 active fragments ##############
+Level 13 took 54ms
+111111
+Fixed 6 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 14 with 2 active fragments ##############
+Level 14 took 6ms
+11
+Fixed 2 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## EXECUTING LVL 15 with 3 active fragments ##############
+Level 15 took 10ms
+111
+Fixed 3 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+Recreating result in testingoutput folder...
+############## FINISHED NR. 2 in 365ms :::: Reduced to 48 out of 86 :::: Compiler calls: 250, compilation errors: 233, runtime errors: 0, failed runs: 17, ok runs: 0 ##############
+
+TOTAL EXECUTION TIME: 47721 ms.
+TOTAL OUTPUT SIZE: 2467 bytes
