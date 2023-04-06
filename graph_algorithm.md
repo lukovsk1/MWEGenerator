@@ -30,8 +30,6 @@ while free != {}
 return fixed
 ```
 
-TODO: document function of guaranteed nodes
-
 The code that the ddmin algorithm tests on will always contain all the fixed fragments, never contain any discarded
 fragments and will contain all fragments in free that not dependent on any fragment missing in the current
 configuration (a subset of active).
