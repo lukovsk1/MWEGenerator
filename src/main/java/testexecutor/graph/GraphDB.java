@@ -236,12 +236,14 @@ public class GraphDB {
 		return res.single().get(0).asInt();
 	}
 
-	public Set<Long> calculateActiveFragments() {
+	public Set<Long> calculateActiveFragments(int limit) {
 		String query = "MATCH (n" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + LABEL_FREE
 				+ ") WHERE NOT EXISTS {MATCH (n)-[" + RELATIONSHIP_LABEL_DEPENDS_ON + "]->(" + LABEL_FREE
-				+ ")} SET n" + LABEL_ACTIVE + " REMOVE n" + LABEL_FREE + " RETURN n;";
+				+ ")} SET n" + LABEL_ACTIVE + " REMOVE n" + LABEL_FREE + " RETURN n";
 
-		// TODO: check if a limit makes sense. The ddmin algorithm might perform much better on bounded sets.
+		if (limit > 0) {
+			query += " LIMIT " + limit;
+		}
 
 		Session session = m_driver.session();
 		Result res = session.run(query);

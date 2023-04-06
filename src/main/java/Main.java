@@ -54,6 +54,10 @@ public class Main {
 					.withPreSliceCode(false)
 					.withLogging(TestExecutorOptions.ELogLevel.INFO);
 
+			if (args.length >= 7) {
+				options.withGraphAlgorithmFragmentLimit(Integer.parseInt(args[6]));
+			}
+
 			generator = (AbstractMWEGenerator) constructor.newInstance(options);
 		} else {
 			System.out.println("ERROR: Invalid number of arguments");

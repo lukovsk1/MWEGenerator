@@ -95,7 +95,7 @@ public class GraphTestExecutor extends ASTTestExecutor {
 
     // returns the fragments that the ddmin algorithm should be run on at this moment
     public List<ICodeFragment> getActiveFragments() {
-        m_activeFragments = m_graphDB.calculateActiveFragments();
+        m_activeFragments = m_graphDB.calculateActiveFragments(getOptions().getGraphAlgorithmFragmentLimit());
         return m_activeFragments.stream()
                 .map(m_fragments::get)
                 .filter(Objects::nonNull)

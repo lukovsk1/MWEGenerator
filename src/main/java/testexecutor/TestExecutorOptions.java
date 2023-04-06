@@ -2,10 +2,7 @@ package testexecutor;
 
 public class TestExecutorOptions {
 
-	public enum ECompilationType {
-		COMMAND_LINE,
-		IN_MEMORY
-	}
+	private int m_graphAlgorithmFragmentLimit = 0;
 
 	public enum ELogLevel {
 		NONE(0),
@@ -37,6 +34,11 @@ public class TestExecutorOptions {
 	private int m_numberOfThreads = 1;
 	private boolean m_preSliceCode = true;
 
+	public TestExecutorOptions withGraphAlgorithmFragmentLimit(int limit) {
+		m_graphAlgorithmFragmentLimit = limit;
+		return this;
+	}
+
 
 	public TestExecutorOptions withModulePath(String modulePath) {
 		m_modulePath = modulePath;
@@ -46,6 +48,7 @@ public class TestExecutorOptions {
 	public String getModulePath() {
 		return m_modulePath;
 	}
+
 	public String getSourceFolderPath() {
 		return m_sourceFolderPath;
 	}
@@ -145,6 +148,10 @@ public class TestExecutorOptions {
 		return m_preSliceCode;
 	}
 
+	public int getGraphAlgorithmFragmentLimit() {
+		return m_graphAlgorithmFragmentLimit;
+	}
+
 	@Override
 	public String toString() {
 		return "{\n" +
@@ -160,6 +167,12 @@ public class TestExecutorOptions {
 				"\tm_multipleRuns=" + m_multipleRuns + ",\n" +
 				"\tm_numberOfThreads=" + m_numberOfThreads + ",\n" +
 				"\tm_preSliceCode=" + m_preSliceCode + ",\n" +
+				"\tm_graphAlgorithmFragmentLimit=" + m_graphAlgorithmFragmentLimit + ",\n" +
 				'}';
+	}
+
+    public enum ECompilationType {
+		COMMAND_LINE,
+		IN_MEMORY
 	}
 }
