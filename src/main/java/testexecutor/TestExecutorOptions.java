@@ -2,8 +2,6 @@ package testexecutor;
 
 public class TestExecutorOptions {
 
-	private int m_graphAlgorithmFragmentLimit = 0;
-
 	public enum ELogLevel {
 		NONE(0),
 		INFO(1),
@@ -34,11 +32,8 @@ public class TestExecutorOptions {
 	private int m_numberOfThreads = 1;
 	private boolean m_preSliceCode = true;
 
-	public TestExecutorOptions withGraphAlgorithmFragmentLimit(int limit) {
-		m_graphAlgorithmFragmentLimit = limit;
-		return this;
-	}
-
+	private int m_graphAlgorithmFragmentLimit = 0;
+	private boolean m_graphAlgorithmEscalatingFragmentLimit = false;
 
 	public TestExecutorOptions withModulePath(String modulePath) {
 		m_modulePath = modulePath;
@@ -148,8 +143,22 @@ public class TestExecutorOptions {
 		return m_preSliceCode;
 	}
 
+	public TestExecutorOptions withGraphAlgorithmFragmentLimit(int limit) {
+		m_graphAlgorithmFragmentLimit = limit;
+		return this;
+	}
+
 	public int getGraphAlgorithmFragmentLimit() {
 		return m_graphAlgorithmFragmentLimit;
+	}
+
+	public TestExecutorOptions withEscalatingFragmentLimit(boolean flag) {
+		m_graphAlgorithmEscalatingFragmentLimit = flag;
+		return this;
+	}
+
+	public boolean isEscalatingFragmentLimit() {
+		return m_graphAlgorithmEscalatingFragmentLimit;
 	}
 
 	@Override

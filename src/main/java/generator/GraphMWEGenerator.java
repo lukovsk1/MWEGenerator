@@ -62,6 +62,9 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
                 }
                 numberOfFixedFragments = numberOfFragmentsLeft;
                 executor.changeSourceToOutputFolder();
+                if (m_testExecutorOptions.isEscalatingFragmentLimit()) {
+                    m_testExecutorOptions.withGraphAlgorithmFragmentLimit(2 * m_testExecutorOptions.getGraphAlgorithmFragmentLimit());
+                }
             }
         } finally {
             cleanup();

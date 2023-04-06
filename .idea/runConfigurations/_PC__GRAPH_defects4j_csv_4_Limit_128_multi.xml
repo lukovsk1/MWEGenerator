@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="[PC] GRAPH defects4j csv_4 Limit 128 multi" type="Application" factoryName="Application" folderName="PC">
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+    <option name="MAIN_CLASS_NAME" value="Main" />
+    <module name="ddminj" />
+    <option name="PROGRAM_PARAMETERS" value="generator.GraphMWEGenerator C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\csv_4_b src\main\java\ src\test\java\ org.apache.commons.csv.CSVParserTest#testNoHeaderMap &quot;java.lang.NullPointerException&quot; true 128" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

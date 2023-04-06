@@ -52,11 +52,16 @@ public class Main {
 					.withLogRuntimeErrors(false)
 					.withNumberOfThreads(16)
 					.withPreSliceCode(false)
-					.withMultipleRuns(true)
 					.withLogging(TestExecutorOptions.ELogLevel.INFO);
 
 			if (args.length >= 7) {
-				options.withGraphAlgorithmFragmentLimit(Integer.parseInt(args[6]));
+				options.withMultipleRuns(Boolean.parseBoolean(args[6]));
+			}
+			if (args.length >= 8) {
+				options.withGraphAlgorithmFragmentLimit(Integer.parseInt(args[7]));
+			}
+			if (args.length >= 9) {
+				options.withEscalatingFragmentLimit(Boolean.parseBoolean(args[8]));
 			}
 
 			generator = (AbstractMWEGenerator) constructor.newInstance(options);
