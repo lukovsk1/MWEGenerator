@@ -52,6 +52,7 @@ public class Main {
 					.withLogRuntimeErrors(false)
 					.withNumberOfThreads(16)
 					.withPreSliceCode(false)
+					.withMultipleRuns(true)
 					.withLogging(TestExecutorOptions.ELogLevel.INFO);
 
 			if (args.length >= 7) {
