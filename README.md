@@ -77,7 +77,7 @@ Next goals:
 - [ ] Integrate static code analysis to the workflow
   - skip compilation if errors are present
   - save time compiling obviously wrong code
-- [ ] Algorithm for all DAGs (not just trees)
+- [x] Algorithm for all DAGs (not just trees)
   - initial implementation based on AST
   - recognizing more dependencies in java code
 - [ ] dynamically include dependencies of testes projects
