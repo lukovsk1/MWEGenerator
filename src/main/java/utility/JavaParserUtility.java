@@ -5,7 +5,10 @@ import org.eclipse.jdt.core.compiler.IScanner;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.core.dom.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Helper to parse Java code.
@@ -102,7 +105,7 @@ public class JavaParserUtility {
 	 * @return A list of tokens representing the source file.
 	 */
 	public static List<Token> scan(String source) throws InvalidInputException {
-		IScanner scanner = ToolFactory.createScanner(true, true, true, "" + JAVA_LANGUAGE_SPECIFICATION);
+		IScanner scanner = ToolFactory.createScanner(false, true, true, "" + JAVA_LANGUAGE_SPECIFICATION);
 		int sourceLength = source.length();
 		scanner.setSource(source.toCharArray());
 

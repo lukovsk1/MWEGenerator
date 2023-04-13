@@ -66,6 +66,8 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
                     m_testExecutorOptions.withGraphAlgorithmFragmentLimit(2 * m_testExecutorOptions.getGraphAlgorithmFragmentLimit());
                 }
             }
+            logInfo("Format result in testingoutput folder...");
+            executor.formatOutputFolder();
         } finally {
             cleanup();
         }

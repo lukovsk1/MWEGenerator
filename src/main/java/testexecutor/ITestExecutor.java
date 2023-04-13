@@ -26,4 +26,6 @@ public interface ITestExecutor {
 	void changeSourceToOutputFolder();
 
 	String getStatistics();
+
+	void formatOutputFolder();
 }

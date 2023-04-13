@@ -57,6 +57,8 @@ public abstract class AbstractMWEGenerator {
 				executor.changeSourceToOutputFolder();
 			} while (m_testExecutorOptions.isMultipleRuns() && fragments.size() < totalFragments);
 
+			logInfo("Formatting result in testingoutput folder...");
+			executor.formatOutputFolder();
 			logInfo("############## FINISHED ##############");
 		} finally {
 			cleanup();

@@ -177,6 +177,7 @@ public class TestExecutorOptions {
 				"\tm_numberOfThreads=" + m_numberOfThreads + ",\n" +
 				"\tm_preSliceCode=" + m_preSliceCode + ",\n" +
 				"\tm_graphAlgorithmFragmentLimit=" + m_graphAlgorithmFragmentLimit + ",\n" +
+				"\tm_graphAlgorithmEscalatingFragmentLimit=" + m_graphAlgorithmEscalatingFragmentLimit + ",\n" +
 				'}';
 	}
 

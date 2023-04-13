@@ -62,6 +62,8 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 
 			logInfo("Recreating result in testingoutput folder...");
 			executor.recreateCode(fragments);
+			logInfo("Formatting result in testingoutput folder...");
+			executor.formatOutputFolder();
 			logInfo("############## FINISHED in " + (System.currentTimeMillis() - runStart) + "ms :::: Reduced to " + executor.getFixedFragments().size() + " out of " + m_initialNumberOfFragments + " :::: " + executor.getStatistics() + " ##############");
 		} finally {
 			cleanup();

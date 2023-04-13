@@ -4,6 +4,14 @@ import compiler.InMemoryJavaCompiler;
 import fragment.ICodeFragment;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.ToolFactory;
+import org.eclipse.jdt.core.formatter.CodeFormatter;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
+import org.eclipse.text.edits.TextEdit;
 import org.mdkt.compiler.CompilationException;
 import utility.FileUtility;
 import utility.SlicerUtility;
@@ -31,6 +39,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 	protected final AtomicInteger m_runtimeErrors = new AtomicInteger();
 	protected final AtomicInteger m_failedRuns = new AtomicInteger();
 	protected final AtomicInteger m_okRuns = new AtomicInteger();
+	private static final String JAVA_VERSION = "1.8";
 
 	protected ATestExecutor(TestExecutorOptions options) {
 		m_options = options;
@@ -361,5 +370,40 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 	protected boolean isExcludedFile(Path path) {
 		return path == null || path.endsWith("package-info.java");
+	}
+
+	public void formatOutputFolder() {
+		final Map<String, String> options = new HashMap<>();
+		options.put(JavaCore.COMPILER_SOURCE, JAVA_VERSION);
+		options.put(JavaCore.COMPILER_COMPLIANCE, JAVA_VERSION);
+		options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JAVA_VERSION);
+		CodeFormatter formatter = ToolFactory.createCodeFormatter(options, ToolFactory.M_FORMAT_EXISTING);
+		File testSourceFolder = getSourceFolder(getTestOutputPath(), getOptions().getSourceFolderPath());
+		try (Stream<Path> walk = Files.walk(testSourceFolder.toPath())) {
+			walk.forEach(path -> {
+				try {
+					if (!Files.isRegularFile(path) || !"java".equals(FilenameUtils.getExtension(path.toString()))) {
+						return;
+					}
+					String code = new String(Files.readAllBytes(path));
+					IRegion region = new Region(0, code.length());
+					TextEdit edit = formatter.format(CodeFormatter.K_COMPILATION_UNIT, code, new IRegion[]{region}, 0, "\n");
+					IDocument doc = new Document(code);
+					edit.apply(doc);
+					String formattedCode = doc.get();
+					if (code.equals(formattedCode)) {
+						return;
+					}
+					FileOutputStream fos = new FileOutputStream(path.toFile(), false);
+					fos.write(formattedCode.getBytes(StandardCharsets.UTF_8));
+					fos.close();
+				} catch (Exception e) {
+					System.out.println("Unable to format file " + path.toString());
+					e.printStackTrace(System.out);
+				}
+			});
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

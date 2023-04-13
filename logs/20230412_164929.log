@@ -1,0 +1,26 @@
+Using executor GraphTestExecutor with executor options:
+{
+	m_modulePath='C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\csv_4_b',
+	m_sourceFolderPath='src\main\java\',
+	m_unitTestFolderPath='src\test\java\',
+	m_unitTestMethod='org.apache.commons.csv.CSVParserTest#testNoHeaderMap',
+	m_expectedResult='java.lang.NullPointerException',
+	m_compilationType=IN_MEMORY,
+	m_logLevel=INFO,
+	m_logCompilationErrors=false,
+	m_logRuntimeErrors=false,
+	m_multipleRuns=false,
+	m_numberOfThreads=16,
+	m_preSliceCode=false,
+	m_graphAlgorithmFragmentLimit=128,
+}
+Manually query the graph in the neo4j browser: http://localhost:7474/browser/
+Example Query: "MATCH (f:Fragment_20230412_164929) RETURN *;"
+java.lang.StringIndexOutOfBoundsException: String index out of range: 1236
+	at java.lang.String.substring(String.java:1963)
+	at utility.JavaParserUtility.scan(JavaParserUtility.java:117)
+	at utility.JavaParserUtility.tokensToAST(JavaParserUtility.java:67)
+	at testexecutor.ast.ASTTestExecutor.extractFragments(ASTTestExecutor.java:68)
+	at testexecutor.graph.GraphTestExecutor.extractFragments(GraphTestExecutor.java:38)
+	at generator.GraphMWEGenerator.runGenerator(GraphMWEGenerator.java:32)
+	at Main.main(Main.java:76)
