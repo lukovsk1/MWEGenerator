@@ -117,6 +117,9 @@ public class JavaParserUtility {
 			Token codeToken = new Token();
 			codeToken.start = scanner.getCurrentTokenStartPosition();
 			codeToken.end = scanner.getCurrentTokenEndPosition();
+			if (codeToken.end <= codeToken.start) {
+				continue;
+			}
 			codeToken.code = source.substring(codeToken.start, codeToken.end + 1);
 
 			tokens.add(codeToken);
