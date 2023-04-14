@@ -7,7 +7,6 @@ import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.types.Entity;
-import org.neo4j.driver.types.Node;
 import utility.FileUtility;
 import utility.JavaParserUtility;
 
@@ -56,31 +55,42 @@ public class GraphDB {
 		m_nodeIdentifierSuffix = nodeIdentifierSuffix;
 	}
 
-	public Node addFragmentNode(ASTCodeFragment fragment) {
-		if (fragment == null || fragment.getTokens().isEmpty()) {
-			return null;
+	public List<Long> addFragmentNodes(List<ASTCodeFragment> fragments) {
+		if (fragments == null || fragments.isEmpty()) {
+			return Collections.emptyList();
 		}
 
-		StringBuilder sb = new StringBuilder();
+		String query = "UNWIND $props AS map CREATE (f" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				LABEL_FREE +
+				") SET f = map" +
+				" RETURN ID(f)";
+
+		List<Map<String, Object>> props = new ArrayList<>();
+		for (ASTCodeFragment fragment : fragments) {
+			if (fragment.getTokens().isEmpty()) {
+				continue;
+			}
+			Map<String, Object> fragmentProperties = new HashMap<>();
+			JavaParserUtility.Token token = fragment.getTokens().get(0);
+			ASTNode node = token.node;
+
+			fragmentProperties.put(ATTR_FILENAME, fragment.getPath());
+			fragmentProperties.put(ATTR_CODE, shortenString(node.toString(), 100));
+			fragmentProperties.put(ATTR_NODE_TYPE, node.getClass().getSimpleName());
+			fragmentProperties.put(ATTR_CLASS_NAME, FileUtility.fileNameToClassName(fragment.getPath()));
+
+			addNodeSpecificAttribute(fragmentProperties, node);
+			props.add(fragmentProperties);
+		}
 		Map<String, Object> params = new HashMap<>();
-		JavaParserUtility.Token token = fragment.getTokens().get(0);
-		ASTNode node = token.node;
-		sb.append("CREATE (f")
-				.append(LABEL_PREFIX_FRAGMENT)
-				.append(m_nodeIdentifierSuffix)
-				.append(LABEL_FREE)
-				.append(" {");
-		addAttribute(sb, params, ATTR_FILENAME, fragment.getPath());
-		addAttribute(sb, params, ATTR_CODE, shortenString(node.toString(), 100));
-		addAttribute(sb, params, ATTR_NODE_TYPE, node.getClass().getSimpleName());
-		addAttribute(sb, params, ATTR_CLASS_NAME, FileUtility.fileNameToClassName(fragment.getPath()));
-
-		addNodeSpecificAttribute(sb, params, node);
-
-		sb.append("}) RETURN f");
+		params.put("props", props);
 		Session session = m_driver.session();
-		Result res = session.run(sb.toString(), params);
-		return res.single().get(0).asNode();
+		Result res = session.run(query, params);
+		return res.stream()
+				.map(rec -> rec.get(0).asLong())
+				.collect(Collectors.toList());
 	}
 
 	private String shortenString(String str, int length) {
@@ -93,26 +103,26 @@ public class GraphDB {
 		return str.substring(0, length - 3) + "...";
 	}
 
-	private void addNodeSpecificAttribute(StringBuilder sb, Map<String, Object> parameters, ASTNode node) {
+	private void addNodeSpecificAttribute(Map<String, Object> fragmentProperties, ASTNode node) {
 		if (node instanceof MethodDeclaration) {
-			addAttribute(sb, parameters, ATTR_METHOD_NAME, ((MethodDeclaration) node).getName().toString());
+			fragmentProperties.put(ATTR_METHOD_NAME, ((MethodDeclaration) node).getName().toString());
 		} else if (node instanceof ClassInstanceCreation) {
-			addAttribute(sb, parameters, ATTR_SIMPLE_NAME, ((ClassInstanceCreation) node).getType().toString());
+			fragmentProperties.put(ATTR_SIMPLE_NAME, ((ClassInstanceCreation) node).getType().toString());
 		} else if (node instanceof TypeDeclaration) {
-			addAttribute(sb, parameters, ATTR_SIMPLE_NAME, ((TypeDeclaration) node).getName().toString());
+			fragmentProperties.put(ATTR_SIMPLE_NAME, ((TypeDeclaration) node).getName().toString());
 		} else if (node instanceof SimpleType) {
-			addAttribute(sb, parameters, ATTR_SIMPLE_NAME, ((SimpleType) node).getName().toString());
+			fragmentProperties.put(ATTR_SIMPLE_NAME, ((SimpleType) node).getName().toString());
 		} else if (node instanceof MethodInvocation) {
 			MethodInvocation n = (MethodInvocation) node;
-			addAttribute(sb, parameters, ATTR_METHOD_NAME, n.getName().toString());
+			fragmentProperties.put(ATTR_METHOD_NAME, n.getName().toString());
 			Expression expr = n.getExpression();
 			if (expr instanceof SimpleName) {
-				addAttribute(sb, parameters, ATTR_SIMPLE_NAME, expr.toString());
+				fragmentProperties.put(ATTR_SIMPLE_NAME, expr.toString());
 			}
 		} else if (node instanceof ImportDeclaration) {
-			addAttribute(sb, parameters, ATTR_IMPORT_NAME, ((ImportDeclaration) node).getName().toString());
+			fragmentProperties.put(ATTR_IMPORT_NAME, ((ImportDeclaration) node).getName().toString());
 		} else if (node instanceof PackageDeclaration) {
-			addAttribute(sb, parameters, ATTR_PACKAGE_NAME, ((PackageDeclaration) node).getName().toString());
+			fragmentProperties.put(ATTR_PACKAGE_NAME, ((PackageDeclaration) node).getName().toString());
 		}
 	}
 
@@ -128,23 +138,21 @@ public class GraphDB {
 		parameters.put(String.valueOf(paramNumber), value);
 	}
 
-	public void addASTDependency(Node node, Node dependsOn) {
-		String query = "MATCH (a), (b) WHERE ID(a)=" +
-				node.id() +
-				" AND ID(b)=" +
-				dependsOn.id() +
+	public void addASTDependencies(List<Long> nodeIds, long parentNodeId) {
+		String query = "MATCH (a), (b) WHERE ID(a) IN $nodeIds" +
+				" AND ID(b)=$parentNodeId" +
 				" CREATE (a)-[r" +
 				RELATIONSHIP_LABEL_DEPENDS_ON +
 				"{" +
 				ATTR_DEPENDENCY_TYPE +
-				":$dependenceType}]->(b)" +
-				" RETURN r";
+				":$dependenceType}]->(b)";
 		Map<String, Object> params = new HashMap<>();
 		params.put("dependenceType", DEPENDENCY_TYPE_AST_TREE);
+		params.put("nodeIds", nodeIds);
+		params.put("parentNodeId", parentNodeId);
 
 		Session session = m_driver.session();
-		Result res = session.run(query, params);
-		res.single().get(0).asRelationship();
+		session.run(query, params);
 	}
 
 	public void markFragmentNodesAsFixed(Set<Long> nodeIds) {

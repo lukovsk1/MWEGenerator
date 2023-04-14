@@ -5,7 +5,6 @@ import fragment.ASTCodeFragment;
 import fragment.GraphCodeFragment;
 import fragment.ICodeFragment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.neo4j.driver.types.Node;
 import testexecutor.TestExecutorOptions;
 import testexecutor.ast.ASTTestExecutor;
 import utility.JavaParserUtility;
@@ -48,17 +47,27 @@ public class GraphTestExecutor extends ASTTestExecutor {
     @Override
     protected ASTCodeFragment transformToFragements(CompilationUnit javaAST, List<JavaParserUtility.Token> tokens, String relativeFileName, AtomicInteger fragmentNr) {
         ASTCodeFragment root = super.transformToFragements(javaAST, tokens, relativeFileName, fragmentNr);
-        writeFragmentToDatabase(root, null);
+        writeFragmentsToDatabase(Collections.singletonList(root), null);
         return null;
     }
 
-    protected void writeFragmentToDatabase(ASTCodeFragment fragment, Node parentFragmentNode) {
-        Node fragmentNode = m_graphDB.addFragmentNode(fragment);
-        m_fragments.put(fragmentNode.id(), new GraphCodeFragment(fragment.getPath(), fragmentNode.id(), fragment.getTokens()));
-        if (parentFragmentNode != null) {
-            m_graphDB.addASTDependency(fragmentNode, parentFragmentNode);
+    protected void writeFragmentsToDatabase(List<ASTCodeFragment> fragments, Long parentFragmentNodeId) {
+        List<Long> fragmentNodeIds = m_graphDB.addFragmentNodes(fragments);
+        if (parentFragmentNodeId != null) {
+            m_graphDB.addASTDependencies(fragmentNodeIds, parentFragmentNodeId);
         }
-        fragment.getChildren().forEach(f -> writeFragmentToDatabase(f, fragmentNode));
+        // add all fragments to map
+        for (int i = 0; i < fragmentNodeIds.size(); i++) {
+            long id = fragmentNodeIds.get(i);
+            ASTCodeFragment fragment = fragments.get(i);
+            m_fragments.put(id, new GraphCodeFragment(fragment.getPath(), id, fragment.getTokens()));
+        }
+        // recursively call method for children
+        for (int i = 0; i < fragmentNodeIds.size(); i++) {
+            long id = fragmentNodeIds.get(i);
+            ASTCodeFragment fragment = fragments.get(i);
+            writeFragmentsToDatabase(fragment.getChildren(), id);
+        }
     }
 
     @Override
