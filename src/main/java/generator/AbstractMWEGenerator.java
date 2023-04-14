@@ -7,10 +7,8 @@ import testexecutor.TestingException;
 import utility.CollectionsUtility;
 
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -18,6 +16,8 @@ public abstract class AbstractMWEGenerator {
 
 	protected final TestExecutorOptions m_testExecutorOptions;
 	protected final ExecutorService m_executorService;
+	protected List<ICodeFragment> m_fragments;
+	protected AtomicBoolean m_isCancelled = new AtomicBoolean();
 
 	public AbstractMWEGenerator(TestExecutorOptions options) {
 		m_testExecutorOptions = options;
@@ -33,9 +33,9 @@ public abstract class AbstractMWEGenerator {
 	}
 
 	public void runGenerator() {
+		ITestExecutor executor = getTestExecutor();
 		try {
 			// extract code fragments
-			ITestExecutor executor = getTestExecutor();
 			executor.initialize();
 			List<ICodeFragment> fragments;
 			int testNr = 1;
@@ -60,9 +60,20 @@ public abstract class AbstractMWEGenerator {
 			logInfo("Formatting result in testingoutput folder...");
 			executor.formatOutputFolder();
 			logInfo("############## FINISHED ##############");
+		} catch (CancellationException e) {
+			logInfo("Execution was manually cancelled. Recreate intermediate result in testingoutput folder...");
+			if (m_fragments != null && !m_fragments.isEmpty()) {
+				executor.recreateCode(m_fragments);
+				executor.formatOutputFolder();
+			}
+			throw e;
 		} finally {
 			cleanup();
 		}
+	}
+
+	public void cancelAndWriteIntermediateResult() {
+		m_isCancelled.set(true);
 	}
 
 	protected void cleanup() {
@@ -76,27 +87,30 @@ public abstract class AbstractMWEGenerator {
 
 		checkPreconditions(executor, initialConfiguration, totalFragments, resultMap);
 
-		List<ICodeFragment> fragments = new ArrayList<>(initialConfiguration);
+		m_fragments = new ArrayList<>(initialConfiguration);
 		int granularity = 2;
-		while (fragments.size() >= 2) {
-			List<List<ICodeFragment>> subsets = CollectionsUtility.split(fragments, granularity);
+		while (m_fragments.size() >= 2) {
+			List<List<ICodeFragment>> subsets = CollectionsUtility.split(m_fragments, granularity);
 			assert subsets.size() == granularity;
 
 			boolean someComplementIsFailing = false;
 			List<Callable<List<ICodeFragment>>> taskList = new ArrayList<>();
 			for (List<ICodeFragment> subset : subsets) {
-				List<ICodeFragment> complement = CollectionsUtility.listMinus(fragments, subset);
+				if (m_isCancelled.get()) {
+					throw new CancellationException("Cancelled by user");
+				}
+				List<ICodeFragment> complement = CollectionsUtility.listMinus(m_fragments, subset);
 
 				if (m_testExecutorOptions.getNumberOfThreads() > 1) {
 					taskList.add(() -> {
-						if (executeTest(executor, complement, totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED) {
+						if (!m_isCancelled.get() && executeTest(executor, complement, totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED) {
 							return complement;
 						}
 						throw new Exception("Test did not fail");
 					});
 				} else {
 					if (executeTest(executor, complement, totalFragments, resultMap) == ITestExecutor.ETestResult.FAILED) {
-						fragments = complement;
+						m_fragments = complement;
 						someComplementIsFailing = true;
 						break;
 					}
@@ -104,7 +118,7 @@ public abstract class AbstractMWEGenerator {
 			}
 			if (m_testExecutorOptions.getNumberOfThreads() > 1) {
 				try {
-					fragments = m_executorService.invokeAny(taskList);
+					m_fragments = m_executorService.invokeAny(taskList);
 					someComplementIsFailing = true;
 				} catch (ExecutionException e) {
 					// no task completed successfully -> increase granularity
@@ -115,17 +129,17 @@ public abstract class AbstractMWEGenerator {
 
 			if (someComplementIsFailing) {
 				granularity = Math.max(granularity - 1, 2);
-				logDebug("DDmin: granularity decreased to " + granularity + " / " + fragments.size());
+				logDebug("DDmin: granularity decreased to " + granularity + " / " + m_fragments.size());
 			} else {
-				if (granularity == fragments.size()) {
+				if (granularity == m_fragments.size()) {
 					break;
 				}
 
-				granularity = Math.min(granularity * 2, fragments.size());
-				logDebug("DDmin: granularity increased to " + granularity + " / " + fragments.size());
+				granularity = Math.min(granularity * 2, m_fragments.size());
+				logDebug("DDmin: granularity increased to " + granularity + " / " + m_fragments.size());
 			}
 		}
-		return fragments;
+		return m_fragments;
 	}
 
 	protected void checkPreconditions(ITestExecutor executor, List<ICodeFragment> initialConfiguration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {

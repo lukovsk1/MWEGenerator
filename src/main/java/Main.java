@@ -14,10 +14,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, InterruptedException {
 		// write both to the console and a log file
 		String dir = System.getProperty("user.dir");
 		DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -32,7 +33,7 @@ public class Main {
 			System.out.println("ERROR: Unable to create log file " + logFile);
 		}
 
-		AbstractMWEGenerator generator = null;
+		AbstractMWEGenerator generator;
 		if (args.length == 0) {
 			generator = new GraphMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
 		} else if (args.length == 1) {
@@ -66,15 +67,33 @@ public class Main {
 
 			generator = (AbstractMWEGenerator) constructor.newInstance(options);
 		} else {
+			generator = null;
 			System.out.println("ERROR: Invalid number of arguments");
 			System.exit(1);
 		}
 
+		// read console input
+		Scanner sc = new Scanner(System.in);
+		Thread readerThread = new Thread(() -> {
+			while (!Thread.interrupted()) {
+				if (sc.hasNextLine()) {
+					String input = sc.nextLine();
+					if ("stop".equals(input)) {
+						generator.cancelAndWriteIntermediateResult();
+					}
+				}
+			}
+		});
+		readerThread.start();
+		long start = System.currentTimeMillis();
+
 		try {
-			long start = System.currentTimeMillis();
-
 			generator.runGenerator();
+			System.out.println("#### MWE GENERATOR FINISHED SUCCESSFULLY ####");
 
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
+		} finally {
 			long time = System.currentTimeMillis() - start;
 			System.out.println();
 			System.out.println("TOTAL EXECUTION TIME: " + time + " ms.");
@@ -82,8 +101,6 @@ public class Main {
 			// check output size:
 			long outputSize = FileUtils.sizeOfDirectory(new File(dir + "/testingoutput"));
 			System.out.println("TOTAL OUTPUT SIZE: " + outputSize + " bytes");
-		} catch (Exception e) {
-			e.printStackTrace(System.out);
 		}
 
 		if (fos != null) {
@@ -91,5 +108,8 @@ public class Main {
 			File finalLogFile = new File(dir + "/logs/" + formattedDate + ".log");
 			Files.move(logFile.toPath(), finalLogFile.toPath());
 		}
+
+		// cancel all remaining threads
+		System.exit(0);
 	}
 }

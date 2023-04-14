@@ -9,6 +9,7 @@ import utility.CollectionsUtility;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 
 public class GraphMWEGenerator extends AbstractMWEGenerator {
 
@@ -24,9 +25,9 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
     }
 
     public void runGenerator() {
+        GraphTestExecutor executor = getTestExecutor();
         try {
             // extract code fragments
-            GraphTestExecutor executor = getTestExecutor();
             executor.initialize();
             long extractionStart = System.currentTimeMillis();
             executor.extractFragments();
@@ -68,6 +69,13 @@ public class GraphMWEGenerator extends AbstractMWEGenerator {
             }
             logInfo("Format result in testingoutput folder...");
             executor.formatOutputFolder();
+        } catch (CancellationException e) {
+            logInfo("Execution was manually cancelled. Recreate intermediate result in testingoutput folder...");
+            if (m_fragments != null && !m_fragments.isEmpty()) {
+                executor.recreateCode(m_fragments);
+                executor.formatOutputFolder();
+            }
+            throw e;
         } finally {
             cleanup();
         }

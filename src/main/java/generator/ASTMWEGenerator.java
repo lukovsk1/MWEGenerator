@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -26,9 +27,9 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	}
 
 	public void runGenerator() {
+		ASTTestExecutor executor = getTestExecutor();
 		try {
 			// extract code fragments
-			ASTTestExecutor executor = getTestExecutor();
 			executor.initialize();
 			List<ICodeFragment> fullTree = executor.extractFragments();
 			List<ICodeFragment> fragments = new ArrayList<>(fullTree);
@@ -65,6 +66,13 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 			logInfo("Formatting result in testingoutput folder...");
 			executor.formatOutputFolder();
 			logInfo("############## FINISHED in " + (System.currentTimeMillis() - runStart) + "ms :::: Reduced to " + executor.getFixedFragments().size() + " out of " + m_initialNumberOfFragments + " :::: " + executor.getStatistics() + " ##############");
+		} catch (CancellationException e) {
+			logInfo("Execution was manually cancelled. Recreate intermediate result in testingoutput folder...");
+			if (m_fragments != null && !m_fragments.isEmpty()) {
+				executor.recreateCode(m_fragments);
+				executor.formatOutputFolder();
+			}
+			throw e;
 		} finally {
 			cleanup();
 		}

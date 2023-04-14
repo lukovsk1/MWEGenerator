@@ -32,7 +32,6 @@ import java.util.stream.Stream;
 public class ASTTestExecutor extends ATestExecutor {
 
 	private final Set<ICodeFragment> m_fixedFragments = new HashSet<>();
-	private boolean m_isRecreating = false;
 
 	public ASTTestExecutor(TestExecutorOptions options) {
 		super(options);
@@ -179,7 +178,7 @@ public class ASTTestExecutor extends ATestExecutor {
 		// add active fragments and all their children
 		Map<String, Set<ICodeFragment>> fragmentsByFile = fragments.stream()
 				.map(fr -> ((ASTCodeFragment) fr))
-				.flatMap(fr -> m_isRecreating ? Stream.of(fr) : CollectionsUtility.getChildrenInDeep(fr).stream())
+				.flatMap(fr -> CollectionsUtility.getChildrenInDeep(fr).stream())
 				.map(fr -> (ICodeFragment) fr)
 				.collect(Collectors.groupingBy(ICodeFragment::getPath, Collectors.mapping(fr -> fr, Collectors.toSet())));
 
@@ -209,11 +208,5 @@ public class ASTTestExecutor extends ATestExecutor {
 
 	public Set<ICodeFragment> getFixedFragments() {
 		return m_fixedFragments;
-	}
-
-	@Override
-	public void recreateCode(List<ICodeFragment> fragments) {
-		m_isRecreating = true;
-		super.recreateCode(fragments);
 	}
 }
