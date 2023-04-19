@@ -247,12 +247,39 @@ public class GraphDB {
 				.collect(Collectors.toSet());
 	}
 
+
+	public Set<Long> calculateActiveFragmentsDependentOn(long dependentOn) {
+        /*
+            MATCH (f:Fragment_20230419_183624)-[:DEPENDS_ON]->(p:Fragment_20230419_183624)
+            WHERE ID(p) = 1962870
+            AND (f:Free OR f:Fixed)
+            SET f:Active
+            REMOVE f:Free:Fixed
+            RETURN ID(f);
+         */
+		Map<String, Object> params = new HashMap<>();
+		String query = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + ")-[" +
+				RELATIONSHIP_LABEL_DEPENDS_ON + "]->(p" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix +
+				") WHERE ID(p) = $dependentOn" +
+				" AND (f" + LABEL_FREE + " OR f" + LABEL_FIXED +
+				") SET f" + LABEL_ACTIVE +
+				" REMOVE f" + LABEL_FREE + LABEL_FIXED +
+				" RETURN ID(f);";
+
+		params.put("dependentOn", dependentOn);
+		Session session = m_driver.session();
+		Result res = session.run(query, params);
+		return res.stream()
+				.map(rec -> rec.get(0).asLong())
+				.collect(Collectors.toSet());
+	}
+
 	public Set<Long> getAllExcludedNodeIds(Set<Long> deselectedActiveNodes) {
         /*
-			MATCH (a:Fragment_20230323_140604:Active), (a)<-[:DEPENDS_ON*]-(f:Fragment_20230323_140604:Free)
-			WHERE ID(a) IN [123]
-			RETURN ID(f);
-		 */
+            MATCH (a:Fragment_20230323_140604:Active), (a)<-[:DEPENDS_ON*]-(f:Fragment_20230323_140604:Free)
+            WHERE ID(a) IN [123]
+            RETURN ID(f);
+         */
 		Map<String, Object> params = new HashMap<>();
 		String query = "MATCH (a" +
 				LABEL_PREFIX_FRAGMENT +

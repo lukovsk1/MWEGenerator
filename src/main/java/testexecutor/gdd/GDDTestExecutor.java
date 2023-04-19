@@ -16,9 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class GDDTestExecutor extends HDDTestExecutor {
-    private final GraphDB m_graphDB;
-    private final Map<Long, GraphCodeFragment> m_fragments;
-    private Set<Long> m_activeFragments;
+    protected final GraphDB m_graphDB;
+    protected final Map<Long, GraphCodeFragment> m_fragments;
+    protected Set<Long> m_activeFragments;
 
     public GDDTestExecutor(TestExecutorOptions options) {
         super(options);
@@ -114,8 +114,7 @@ public class GDDTestExecutor extends HDDTestExecutor {
     @Override
     public void addFixedFragments(List<ICodeFragment> fragments) {
         Set<Long> fixedNodes = fragments.stream()
-                .map(f -> (GraphCodeFragment) f)
-                .map(ACodeFragment::getFragmentNumber)
+                .map(ICodeFragment::getFragmentNumber)
                 .collect(Collectors.toSet());
         m_graphDB.markFragmentNodesAsFixed(fixedNodes);
     }
