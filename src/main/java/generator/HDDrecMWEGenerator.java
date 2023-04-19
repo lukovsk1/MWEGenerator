@@ -9,7 +9,6 @@ import utility.CollectionsUtility;
 
 import java.util.*;
 import java.util.concurrent.CancellationException;
-import java.util.stream.Collectors;
 
 public class HDDrecMWEGenerator extends HDDMWEGenerator {
 
@@ -20,13 +19,12 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 	public void runGenerator() {
 		HDDrecTestExecutor executor = getTestExecutor();
 		try {
-			// extract code fragments
-			executor.initialize();
-			List<ICodeFragment> fileRoots = executor.extractFragments();
-			analyzeTree(fileRoots);
-
 			int numberOfFixedFragments = 0;
 			while (true) {
+				// extract code fragments
+				executor.initialize();
+				List<ICodeFragment> fileRoots = executor.extractFragments();
+				analyzeTree(fileRoots);
 				m_level = 0;
 				long runStart = System.currentTimeMillis();
 				logInfo("############## RUNNING TEST NR. " + m_testNr + " ##############");
@@ -67,9 +65,7 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 				}
 				numberOfFixedFragments = numberOfFragmentsLeft;
 				executor.changeSourceToOutputFolder();
-				Set<ICodeFragment> fixed = executor.getFixedFragments();
-				executor.addFileRootsToQueue(fileRoots.stream().filter(fixed::contains).collect(Collectors.toList()));
-				fixed.clear();
+				executor.getFixedFragments().clear();
 			}
 			logInfo("Formatting result in testingoutput folder...");
 			executor.formatOutputFolder();

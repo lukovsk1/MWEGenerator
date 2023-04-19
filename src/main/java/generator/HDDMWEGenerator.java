@@ -8,7 +8,10 @@ import testexecutor.TestExecutorOptions;
 import testexecutor.hdd.HDDTestExecutor;
 import utility.CollectionsUtility;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -18,7 +21,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 	protected int m_testNr = 0;
 	protected int m_level = 0;
 	protected int m_maxLevel = 0;
-	protected long m_initialNumberOfFragments = 0;
+	protected long m_initialNumberOfFragments = -1;
 
 	public HDDMWEGenerator(TestExecutorOptions options) {
 		super(options);
@@ -28,13 +31,12 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 		HDDTestExecutor executor = getTestExecutor();
 		try {
 			// extract code fragments
-			executor.initialize();
-			List<ICodeFragment> fullTree = executor.extractFragments();
-			List<ICodeFragment> fragments = new ArrayList<>(fullTree);
-			analyzeTree(fullTree);
-
 			int numberOfFixedFragments = 0;
 			while (true) {
+				executor.initialize();
+				List<ICodeFragment> fullTree = executor.extractFragments();
+				List<ICodeFragment> fragments = new ArrayList<>(fullTree);
+				analyzeTree(fullTree);
 				m_level = 0;
 				long runStart = System.currentTimeMillis();
 				logInfo("############## RUNNING TEST NR. " + m_testNr + " ##############");
@@ -69,9 +71,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 				}
 				numberOfFixedFragments = numberOfFragmentsLeft;
 				executor.changeSourceToOutputFolder();
-				Set<ICodeFragment> fixed = executor.getFixedFragments();
-				fragments = fullTree.stream().filter(fixed::contains).collect(Collectors.toList());
-				fixed.clear();
+				executor.getFixedFragments().clear();
 			}
 			logInfo("Formatting result in testingoutput folder...");
 			executor.formatOutputFolder();
@@ -116,8 +116,10 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 				.mapToInt(Map.Entry::getKey)
 				.max()
 				.orElse(0);
-		m_initialNumberOfFragments = numberOfFragments.get();
-		System.out.println("Total :::: fragments: " + m_initialNumberOfFragments);
+		if (m_initialNumberOfFragments == -1) {
+			m_initialNumberOfFragments = numberOfFragments.get();
+		}
+		System.out.println("Total :::: fragments: " + numberOfFragments.get() + " out of " + m_initialNumberOfFragments + " originally");
 	}
 
 	@Override
