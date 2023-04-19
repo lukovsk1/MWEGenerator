@@ -38,7 +38,7 @@ public class GDDTestExecutor extends HDDTestExecutor {
         Set<Long> removedFragments = m_graphDB.deleteUnneccessaryFragments();
         m_fragments.entrySet().removeIf(e -> removedFragments.contains(e.getKey()));
         m_graphDB.calculateCrossTreeDependencies();
-        m_graphDB.calculateGuarantees();
+        //m_graphDB.calculateGuarantees(); TODO check if this is actually beneficial
 
         // TODO maybe check for cycles in graph
         return Collections.emptyList();

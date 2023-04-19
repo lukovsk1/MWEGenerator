@@ -1,4 +1,4 @@
-# MWE Generator - Graph Algorithm
+# MWE Generator - Graph Delta Debugging (GDD)
 
 ## Idea
 
@@ -31,10 +31,41 @@ return fixed
 ```
 
 The code that the ddmin algorithm tests on will always contain all the fixed fragments, never contain any discarded
-fragments and will contain all fragments in free that not dependent on any fragment missing in the current
+fragments and will contain all fragments in free that do not dependent on any fragment missing in the current
 configuration (a subset of active).
 
 The set of fixed fragments that is returned at the end of the run, is an MWE.
+
+## Recursive GDD
+
+```
+free := V
+fixed := {}
+discarded := {}
+queue := {}
+
+while free != {} ∨ queue != {}
+  if(queue != {})
+    w := queue.pop()
+    active := {f in free ∨ f in fixed | s.t. (f,w) in E}
+    fixed := fixed \ active
+  else
+    active := {f in free | s.t. not exists (f,v) in E with v in free}
+  
+  free := free \ active
+  minconfig := ddmin(active)
+  fixed := fixed u minconfig
+  queue := queue u minconfig
+  discarded := discarded u (active \ minconfig)
+
+return fixed
+```
+
+The idea of the recursive GDD algorithm is to reconsider already fixed nodes.
+Nodes that are dependent on multiple other nodes, might be considered in multiple runs of the ddmin algorithm
+so there are multiple chances to discard them.
+
+TODO: implementation
 
 ## Graph DB
 
