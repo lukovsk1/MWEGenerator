@@ -2,7 +2,7 @@
   <configuration default="false" name="generator.ASTMWEGenerator" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="Main" />
     <module name="ddminj" />
-    <option name="PROGRAM_PARAMETERS" value="generator.ASTMWEGenerator" />
+    <option name="PROGRAM_PARAMETERS" value="generator.HDDMWEGenerator" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

@@ -3,7 +3,7 @@ package generator;
 import fragment.ICodeFragment;
 import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
-import testexecutor.graph.GraphTestExecutor;
+import testexecutor.gdd.GDDTestExecutor;
 import utility.CollectionsUtility;
 
 import java.util.Collections;
@@ -11,21 +11,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
 
-public class GraphMWEGenerator extends AbstractMWEGenerator {
+public class GDDMWEGenerator extends AbstractMWEGenerator {
 
     private int m_level = 0;
 
-    public GraphMWEGenerator(TestExecutorOptions options) {
+    public GDDMWEGenerator(TestExecutorOptions options) {
         super(options);
     }
 
     @Override
-    protected GraphTestExecutor getTestExecutor() {
-        return new GraphTestExecutor(m_testExecutorOptions);
+    protected GDDTestExecutor getTestExecutor() {
+        return new GDDTestExecutor(m_testExecutorOptions);
     }
 
     public void runGenerator() {
-        GraphTestExecutor executor = getTestExecutor();
+        GDDTestExecutor executor = getTestExecutor();
         try {
             // extract code fragments
             executor.initialize();

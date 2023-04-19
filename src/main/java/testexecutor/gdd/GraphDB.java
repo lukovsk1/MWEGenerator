@@ -1,4 +1,4 @@
-package testexecutor.graph;
+package testexecutor.gdd;
 
 import fragment.ASTCodeFragment;
 import org.eclipse.jdt.core.dom.*;
@@ -124,18 +124,6 @@ public class GraphDB {
 		} else if (node instanceof PackageDeclaration) {
 			fragmentProperties.put(ATTR_PACKAGE_NAME, ((PackageDeclaration) node).getName().toString());
 		}
-	}
-
-	private void addAttribute(StringBuilder sb, Map<String, Object> parameters, String attributeName, Object value) {
-		char lastChar = sb.charAt(sb.length() - 1);
-		if (lastChar != '{' && lastChar != ',') {
-			sb.append(",");
-		}
-		int paramNumber = parameterNumber.getAndIncrement();
-		sb.append(attributeName)
-				.append(":$")
-				.append(paramNumber);
-		parameters.put(String.valueOf(paramNumber), value);
 	}
 
 	public void addASTDependencies(List<Long> nodeIds, long parentNodeId) {

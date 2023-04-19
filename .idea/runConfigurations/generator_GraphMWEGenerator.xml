@@ -2,7 +2,7 @@
   <configuration default="false" name="generator.GraphMWEGenerator" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="Main" />
     <module name="ddminj" />
-    <option name="PROGRAM_PARAMETERS" value="generator.GraphMWEGenerator" />
+    <option name="PROGRAM_PARAMETERS" value="generator.GDDMWEGenerator" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

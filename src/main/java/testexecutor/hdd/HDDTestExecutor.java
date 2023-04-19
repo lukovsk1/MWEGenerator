@@ -1,4 +1,4 @@
-package testexecutor.ast;
+package testexecutor.hdd;
 
 import fragment.ASTCodeFragment;
 import fragment.ICodeFragment;
@@ -29,11 +29,11 @@ import java.util.stream.Stream;
 /*
     An executor that extracts the hierarchical code fragments from the AST of the source code
  */
-public class ASTTestExecutor extends ATestExecutor {
+public class HDDTestExecutor extends ATestExecutor {
 
 	private final Set<ICodeFragment> m_fixedFragments = new HashSet<>();
 
-	public ASTTestExecutor(TestExecutorOptions options) {
+	public HDDTestExecutor(TestExecutorOptions options) {
 		super(options);
 	}
 

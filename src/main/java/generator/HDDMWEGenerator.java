@@ -5,7 +5,7 @@ import fragment.ICodeFragment;
 import fragment.IHierarchicalCodeFragment;
 import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
-import testexecutor.ast.ASTTestExecutor;
+import testexecutor.hdd.HDDTestExecutor;
 import utility.CollectionsUtility;
 
 import java.util.ArrayList;
@@ -16,18 +16,18 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-public class ASTMWEGenerator extends AbstractMWEGenerator {
+public class HDDMWEGenerator extends AbstractMWEGenerator {
 
 	private int m_level = 0;
 	private int m_maxLevel = 0;
 	private long m_initialNumberOfFragments = 0;
 
-	public ASTMWEGenerator(TestExecutorOptions options) {
+	public HDDMWEGenerator(TestExecutorOptions options) {
 		super(options);
 	}
 
 	public void runGenerator() {
-		ASTTestExecutor executor = getTestExecutor();
+		HDDTestExecutor executor = getTestExecutor();
 		try {
 			// extract code fragments
 			executor.initialize();
@@ -112,7 +112,7 @@ public class ASTMWEGenerator extends AbstractMWEGenerator {
 	}
 
 	@Override
-	protected ASTTestExecutor getTestExecutor() {
-		return new ASTTestExecutor(m_testExecutorOptions);
+	protected HDDTestExecutor getTestExecutor() {
+		return new HDDTestExecutor(m_testExecutorOptions);
 	}
 }

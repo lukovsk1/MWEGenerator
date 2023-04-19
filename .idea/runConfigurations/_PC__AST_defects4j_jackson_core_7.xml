@@ -3,7 +3,7 @@
     <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
     <option name="MAIN_CLASS_NAME" value="Main" />
     <module name="ddminj" />
-    <option name="PROGRAM_PARAMETERS" value="generator.ASTMWEGenerator C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\jackson_core_7_b src\main\java\ src\test\java\ com.fasterxml.jackson.core.json.GeneratorFailTest#testFailOnWritingStringNotFieldNameBytes &quot;junit.framework.AssertionFailedError: Should not have let com.fasterxml.jackson.core.json.UTF8JsonGenerator.writeString() be used in place of 'writeFieldName()'&quot;" />
+    <option name="PROGRAM_PARAMETERS" value="generator.HDDMWEGenerator C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\jackson_core_7_b src\main\java\ src\test\java\ com.fasterxml.jackson.core.json.GeneratorFailTest#testFailOnWritingStringNotFieldNameBytes &quot;junit.framework.AssertionFailedError: Should not have let com.fasterxml.jackson.core.json.UTF8JsonGenerator.writeString() be used in place of 'writeFieldName()'&quot;" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

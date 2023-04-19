@@ -1,4 +1,4 @@
-package testexecutor.graph;
+package testexecutor.gdd;
 
 import fragment.ACodeFragment;
 import fragment.ASTCodeFragment;
@@ -6,7 +6,7 @@ import fragment.GraphCodeFragment;
 import fragment.ICodeFragment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import testexecutor.TestExecutorOptions;
-import testexecutor.ast.ASTTestExecutor;
+import testexecutor.hdd.HDDTestExecutor;
 import utility.JavaParserUtility;
 
 import java.time.LocalDateTime;
@@ -15,12 +15,12 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class GraphTestExecutor extends ASTTestExecutor {
+public class GDDTestExecutor extends HDDTestExecutor {
     private final GraphDB m_graphDB;
     private final Map<Long, GraphCodeFragment> m_fragments;
     private Set<Long> m_activeFragments;
 
-    public GraphTestExecutor(TestExecutorOptions options) {
+    public GDDTestExecutor(TestExecutorOptions options) {
         super(options);
         DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String nodeIdentifierSuffix = "_" + LocalDateTime.now().format(timeStampPattern);
