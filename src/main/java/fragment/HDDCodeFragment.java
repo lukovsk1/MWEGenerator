@@ -5,13 +5,13 @@ import utility.JavaParserUtility.Token;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ASTCodeFragment extends ACodeFragment<Void> implements IHierarchicalCodeFragment {
+public class HDDCodeFragment extends ACodeFragment<Void> implements IHierarchicalCodeFragment {
 
 	private final List<Token> m_tokens = new ArrayList<>();
-	private final List<ASTCodeFragment> m_children = new ArrayList<>();
+	private final List<HDDCodeFragment> m_children = new ArrayList<>();
 	private int m_level = -1;
 
-	public ASTCodeFragment(String path, int fragmentNumber) {
+	public HDDCodeFragment(String path, int fragmentNumber) {
 		super(path, null, fragmentNumber);
 	}
 
@@ -37,14 +37,14 @@ public class ASTCodeFragment extends ACodeFragment<Void> implements IHierarchica
 		return m_tokens.get(m_tokens.size() - 1).end;
 	}
 
-	public void addChild(ASTCodeFragment child) {
+	public void addChild(HDDCodeFragment child) {
 		if (this != child) {
 			m_children.add(child);
 		}
 	}
 
 	@Override
-	public List<ASTCodeFragment> getChildren() {
+	public List<HDDCodeFragment> getChildren() {
 		return new ArrayList<>(m_children);
 	}
 

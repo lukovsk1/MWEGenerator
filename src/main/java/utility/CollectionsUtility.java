@@ -1,5 +1,6 @@
 package utility;
 
+import fragment.ICodeFragment;
 import fragment.IHierarchicalCodeFragment;
 
 import java.util.*;
@@ -11,9 +12,9 @@ public final class CollectionsUtility {
 	}
 
 	/*
-		Split a configuration of fragments into N subsets
-		return the list of subsets
-	 */
+        Split a configuration of fragments into N subsets
+        return the list of subsets
+     */
 	public static <T> List<List<T>> split(List<T> fragments, int granularity) {
 		List<List<T>> subsets = new ArrayList<>();
 		int start = 0;
@@ -32,8 +33,8 @@ public final class CollectionsUtility {
 	}
 
 	/*
-		Return all elements of c1 that are not in c2.
-	 */
+        Return all elements of c1 that are not in c2.
+     */
 	public static <T> List<T> listMinus(List<T> c1, List<T> c2) {
 		return c1.stream()
 				.filter(e -> !c2.contains(e))
@@ -54,5 +55,18 @@ public final class CollectionsUtility {
 			returnValue.addAll(getChildrenInDeep(child));
 		}
 		return returnValue;
+	}
+
+	public static <T, U> List<T> castList(List<U> list, Class<T> clz) {
+		return list.stream()
+				.map(clz::cast)
+				.collect(Collectors.toList());
+	}
+
+	public static List<ICodeFragment> union(Collection<? extends ICodeFragment> c1, Collection<? extends ICodeFragment> c2) {
+		List<ICodeFragment> list = new ArrayList<>(c1.size() + c2.size());
+		list.addAll(c1);
+		c2.stream().filter(e -> !list.contains(e)).forEach(list::add);
+		return list;
 	}
 }

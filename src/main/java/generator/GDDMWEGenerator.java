@@ -34,7 +34,7 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
             final int numberOfFragments = executor.getNumberOfFragmentsInDB();
             logInfo("Extracted " + numberOfFragments + " fragments to graph database in " + (System.currentTimeMillis() - extractionStart) + "ms");
             int numberOfFixedFragments = 0;
-            int testNr = 1;
+            int testNr = 0;
             while (true) {
                 long runStart = System.currentTimeMillis();
                 logInfo("############## RUNNING TEST NR. " + testNr + " ##############");

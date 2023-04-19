@@ -1,6 +1,6 @@
 package testexecutor.hdd;
 
-import fragment.ASTCodeFragment;
+import fragment.HDDCodeFragment;
 import fragment.ICodeFragment;
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
@@ -76,16 +76,16 @@ public class HDDTestExecutor extends ATestExecutor {
 				.collect(Collectors.toList());
 	}
 
-	protected ASTCodeFragment transformToFragements(CompilationUnit javaAST, List<Token> tokens, String relativeFileName, AtomicInteger fragmentNr) {
-		Map<ASTNode, ASTCodeFragment> astNodeToFragment = new HashMap<>();
-		ASTCodeFragment rootFragment = new ASTCodeFragment(relativeFileName, fragmentNr.getAndIncrement());
+	protected HDDCodeFragment transformToFragements(CompilationUnit javaAST, List<Token> tokens, String relativeFileName, AtomicInteger fragmentNr) {
+		Map<ASTNode, HDDCodeFragment> astNodeToFragment = new HashMap<>();
+		HDDCodeFragment rootFragment = new HDDCodeFragment(relativeFileName, fragmentNr.getAndIncrement());
 		rootFragment.setLevel(0);
 		astNodeToFragment.put(javaAST, rootFragment);
 		// Combine all tokens that belong to the same AST node:
 		for (Token token : tokens) {
-			ASTCodeFragment fragment = astNodeToFragment.get(token.node);
+			HDDCodeFragment fragment = astNodeToFragment.get(token.node);
 			if (fragment == null) {
-				fragment = new ASTCodeFragment(relativeFileName, fragmentNr.getAndIncrement());
+				fragment = new HDDCodeFragment(relativeFileName, fragmentNr.getAndIncrement());
 				astNodeToFragment.put(token.node, fragment);
 				for (ASTNode additionalNode : token.additionalNodes) {
 					astNodeToFragment.put(additionalNode, fragment);
@@ -98,7 +98,7 @@ public class HDDTestExecutor extends ATestExecutor {
 		return rootFragment;
 	}
 
-	protected void calculateDependencies(ASTNode rootNode, ASTCodeFragment rootFragment, Map<ASTNode, ASTCodeFragment> nodesToFragments) {
+	protected void calculateDependencies(ASTNode rootNode, HDDCodeFragment rootFragment, Map<ASTNode, HDDCodeFragment> nodesToFragments) {
 		// For each node, calculate its children and its level
 		if (nodesToFragments.isEmpty()) {
 			return;
@@ -115,7 +115,7 @@ public class HDDTestExecutor extends ATestExecutor {
 					.filter(node -> !Objects.equals(node, parent.get()))
 					.collect(Collectors.toList());
 			for (ASTNode child : childNodes) {
-				ASTCodeFragment fragment = nodesToFragments.get(child);
+				HDDCodeFragment fragment = nodesToFragments.get(child);
 				fragment.setLevel(level);
 				nodesOnLevel.add(child);
 				if (parent.get() != null && nodesToFragments.get(parent.get()) != null) {
@@ -139,12 +139,12 @@ public class HDDTestExecutor extends ATestExecutor {
 			nodesOnParentLevel.remove(parent.get());
 		}
 		// sometimes there are middle nodes, that are not assigned to a token in a fragment
-		for (Map.Entry<ASTNode, ASTCodeFragment> unassignedEntry : nodesToFragments.entrySet()
+		for (Map.Entry<ASTNode, HDDCodeFragment> unassignedEntry : nodesToFragments.entrySet()
 				.stream()
 				.filter(e -> e.getValue().getLevel() < 0)
 				.sorted(Comparator.comparing(e -> e.getValue().getStart()))
 				.collect(Collectors.toList())) {
-			ASTCodeFragment fragment = unassignedEntry.getValue();
+			HDDCodeFragment fragment = unassignedEntry.getValue();
 			ASTNode ancestorNode = unassignedEntry.getKey().getParent();
 			if (ancestorNode == null) {
 				throw new TestingException("Unable to calculate dependencies. Found unassignable node");
@@ -155,7 +155,7 @@ public class HDDTestExecutor extends ATestExecutor {
 					throw new TestingException("Unable to calculate dependencies. Found unassignable node");
 				}
 			}
-			ASTCodeFragment parentFragment = nodesToFragments.get(ancestorNode);
+			HDDCodeFragment parentFragment = nodesToFragments.get(ancestorNode);
 			parentFragment.addChild(fragment);
 			fragment.setLevel(parentFragment.getLevel() + 1);
 		}
@@ -166,7 +166,7 @@ public class HDDTestExecutor extends ATestExecutor {
 		recalculateLevels(rootFragment, 0);
 	}
 
-	protected void recalculateLevels(ASTCodeFragment fragment, int level) {
+	protected void recalculateLevels(HDDCodeFragment fragment, int level) {
 		fragment.setLevel(level);
 		fragment.getChildren().forEach(c -> recalculateLevels(c, level + 1));
 	}
@@ -177,7 +177,7 @@ public class HDDTestExecutor extends ATestExecutor {
 
 		// add active fragments and all their children
 		Map<String, Set<ICodeFragment>> fragmentsByFile = fragments.stream()
-				.map(fr -> ((ASTCodeFragment) fr))
+				.map(fr -> ((HDDCodeFragment) fr))
 				.flatMap(fr -> CollectionsUtility.getChildrenInDeep(fr).stream())
 				.map(fr -> (ICodeFragment) fr)
 				.collect(Collectors.groupingBy(ICodeFragment::getPath, Collectors.mapping(fr -> fr, Collectors.toSet())));
@@ -193,7 +193,7 @@ public class HDDTestExecutor extends ATestExecutor {
 			String fileName = entry.getKey();
 			StringBuilder sb = new StringBuilder();
 			entry.getValue().stream()
-					.flatMap(fr -> ((ASTCodeFragment) fr).getTokens().stream())
+					.flatMap(fr -> ((HDDCodeFragment) fr).getTokens().stream())
 					.sorted(Comparator.comparing(t -> t.start))
 					.forEach(token -> sb.append(token.code));
 

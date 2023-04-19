@@ -1,6 +1,6 @@
 package testexecutor.gdd;
 
-import fragment.ASTCodeFragment;
+import fragment.HDDCodeFragment;
 import org.eclipse.jdt.core.dom.*;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
@@ -11,7 +11,6 @@ import utility.FileUtility;
 import utility.JavaParserUtility;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class GraphDB {
@@ -45,8 +44,6 @@ public class GraphDB {
 	private static final String GUARANTEE_TYPE_UNIT_TO_TYPE_DEFINITION = "UNIT_TO_TYPE_DEFINITION";
 	private static final String GUARANTEE_TYPE_PACKAGE_INTERNAL = "PACKAGE_INTERNAL";
 
-
-	private static final AtomicInteger parameterNumber = new AtomicInteger();
 	private final Driver m_driver;
 	private final String m_nodeIdentifierSuffix;
 
@@ -55,7 +52,7 @@ public class GraphDB {
 		m_nodeIdentifierSuffix = nodeIdentifierSuffix;
 	}
 
-	public List<Long> addFragmentNodes(List<ASTCodeFragment> fragments) {
+	public List<Long> addFragmentNodes(List<HDDCodeFragment> fragments) {
 		if (fragments == null || fragments.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -68,7 +65,7 @@ public class GraphDB {
 				" RETURN ID(f)";
 
 		List<Map<String, Object>> props = new ArrayList<>();
-		for (ASTCodeFragment fragment : fragments) {
+		for (HDDCodeFragment fragment : fragments) {
 			if (fragment.getTokens().isEmpty()) {
 				continue;
 			}

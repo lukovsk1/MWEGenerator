@@ -38,7 +38,7 @@ public abstract class AbstractMWEGenerator {
 			// extract code fragments
 			executor.initialize();
 			List<ICodeFragment> fragments;
-			int testNr = 1;
+			int testNr = 0;
 			int totalFragments;
 			do {
 				logInfo("############## RUNNING TEST NR. " + testNr++ + " ##############");

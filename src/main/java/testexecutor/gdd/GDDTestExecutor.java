@@ -1,8 +1,8 @@
 package testexecutor.gdd;
 
 import fragment.ACodeFragment;
-import fragment.ASTCodeFragment;
 import fragment.GraphCodeFragment;
+import fragment.HDDCodeFragment;
 import fragment.ICodeFragment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import testexecutor.TestExecutorOptions;
@@ -45,13 +45,13 @@ public class GDDTestExecutor extends HDDTestExecutor {
     }
 
     @Override
-    protected ASTCodeFragment transformToFragements(CompilationUnit javaAST, List<JavaParserUtility.Token> tokens, String relativeFileName, AtomicInteger fragmentNr) {
-        ASTCodeFragment root = super.transformToFragements(javaAST, tokens, relativeFileName, fragmentNr);
+    protected HDDCodeFragment transformToFragements(CompilationUnit javaAST, List<JavaParserUtility.Token> tokens, String relativeFileName, AtomicInteger fragmentNr) {
+        HDDCodeFragment root = super.transformToFragements(javaAST, tokens, relativeFileName, fragmentNr);
         writeFragmentsToDatabase(Collections.singletonList(root), null);
         return null;
     }
 
-    protected void writeFragmentsToDatabase(List<ASTCodeFragment> fragments, Long parentFragmentNodeId) {
+    protected void writeFragmentsToDatabase(List<HDDCodeFragment> fragments, Long parentFragmentNodeId) {
         List<Long> fragmentNodeIds = m_graphDB.addFragmentNodes(fragments);
         if (parentFragmentNodeId != null) {
             m_graphDB.addASTDependencies(fragmentNodeIds, parentFragmentNodeId);
@@ -59,13 +59,13 @@ public class GDDTestExecutor extends HDDTestExecutor {
         // add all fragments to map
         for (int i = 0; i < fragmentNodeIds.size(); i++) {
             long id = fragmentNodeIds.get(i);
-            ASTCodeFragment fragment = fragments.get(i);
+            HDDCodeFragment fragment = fragments.get(i);
             m_fragments.put(id, new GraphCodeFragment(fragment.getPath(), id, fragment.getTokens()));
         }
         // recursively call method for children
         for (int i = 0; i < fragmentNodeIds.size(); i++) {
             long id = fragmentNodeIds.get(i);
-            ASTCodeFragment fragment = fragments.get(i);
+            HDDCodeFragment fragment = fragments.get(i);
             writeFragmentsToDatabase(fragment.getChildren(), id);
         }
     }
