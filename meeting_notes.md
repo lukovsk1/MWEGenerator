@@ -30,3 +30,16 @@
     - Finish implementing graph algorithm with AST dependencies (should perform exactly like HDD)
     - Add additional logging
     - Add import dependencies
+
+### 17.04.2023
+
+- Testing in virtual machine
+- wish list
+    - Recursive HDD
+    - Recursive Graph?
+    - More Graph Dependencies
+        - method signatures
+        - variable usage
+    - Comparisons / Benchmark
+        - directly generate csv / latex
+        - 
