@@ -40,9 +40,9 @@ public final class SlicerUtility {
     public static void doSlicing(Path testSourcePath, TestExecutorOptions executorOptions) {
         try {
             // compile source and unit test folder
-            File sourceFolder = new File(testSourcePath + "\\" + executorOptions.getSourceFolderPath());
-            File unitTestFolder = new File(testSourcePath + "\\" + executorOptions.getUnitTestFolderPath());
-            File targetDir = new File(testSourcePath + "\\compiledClasses");
+            File sourceFolder = new File(testSourcePath + File.separator + executorOptions.getSourceFolderPath());
+            File unitTestFolder = new File(testSourcePath + File.separator + executorOptions.getUnitTestFolderPath());
+            File targetDir = new File(testSourcePath + File.separator + "compiledClasses");
             InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance().ignoreWarnings();
 
             FileUtility.addJavaFilesToCompiler(compiler, sourceFolder.toPath());

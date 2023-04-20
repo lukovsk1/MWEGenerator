@@ -26,70 +26,70 @@ import java.util.stream.Stream;
  */
 public class SingleCharacterTestExecutor extends ATestExecutor {
 
-	public SingleCharacterTestExecutor(TestExecutorOptions options) {
-		super(options);
-	}
+    public SingleCharacterTestExecutor(TestExecutorOptions options) {
+        super(options);
+    }
 
-	@Override
-	public List<ICodeFragment> extractFragments() {
-		File sourceFolder = getSourceFolder(getTestSourcePath(), getOptions().getSourceFolderPath());
-		List<Path> filePaths;
-		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
-		try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
-			filePaths = stream
-					.filter(file -> Files.isRegularFile(file)
-							&& !isExcludedFile(file)
-							&& "java".equals(FilenameUtils.getExtension(file.toString()))
-							&& !file.toString().startsWith(unitTestFolderPath))
-					.collect(Collectors.toList());
+    @Override
+    public List<ICodeFragment> extractFragments() {
+        File sourceFolder = getSourceFolder(getTestSourcePath(), getOptions().getSourceFolderPath());
+        List<Path> filePaths;
+        String unitTestFolderPath = getTestSourcePath().toString() + File.separator + getOptions().getUnitTestFolderPath();
+        try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
+            filePaths = stream
+                    .filter(file -> Files.isRegularFile(file)
+                            && !isExcludedFile(file)
+                            && "java".equals(FilenameUtils.getExtension(file.toString()))
+                            && !file.toString().startsWith(unitTestFolderPath))
+                    .collect(Collectors.toList());
 
-		} catch (IOException e) {
-			throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);
-		}
+        } catch (IOException e) {
+            throw new ExtractorException("Unable to list files in folder" + sourceFolder.toPath(), e);
+        }
 
-		List<ICodeFragment> fragments = new ArrayList<>();
+        List<ICodeFragment> fragments = new ArrayList<>();
 
-		int fragmentNr = 0;
-		for (Path filePath : filePaths) {
-			try {
-				String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
-				byte[] file = Files.readAllBytes(filePath);
-				for (byte b : file) {
-					fragments.add(new SingleCharacterCodeFragment(relativeFileName, b, fragmentNr++));
-				}
+        int fragmentNr = 0;
+        for (Path filePath : filePaths) {
+            try {
+                String relativeFileName = filePath.toString().substring(sourceFolder.toString().length());
+                byte[] file = Files.readAllBytes(filePath);
+                for (byte b : file) {
+                    fragments.add(new SingleCharacterCodeFragment(relativeFileName, b, fragmentNr++));
+                }
 
-			} catch (IOException e) {
-				throw new ExtractorException("Unable to read characters from file " + filePath, e);
-			}
-		}
+            } catch (IOException e) {
+                throw new ExtractorException("Unable to read characters from file " + filePath, e);
+            }
+        }
 
-		return fragments;
-	}
+        return fragments;
+    }
 
-	@Override
-	protected Map<String, String> mapFragmentsToFiles(List<ICodeFragment> fragments) {
-		Map<String, String> files = new HashMap<>();
-		String fileName = null;
-		List<Byte> bytes = new ArrayList<>();
-		BiConsumer<List<Byte>, String> byteWriter = (byteList, fn) -> {
-			if (byteList.size() > 0) {
-				byte[] byteArray = new byte[byteList.size()];
-				for (int i = 0; i < byteList.size(); i++) {
-					byteArray[i] = byteList.get(i);
-				}
-				files.put(fn, new String(byteArray, StandardCharsets.UTF_8));
-			}
-		};
-		for (ICodeFragment fr : fragments) {
-			SingleCharacterCodeFragment fragment = (SingleCharacterCodeFragment) fr;
-			if (!fragment.getPath().equals(fileName)) {
-				byteWriter.accept(bytes, fileName);
-				fileName = fragment.getPath();
-				bytes = new ArrayList<>();
-			}
-			bytes.add(fragment.getContent());
-		}
-		byteWriter.accept(bytes, fileName);
-		return files;
-	}
+    @Override
+    protected Map<String, String> mapFragmentsToFiles(List<ICodeFragment> fragments) {
+        Map<String, String> files = new HashMap<>();
+        String fileName = null;
+        List<Byte> bytes = new ArrayList<>();
+        BiConsumer<List<Byte>, String> byteWriter = (byteList, fn) -> {
+            if (byteList.size() > 0) {
+                byte[] byteArray = new byte[byteList.size()];
+                for (int i = 0; i < byteList.size(); i++) {
+                    byteArray[i] = byteList.get(i);
+                }
+                files.put(fn, new String(byteArray, StandardCharsets.UTF_8));
+            }
+        };
+        for (ICodeFragment fr : fragments) {
+            SingleCharacterCodeFragment fragment = (SingleCharacterCodeFragment) fr;
+            if (!fragment.getPath().equals(fileName)) {
+                byteWriter.accept(bytes, fileName);
+                fileName = fragment.getPath();
+                bytes = new ArrayList<>();
+            }
+            bytes.add(fragment.getContent());
+        }
+        byteWriter.accept(bytes, fileName);
+        return files;
+    }
 }

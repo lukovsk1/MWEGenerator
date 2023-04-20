@@ -73,7 +73,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 		if (!moduleFolder.exists() || !moduleFolder.isDirectory()) {
 			throw new ExtractorException("Invalid module path " + modulePath);
 		}
-		File sourceFolder = new File(moduleFolder.getPath() + "/" + sourceFolderPath);
+		File sourceFolder = new File(moduleFolder.getPath() + File.separator + sourceFolderPath);
 		if (!sourceFolder.exists() || !sourceFolder.isDirectory()) {
 			throw new ExtractorException("Missing source folder " + sourceFolder);
 		}
@@ -82,22 +82,22 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 	protected Path getTestFolderPath() {
 		String dir = System.getProperty("user.dir");
-		return FileSystems.getDefault().getPath(dir + "/testingfolder");
+		return FileSystems.getDefault().getPath(dir + File.separator + "testingfolder");
 	}
 
 	protected Path getTestSourcePath() {
 		String dir = System.getProperty("user.dir");
-		return FileSystems.getDefault().getPath(dir + "/testingsource");
+		return FileSystems.getDefault().getPath(dir + File.separator + "testingsource");
 	}
 
 	protected Path getTestBuildPath() {
 		String dir = System.getProperty("user.dir");
-		return FileSystems.getDefault().getPath(dir + "/testingbuild");
+		return FileSystems.getDefault().getPath(dir + File.separator + "testingbuild");
 	}
 
 	protected Path getTestOutputPath() {
 		String dir = System.getProperty("user.dir");
-		return FileSystems.getDefault().getPath(dir + "/testingoutput");
+		return FileSystems.getDefault().getPath(dir + File.separator + "testingoutput");
 	}
 
 	protected void copyFolderStructure(Path src, Path dest, boolean includeJavaFiles) throws IOException {
@@ -135,9 +135,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 			// Copy unit test file
 			String unitTestFolderPath = getOptions().getUnitTestFolderPath();
-			Path unitTestPath = FileSystems.getDefault().getPath(testOutputPath + "\\" + unitTestFolderPath);
+			Path unitTestPath = FileSystems.getDefault().getPath(testOutputPath + File.separator + unitTestFolderPath);
 			FileUtility.deleteFolder(unitTestPath);
-			copyFolderStructure(FileSystems.getDefault().getPath(getTestSourcePath() + "\\" + unitTestFolderPath), unitTestPath, true);
+			copyFolderStructure(FileSystems.getDefault().getPath(getTestSourcePath() + File.separator + unitTestFolderPath), unitTestPath, true);
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
 		}
@@ -195,7 +195,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 		String[] unitTestName = getOptions().getUnitTestMethod().split("#");
 
 		try {
-			Path unitTestFolder = FileSystems.getDefault().getPath(getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath());
+			Path unitTestFolder = FileSystems.getDefault().getPath(getTestSourcePath().toString() + File.separator + getOptions().getUnitTestFolderPath());
 			FileUtility.addJavaFilesToCompiler(compiler, unitTestFolder);
 			for (Map.Entry<String, String> file : mapFragmentsToFiles(fragments).entrySet()) {
 				compiler.addSource(FileUtility.fileNameToClassName(file.getKey()), file.getValue());
@@ -266,9 +266,9 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 			// Copy unit test folder
 			String unitTestFolderPath = getOptions().getUnitTestFolderPath();
-			Path unitTestPath = FileSystems.getDefault().getPath(testFolderPath + "\\" + unitTestFolderPath);
+			Path unitTestPath = FileSystems.getDefault().getPath(testFolderPath + File.separator + unitTestFolderPath);
 			FileUtility.deleteFolder(unitTestPath);
-			copyFolderStructure(FileSystems.getDefault().getPath(testSourcePath + "\\" + unitTestFolderPath), unitTestPath, true);
+			copyFolderStructure(FileSystems.getDefault().getPath(testSourcePath + File.separator + unitTestFolderPath), unitTestPath, true);
 		} catch (IOException e) {
 			throw new TestingException("Unable to copy module", e);
 		}

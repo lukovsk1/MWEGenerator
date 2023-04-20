@@ -21,10 +21,9 @@ public class Main {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, InterruptedException {
 		// write both to the console and a log file
 		String dir = System.getProperty("user.dir");
-		System.out.println(dir);
 		DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 		String formattedDate = LocalDateTime.now().format(timeStampPattern);
-		File logFile = new File(dir + "/logs/_" + formattedDate + ".log");
+		File logFile = new File(dir + File.separator + "logs" + File.separator + "_" + formattedDate + ".log");
 		FileOutputStream fos = null;
 		if (logFile.createNewFile()) {
 			fos = new FileOutputStream(logFile);
@@ -100,13 +99,13 @@ public class Main {
 			System.out.println("TOTAL EXECUTION TIME: " + time + " ms.");
 
 			// check output size:
-			long outputSize = FileUtils.sizeOfDirectory(new File(dir + "/testingoutput"));
+			long outputSize = FileUtils.sizeOfDirectory(new File(dir + File.separator + "testingoutput"));
 			System.out.println("TOTAL OUTPUT SIZE: " + outputSize + " bytes");
 		}
 
 		if (fos != null) {
 			fos.close();
-			File finalLogFile = new File(dir + "/logs/" + formattedDate + ".log");
+			File finalLogFile = new File(dir + File.separator + "logs" + File.separator + formattedDate + ".log");
 			Files.move(logFile.toPath(), finalLogFile.toPath());
 		}
 

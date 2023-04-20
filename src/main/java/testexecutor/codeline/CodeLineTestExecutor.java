@@ -32,7 +32,7 @@ public class CodeLineTestExecutor extends ATestExecutor {
 	public List<ICodeFragment> extractFragments() {
 		File sourceFolder = getSourceFolder(getTestSourcePath(), getOptions().getSourceFolderPath());
 		List<Path> filePaths;
-		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
+		String unitTestFolderPath = getTestSourcePath().toString() + File.separator + getOptions().getUnitTestFolderPath();
 		try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
 			filePaths = stream
 					.filter(file -> Files.isRegularFile(file)

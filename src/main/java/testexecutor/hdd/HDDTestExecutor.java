@@ -53,7 +53,7 @@ public class HDDTestExecutor extends ATestExecutor {
 		List<ICodeFragment> fragments = new ArrayList<>();
 
 		AtomicInteger fragmentNr = new AtomicInteger();
-		String unitTestFolderPath = getTestSourcePath().toString() + "\\" + getOptions().getUnitTestFolderPath();
+		String unitTestFolderPath = getTestSourcePath().toString() + File.separator + getOptions().getUnitTestFolderPath();
 		for (Path filePath : filePaths) {
 			if(!"java".equals(FilenameUtils.getExtension(filePath.toString()))
 					|| filePath.toString().startsWith(unitTestFolderPath) ) {
