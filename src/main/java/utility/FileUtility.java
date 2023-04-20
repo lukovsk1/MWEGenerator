@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class FileUtility {
@@ -41,7 +42,8 @@ public class FileUtility {
 			walk.filter(path -> Files.isRegularFile(path) && "java".equals(FilenameUtils.getExtension(path.toString())))
 					.forEach(path -> {
 						try {
-							String className = path.toString().substring(folderPath.toString().length() + 1, path.toString().length() - 5).replaceAll("\\\\", ".");
+							String className = path.toString().substring(folderPath.toString().length() + 1, path.toString().length() - 5)
+									.replaceAll(Pattern.quote(File.separator), ".");
 							compiler.addSource(className, new String(Files.readAllBytes(path)));
 						} catch (Exception e) {
 							throw new RuntimeException(e);
