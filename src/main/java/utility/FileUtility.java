@@ -42,6 +42,7 @@ public class FileUtility {
 					.forEach(path -> {
 						try {
 							String className = path.toString().substring(folderPath.toString().length() + 1, path.toString().length() - 5).replaceAll("\\\\", ".");
+							System.out.println("VM: adding unit test " + path + " to compiler with className " + className);
 							compiler.addSource(className, new String(Files.readAllBytes(path)));
 						} catch (Exception e) {
 							throw new RuntimeException(e);
