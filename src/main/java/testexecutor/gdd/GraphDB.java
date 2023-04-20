@@ -29,6 +29,8 @@ public class GraphDB {
 	private static final String ATTR_CODE = "code";
 	private static final String ATTR_NODE_TYPE = "nodeType";
 	private static final String ATTR_METHOD_NAME = "methodName";
+	private static final String ATTR_BINDING_KEY = "bindingKey";
+	private static final String ATTR_EXPRESSION_BINDING_KEY = "expressionBindingKey";
 	private static final String ATTR_CLASS_NAME = "className";
 	private static final String ATTR_SIMPLE_NAME = "simpleName";
 	private static final String ATTR_IMPORT_NAME = "importName";
@@ -39,6 +41,7 @@ public class GraphDB {
 	private static final String DEPENDENCY_TYPE_IMPORT_TO_UNIT = "IMPORT_TO_UNIT";
 	private static final String DEPENDENCY_TYPE_CLASS_TO_IMPORT = "CLASS_TO_IMPORT";
 	private static final String DEPENDENCY_TYPE_CLASS_TO_UNIT_IN_PACKAGE = "CLASS_TO_UNIT_IN_PACKAGE";
+	private static final String DEPENDENCY_TYPE_METHOD_INVOCATION_TO_DECLARATION = "METHOD_INVOCATION_TO_DECLARATION";
 
 	private static final String GUARANTEE_TYPE_UNIT_TO_PACKAGE = "UNIT_TO_PACKAGE";
 	private static final String GUARANTEE_TYPE_UNIT_TO_TYPE_DEFINITION = "UNIT_TO_TYPE_DEFINITION";
@@ -102,7 +105,12 @@ public class GraphDB {
 
 	private void addNodeSpecificAttribute(Map<String, Object> fragmentProperties, ASTNode node) {
 		if (node instanceof MethodDeclaration) {
-			fragmentProperties.put(ATTR_METHOD_NAME, ((MethodDeclaration) node).getName().toString());
+			MethodDeclaration n = ((MethodDeclaration) node);
+			fragmentProperties.put(ATTR_METHOD_NAME, n.getName().toString());
+			IMethodBinding methodBinding = (IMethodBinding) n.getName().resolveBinding();
+			if (methodBinding != null) {
+				fragmentProperties.put(ATTR_BINDING_KEY, methodBinding.getKey());
+			}
 		} else if (node instanceof ClassInstanceCreation) {
 			fragmentProperties.put(ATTR_SIMPLE_NAME, ((ClassInstanceCreation) node).getType().toString());
 		} else if (node instanceof TypeDeclaration) {
@@ -112,14 +120,28 @@ public class GraphDB {
 		} else if (node instanceof MethodInvocation) {
 			MethodInvocation n = (MethodInvocation) node;
 			fragmentProperties.put(ATTR_METHOD_NAME, n.getName().toString());
+			IMethodBinding methodBinding = (IMethodBinding) n.getName().resolveBinding();
+			if (methodBinding != null) {
+				fragmentProperties.put(ATTR_BINDING_KEY, methodBinding.getKey());
+			}
 			Expression expr = n.getExpression();
 			if (expr instanceof SimpleName) {
 				fragmentProperties.put(ATTR_SIMPLE_NAME, expr.toString());
+				IBinding binding = ((SimpleName) expr).resolveBinding();
+				if (binding != null) {
+					fragmentProperties.put(ATTR_EXPRESSION_BINDING_KEY, binding.getKey());
+				}
 			}
 		} else if (node instanceof ImportDeclaration) {
 			fragmentProperties.put(ATTR_IMPORT_NAME, ((ImportDeclaration) node).getName().toString());
 		} else if (node instanceof PackageDeclaration) {
 			fragmentProperties.put(ATTR_PACKAGE_NAME, ((PackageDeclaration) node).getName().toString());
+		} else if (node instanceof SimpleName) {
+			fragmentProperties.put(ATTR_SIMPLE_NAME, node.toString());
+			IBinding binding = ((SimpleName) node).resolveBinding();
+			if (binding != null) {
+				fragmentProperties.put(ATTR_BINDING_KEY, binding.getKey());
+			}
 		}
 	}
 
@@ -487,12 +509,36 @@ public class GraphDB {
 
 	private void addLocalMethodInvocationsDependencies() {
         /*
-        MATCH (f:Fragment_20230323_171737 {nodeType:'MethodInvocation'}), (d:Fragment_20230323_171737 {nodeType:'MethodDeclaration'})
-        WHERE f.simpleName IS NULL AND f.className = d.className AND f.methodName = d.methodName
-        RETURN f, d;
+        MATCH (i:Fragment_20230420_172659 {nodeType:'MethodInvocation'}), (d:Fragment_20230420_172659 {nodeType:'MethodDeclaration'})
+        WHERE i.bindingKey IS NOT NULL AND i.bindingKey = d.bindingKey
+        RETURN i, d;
          */
 
-		// TODO implement and restrict further. Overloaded methods will be added as false dependencies
+		Map<String, Object> params = new HashMap<>();
+		String query = "MATCH (i" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				"{" +
+				ATTR_NODE_TYPE +
+				":$methodInvocation}), (d" +
+				LABEL_PREFIX_FRAGMENT +
+				m_nodeIdentifierSuffix +
+				"{" +
+				ATTR_NODE_TYPE +
+				":$methodDeclaration}) WHERE i." +
+				ATTR_BINDING_KEY + " IS NOT NULL AND i." +
+				ATTR_BINDING_KEY + " = d." + ATTR_BINDING_KEY +
+				" CREATE (s)-[" +
+				RELATIONSHIP_LABEL_DEPENDS_ON +
+				"{" +
+				ATTR_DEPENDENCY_TYPE +
+				":$dependenceType}]->(c);";
+		params.put("methodInvocation", MethodInvocation.class.getSimpleName());
+		params.put("methodDeclaration", MethodDeclaration.class.getSimpleName());
+		params.put("dependenceType", DEPENDENCY_TYPE_METHOD_INVOCATION_TO_DECLARATION);
+		Session session = m_driver.session();
+		Result res = session.run(query, params);
+		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " method invocation to declaration cross tree dependencies.");
 	}
 
 	private void addUnitToPackageGuarantee() {

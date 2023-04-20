@@ -53,6 +53,8 @@ public class JavaParserUtility {
 		parser.setResolveBindings(true);
 		parser.setBindingsRecovery(true); // generates binding also for none resolvable/missing types
 		parser.setIgnoreMethodBodies(!parseMethodBodies);
+		parser.setUnitName("unit_name");
+		parser.setEnvironment(null, new String[]{}, null, false);
 		return (CompilationUnit) parser.createAST(null);
 	}
 
