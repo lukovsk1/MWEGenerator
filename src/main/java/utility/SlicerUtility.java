@@ -139,7 +139,7 @@ public final class SlicerUtility {
 
     private static MethodReference extractUnitTestMethodReference(String unitTestMethod) {
         String[] unitTestName = unitTestMethod.split("#");
-        String className = "L" + unitTestName[0].replaceAll("\\.", "/");
+        String className = "L" + unitTestName[0].replaceAll("\\.", File.separator);
         return MethodReference.findOrCreate(ClassLoaderReference.Application, className, unitTestName[1], "()V");
     }
 
