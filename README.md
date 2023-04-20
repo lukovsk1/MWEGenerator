@@ -119,3 +119,13 @@ TestExecutorOptions#withConcurrentExecution allows the DDmin algorithm to be run
 of concurrent threads.
 Multiple subsets of code fragments are compiled and executed in parallel.
 For the defects4j example CLI 1 this reduces the runtime for a single execution of the algorithm from around 6h to 1.5h.
+
+## Running the algorithm on a Linux VM
+
+Steps:
+
+- Install defects4j and check out a bug
+- Clone the ddminj git repo
+- mvn clean compile assembly:single
+- java -jar target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar
+

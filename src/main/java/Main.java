@@ -21,6 +21,7 @@ public class Main {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, InterruptedException {
 		// write both to the console and a log file
 		String dir = System.getProperty("user.dir");
+		System.out.println(dir);
 		DateTimeFormatter timeStampPattern = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 		String formattedDate = LocalDateTime.now().format(timeStampPattern);
 		File logFile = new File(dir + "/logs/_" + formattedDate + ".log");
