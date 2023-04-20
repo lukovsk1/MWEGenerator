@@ -196,6 +196,7 @@ public abstract class ATestExecutor implements ITestExecutor {
 
 		try {
 			Path unitTestFolder = FileSystems.getDefault().getPath(getTestSourcePath().toString() + File.separator + getOptions().getUnitTestFolderPath());
+			System.out.println("unitTestFolder: " + unitTestFolder);
 			FileUtility.addJavaFilesToCompiler(compiler, unitTestFolder);
 			for (Map.Entry<String, String> file : mapFragmentsToFiles(fragments).entrySet()) {
 				compiler.addSource(FileUtility.fileNameToClassName(file.getKey()), file.getValue());
