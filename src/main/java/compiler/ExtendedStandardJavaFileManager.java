@@ -31,6 +31,7 @@ public class ExtendedStandardJavaFileManager extends org.mdkt.compiler.ExtendedS
             CompiledCode innerClass = new CompiledCode(className);
             this.compiledCode.add(innerClass);
             this.cl.addCode(innerClass);
+            System.out.println("Compilation: added " + innerClass.getName());
             return innerClass;
         } catch (Exception var6) {
             throw new RuntimeException("Error while creating in-memory output file for " + className, var6);
