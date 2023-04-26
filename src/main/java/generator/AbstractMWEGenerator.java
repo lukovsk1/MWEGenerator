@@ -5,6 +5,7 @@ import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import testexecutor.TestingException;
 import utility.CollectionsUtility;
+import utility.StatsUtility;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -46,9 +47,8 @@ public abstract class AbstractMWEGenerator {
 				totalFragments = fragments.size();
 				long start = System.currentTimeMillis();
 				fragments = runDDMin(executor, fragments, totalFragments);
-				long time = System.currentTimeMillis() - start;
 				logInfo(null);
-				logInfo("Found a 1-minimal configuration in " + time + " ms:");
+				logInfo("Found a 1-minimal configuration in " + StatsUtility.formatDuration(start) + ":");
 				logInfo(getConfigurationIdentifier(fragments, totalFragments));
 
 				// recreate mwe

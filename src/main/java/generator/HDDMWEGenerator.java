@@ -7,6 +7,7 @@ import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import testexecutor.hdd.HDDTestExecutor;
 import utility.CollectionsUtility;
+import utility.StatsUtility;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +45,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 					long start = System.currentTimeMillis();
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " / " + m_maxLevel + " ##############");
 					List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
-					logInfo("Level " + m_testNr + "-" + m_level + " / " + m_maxLevel + " took " + (System.currentTimeMillis() - start) + "ms");
+					logInfo("Level " + m_testNr + "-" + m_level + " / " + m_maxLevel + " took " + StatsUtility.formatDuration(start));
 					printConfigurationInfo(minConfig, fragments);
 					if (minConfig.isEmpty()) {
 						break;
@@ -65,7 +66,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 				logInfo("Recreating result in testingoutput folder...");
 				executor.recreateCode(fragments);
 				int numberOfFragmentsLeft = executor.getFixedFragments().size();
-				logInfo("############## FINISHED NR. " + m_testNr++ + " in " + (System.currentTimeMillis() - runStart) + "ms :::: Reduced to " + numberOfFragmentsLeft + " out of " + m_initialNumberOfFragments + " :::: " + executor.getStatistics() + " ##############");
+				logInfo("############## FINISHED NR. " + m_testNr++ + " in " + StatsUtility.formatDuration(runStart) + " :::: Reduced to " + numberOfFragmentsLeft + " out of " + m_initialNumberOfFragments + " :::: " + executor.getStatistics() + " ##############");
 				if (!m_testExecutorOptions.isMultipleRuns() || numberOfFixedFragments == numberOfFragmentsLeft) {
 					break;
 				}

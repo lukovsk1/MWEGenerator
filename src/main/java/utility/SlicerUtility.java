@@ -104,14 +104,14 @@ public final class SlicerUtility {
             Slicer.ControlDependenceOptions control = Slicer.ControlDependenceOptions.FULL;
 
             SDG<InstanceKey> sdg = new SDG<>(cg, ptr, new AstJavaModRef<>(), data, control);
-            System.out.println("Slicing: ... in " + (System.currentTimeMillis() - start) + "ms");
+            System.out.println("Slicing: ... in " + StatsUtility.formatDuration(start));
             System.out.println("Slicing: computing code slice...");
             start = System.currentTimeMillis();
 
             // running slicing algorithm
             Collection<Statement> slicingStatements = getSlicingStatements(entryRef, cg);
             Collection<Statement> codeSlice = Slicer.computeBackwardSlice(sdg, slicingStatements);
-            System.out.println("Slicing: Extracted slicing with " + codeSlice.size() + " statements in " + (System.currentTimeMillis() - start) + "ms");
+            System.out.println("Slicing: Extracted slicing with " + codeSlice.size() + " statements in " + StatsUtility.formatDuration(start));
 
             // removing unused code from source folder
             pruneSourceFolder(codeSlice, testSourcePath);

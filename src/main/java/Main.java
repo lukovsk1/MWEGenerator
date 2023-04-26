@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.TeeOutputStream;
 import testexecutor.ExecutorConstants;
 import testexecutor.TestExecutorOptions;
+import utility.StatsUtility;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -94,9 +95,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace(System.out);
 		} finally {
-			long time = System.currentTimeMillis() - start;
 			System.out.println();
-			System.out.println("TOTAL EXECUTION TIME: " + time + " ms.");
+			System.out.println("TOTAL EXECUTION TIME: " + StatsUtility.formatDuration(start) + ".");
 
 			// check output size:
 			long outputSize = FileUtils.sizeOfDirectory(new File(dir + File.separator + "testingoutput"));

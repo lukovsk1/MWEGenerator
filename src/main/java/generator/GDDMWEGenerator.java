@@ -5,6 +5,7 @@ import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import testexecutor.gdd.GDDTestExecutor;
 import utility.CollectionsUtility;
+import utility.StatsUtility;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +33,7 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
             long extractionStart = System.currentTimeMillis();
             executor.extractFragments();
             final int numberOfFragments = executor.getNumberOfFragmentsInDB();
-            logInfo("Extracted " + numberOfFragments + " fragments to graph database in " + (System.currentTimeMillis() - extractionStart) + "ms");
+            logInfo("Extracted " + numberOfFragments + " fragments to graph database in " + StatsUtility.formatDuration(extractionStart));
             int numberOfFixedFragments = 0;
             int testNr = 0;
             while (true) {
@@ -46,7 +47,7 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
                     }
                     logInfo("############## EXECUTING LVL " + m_level + " with " + fragments.size() + " active fragments ##############");
                     List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
-                    logInfo("Level " + m_level + " took " + (System.currentTimeMillis() - levelStart) + "ms");
+                    logInfo("Level " + m_level + " took " + StatsUtility.formatDuration(levelStart));
                     printConfigurationInfo(minConfig, fragments);
                     executor.addFixedFragments(minConfig);
                     executor.addDiscardedFragments(CollectionsUtility.listMinus(fragments, minConfig));
@@ -57,7 +58,7 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
                 logInfo("Recreating result in testingoutput folder...");
                 executor.recreateCode(Collections.emptyList());
                 int numberOfFragmentsLeft = executor.getNumberOfFragmentsInDB();
-                logInfo("############## FINISHED NR. " + testNr++ + " in " + (System.currentTimeMillis() - runStart) + "ms :::: Reduced to " + numberOfFragmentsLeft + " out of " + numberOfFragments + " :::: " + executor.getStatistics() + " ##############");
+                logInfo("############## FINISHED NR. " + testNr++ + " in " + StatsUtility.formatDuration(runStart) + " :::: Reduced to " + numberOfFragmentsLeft + " out of " + numberOfFragments + " :::: " + executor.getStatistics() + " ##############");
                 if (!m_testExecutorOptions.isMultipleRuns() || numberOfFixedFragments == numberOfFragmentsLeft) {
                     break;
                 }

@@ -6,6 +6,7 @@ import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import testexecutor.hdd.HDDrecTestExecutor;
 import utility.CollectionsUtility;
+import utility.StatsUtility;
 
 import java.util.*;
 import java.util.concurrent.CancellationException;
@@ -29,7 +30,7 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 				long runStart = System.currentTimeMillis();
 				logInfo("############## RUNNING TEST NR. " + m_testNr + " ##############");
 				while (!executor.getQueue().isEmpty()) {
-					long start = System.currentTimeMillis();
+					long levelStart = System.currentTimeMillis();
 					IHierarchicalCodeFragment currentFragment = executor.getQueue().poll();
 					if (currentFragment == null) {
 						continue;
@@ -40,7 +41,7 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 					}
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " ##############");
 					List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
-					logInfo("Level " + m_testNr + "-" + m_level + " took " + (System.currentTimeMillis() - start) + "ms");
+					logInfo("Level " + m_testNr + "-" + m_level + " took " + StatsUtility.formatDuration(levelStart));
 					printConfigurationInfo(minConfig, fragments);
 					executor.addFixedFragments(minConfig);
 					executor.getQueue().addAll(CollectionsUtility.castList(minConfig, IHierarchicalCodeFragment.class));
@@ -59,7 +60,7 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 				logInfo("Recreating result in testingoutput folder...");
 				executor.recreateCode(Collections.emptyList());
 				int numberOfFragmentsLeft = executor.getFixedFragments().size();
-				logInfo("############## FINISHED NR. " + m_testNr++ + " in " + (System.currentTimeMillis() - runStart) + "ms :::: Reduced to " + numberOfFragmentsLeft + " out of " + m_initialNumberOfFragments + " :::: " + executor.getStatistics() + " ##############");
+				logInfo("############## FINISHED NR. " + m_testNr++ + " in " + StatsUtility.formatDuration(runStart) + " :::: Reduced to " + numberOfFragmentsLeft + " out of " + m_initialNumberOfFragments + " :::: " + executor.getStatistics() + " ##############");
 				if (!m_testExecutorOptions.isMultipleRuns() || numberOfFixedFragments == numberOfFragmentsLeft) {
 					break;
 				}
