@@ -38,7 +38,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 			while (true) {
 				executor.initialize();
 				List<ICodeFragment> fullTree = executor.extractFragments();
-				m_fragments = new ArrayList<>(fullTree);
+				List<ICodeFragment> fragments = new ArrayList<>(fullTree);
 				analyzeTree(fullTree);
 				m_level = 0;
 				long runStart = System.currentTimeMillis();
@@ -46,18 +46,18 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 				while (true) {
 					long levelStart = System.currentTimeMillis();
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " / " + m_maxLevel + " ##############");
-					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, m_fragments.size(), calculateTotalNumberOfFragements(executor));
-					List<ICodeFragment> minConfig = runDDMin(executor, m_fragments, m_fragments.size());
+					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, fragments.size(), calculateTotalNumberOfFragements(executor, fragments));
+					List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
 					logInfo("Level " + m_testNr + "-" + m_level + " / " + m_maxLevel + " took " + StatsUtility.formatDuration(levelStart));
-					printConfigurationInfo(minConfig, m_fragments);
+					printConfigurationInfo(minConfig, fragments);
 					executor.addFixedFragments(minConfig);
-					m_fragments = minConfig.stream()
+					fragments = minConfig.stream()
 							.map(fr -> (IHierarchicalCodeFragment) fr)
 							.map(IHierarchicalCodeFragment::getChildren)
 							.flatMap(Collection::stream)
 							.map(fr -> (ICodeFragment) fr)
 							.collect(Collectors.toList());
-					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor);
+					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor, fragments);
 					logInfo("############## After level " + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
 					executor.trackDDminCompilerStats();
 					statsTracker.trackDDminExecutionEnd(levelStart, minConfig.size(), numberOfRemainingFragments);
@@ -92,8 +92,8 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 		}
 	}
 
-	private long calculateTotalNumberOfFragements(HDDTestExecutor executor) {
-		return executor.getFixedFragments().size() + m_fragments.stream()
+	private long calculateTotalNumberOfFragements(HDDTestExecutor executor, List<ICodeFragment> fragments) {
+		return executor.getFixedFragments().size() + fragments.stream()
 				.map(IHierarchicalCodeFragment.class::cast)
 				.mapToLong(fr -> CollectionsUtility.getChildrenInDeep(fr).size())
 				.sum();

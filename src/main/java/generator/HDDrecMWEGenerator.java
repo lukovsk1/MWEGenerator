@@ -37,15 +37,15 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 					if (currentFragment == null) {
 						continue;
 					}
-					m_fragments = CollectionsUtility.castList(currentFragment.getChildren(), ICodeFragment.class);
-					if (m_fragments.isEmpty()) {
+					List<ICodeFragment> fragments = CollectionsUtility.castList(currentFragment.getChildren(), ICodeFragment.class);
+					if (fragments.isEmpty()) {
 						continue;
 					}
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " ##############");
-					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, m_fragments.size(), calculateTotalNumberOfFragements(executor));
-					List<ICodeFragment> minConfig = runDDMin(executor, m_fragments, m_fragments.size());
+					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, fragments.size(), calculateTotalNumberOfFragements(executor));
+					List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
 					logInfo("Level " + m_testNr + "-" + m_level + " took " + StatsUtility.formatDuration(levelStart));
-					printConfigurationInfo(minConfig, m_fragments);
+					printConfigurationInfo(minConfig, fragments);
 					executor.addFixedFragments(minConfig);
 					executor.getQueue().addAll(CollectionsUtility.castList(minConfig, IHierarchicalCodeFragment.class));
 

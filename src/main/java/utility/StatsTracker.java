@@ -80,6 +80,10 @@ public class StatsTracker {
         }
     }
 
+    public void writeGeneratorName(String simpleName) {
+        getCell(1, 2).setCellValue(simpleName);
+    }
+
     public void writeExecutorOptions(TestExecutorOptions options) {
         // write options from row 4-17
         getCell(4, 2).setCellValue(options.getModulePath());

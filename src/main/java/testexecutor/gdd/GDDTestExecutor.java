@@ -129,8 +129,8 @@ public class GDDTestExecutor extends HDDTestExecutor {
         System.out.println("Discarded " + fragments.size() + " active fragments. " + allDiscardedNodes.size() + " fragments, including dependent nodes");
     }
 
-    public int getNumberOfFragmentsInDB() {
-        return m_graphDB.getNumberOfFragments();
+    public int getNumberOfRemainingFragments() {
+        return m_fragments.size();
     }
 
     @Override

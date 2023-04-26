@@ -4,6 +4,7 @@
     <option name="MAIN_CLASS_NAME" value="Main" />
     <module name="ddminj" />
     <option name="PROGRAM_PARAMETERS" value="generator.GDDMWEGenerator C:\Users\lubo9\Desktop\Workspace\defects4j\bugs\cli_1_b src\java\ src\test\ org.apache.commons.cli.bug.BugCLI13Test#testCLI13 junit.framework.AssertionFailedError" />
+    <option name="VM_PARAMETERS" value="-ea" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

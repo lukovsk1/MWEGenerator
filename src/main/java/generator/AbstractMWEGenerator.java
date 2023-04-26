@@ -34,6 +34,7 @@ public abstract class AbstractMWEGenerator {
 		}
 
 		StatsUtility.getStatsTracker().writeExecutorOptions(options);
+		StatsUtility.getStatsTracker().writeGeneratorName(this.getClass().getSimpleName());
 	}
 
 	public void runGenerator() {

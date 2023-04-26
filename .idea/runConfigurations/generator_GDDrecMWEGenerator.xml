@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="generator.GDDMWEGenerator" type="Application" factoryName="Application">
+  <configuration default="false" name="generator.GDDrecMWEGenerator" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="Main" />
     <module name="ddminj" />
-    <option name="PROGRAM_PARAMETERS" value="generator.GDDMWEGenerator" />
+    <option name="PROGRAM_PARAMETERS" value="generator.GDDrecMWEGenerator" />
     <option name="VM_PARAMETERS" value="-ea" />
     <method v="2">
       <option name="Make" enabled="true" />
