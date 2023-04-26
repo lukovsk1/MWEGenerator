@@ -60,7 +60,6 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 				logInfo("Recreating result in testingoutput folder...");
 				executor.recreateCode(Collections.emptyList());
 				int numberOfFragmentsLeft = executor.getFixedFragments().size();
-				StatsUtility.getStatsTracker().writeInputFragments(numberOfFragmentsLeft);
 				logInfo("############## FINISHED NR. " + m_testNr++ + " in " + StatsUtility.formatDuration(runStart) + " :::: Reduced to " + numberOfFragmentsLeft + " out of " + m_initialNumberOfFragments + " :::: " + executor.getStatistics() + " ##############");
 				if (!m_testExecutorOptions.isMultipleRuns() || numberOfFixedFragments == numberOfFragmentsLeft) {
 					break;
@@ -76,10 +75,6 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 			if (m_fragments != null && !m_fragments.isEmpty()) {
 				executor.recreateCode(m_fragments);
 				executor.formatOutputFolder();
-				StatsUtility.getStatsTracker().writeInputFragments(executor.getFixedFragments().size() + m_fragments.stream()
-						.map(IHierarchicalCodeFragment.class::cast)
-						.mapToLong(fr -> CollectionsUtility.getChildrenInDeep(fr).size())
-						.sum());
 			}
 			throw e;
 		} finally {

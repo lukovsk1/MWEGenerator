@@ -28,4 +28,6 @@ public interface ITestExecutor {
 	String getStatistics();
 
 	void formatOutputFolder();
+
+	void trackDDminCompilerStats();
 }

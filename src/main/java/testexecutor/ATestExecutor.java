@@ -15,6 +15,7 @@ import org.eclipse.text.edits.TextEdit;
 import org.mdkt.compiler.CompilationException;
 import utility.FileUtility;
 import utility.SlicerUtility;
+import utility.StatsTracker;
 import utility.StatsUtility;
 
 import java.io.*;
@@ -416,5 +417,11 @@ public abstract class ATestExecutor implements ITestExecutor {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public void trackDDminCompilerStats() {
+		StatsTracker statsTracker = StatsUtility.getStatsTracker();
+		statsTracker.trackDDMinCompilerStats(m_compilerCalls.get(), m_failedRuns.get());
 	}
 }

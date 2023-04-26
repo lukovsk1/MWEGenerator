@@ -104,7 +104,7 @@ public class Main {
 			// check output size:
 			long outputSize = FileUtils.sizeOfDirectory(new File(dir + File.separator + "testingoutput"));
 			System.out.println("TOTAL OUTPUT SIZE: " + outputSize + " bytes");
-			statTracker.saveStats();
+			statTracker.saveStats(start);
 		}
 
 		if (fos != null) {

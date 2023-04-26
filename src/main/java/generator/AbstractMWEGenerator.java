@@ -56,6 +56,7 @@ public abstract class AbstractMWEGenerator {
 				statsTracker.startTrackingDDminExecution(String.valueOf(testNr), activeFragments, activeFragments);
 				m_fragments = runDDMin(executor, m_fragments, activeFragments);
 				logInfo("############## FINISHED NR. " + testNr++ + " in " + StatsUtility.formatDuration(start) + " :::: Reduced to " + m_fragments.size() + " out of " + totalFragments + " :::: " + executor.getStatistics() + " ##############");
+				executor.trackDDminCompilerStats();
 				statsTracker.trackDDminExecutionEnd(start, m_fragments.size(), m_fragments.size());
 
 				// recreate mwe

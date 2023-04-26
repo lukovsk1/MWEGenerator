@@ -11,15 +11,14 @@ import java.io.FileOutputStream;
 public class StatsTracker {
     private static final String WORKBOOK_PATH = File.separator + "stats" + File.separator + "Statistics.xlsx";
 
-    private final String sheetName;
     private final XSSFWorkbook workbook;
-    private final XSSFSheet sheet;
-    private XSSFRow activeDDminRow;
-    private long outputFragments = Long.MAX_VALUE;
-    private int ddminRowNumber = 31;
+    private final XSSFSheet m_sheet;
+    private XSSFRow m_activeDDminRow;
+    private int m_ddminRowNumber = 31;
+    private int m_compilerCalls = 0;
+    private int m_failedRuns = 0;
 
     public StatsTracker(String formattedDate) {
-        sheetName = formattedDate;
         String dir = System.getProperty("user.dir");
         File workbookFile = new File(dir + WORKBOOK_PATH);
         if (!workbookFile.exists()) {
@@ -32,7 +31,7 @@ public class StatsTracker {
             if (sheetIndex < 0) {
                 throw new StatsException("Unable to find template sheet");
             }
-            sheet = workbook.cloneSheet(sheetIndex, sheetName);
+            m_sheet = workbook.cloneSheet(sheetIndex, formattedDate);
         } catch (Exception e) {
             throw new StatsException("Error while initializing StatsTracker", e);
         }
@@ -40,9 +39,9 @@ public class StatsTracker {
 
     // get cell with real coordinates (starting from 1)
     private XSSFCell getCell(int rowNo, int columnNo) {
-        XSSFRow row = sheet.getRow(rowNo - 1);
+        XSSFRow row = m_sheet.getRow(rowNo - 1);
         if (row == null) {
-            row = sheet.createRow(rowNo - 1);
+            row = m_sheet.createRow(rowNo - 1);
         }
 
         return getCell(row, columnNo);
@@ -57,7 +56,15 @@ public class StatsTracker {
         return cell;
     }
 
-    public void saveStats() {
+    public void saveStats(long startTime) {
+        // write total execution time
+        getCell(26, 2).setCellValue(System.currentTimeMillis() - startTime);
+
+        // delete trailing rows
+        for (int i = m_ddminRowNumber; i <= m_sheet.getLastRowNum(); i++) {
+            m_sheet.removeRow(m_sheet.getRow(i));
+        }
+
         // Evaluate all formulas in the workbook
         XSSFFormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
         formulaEvaluator.evaluateAll();
@@ -115,32 +122,43 @@ public class StatsTracker {
         getCell(25, 2).setCellValue(loc);
     }
 
-    public void writeOutputFragments(long size) {
-        if (size < outputFragments) {
-            outputFragments = size;
-            getCell(23, 2).setCellValue(size);
-        }
-    }
-
 
     public void startTrackingDDminExecution(String levelIdentifier, long numberOfFragmentsForDDmin, long totalFragments) {
         // duplicate the last row with its formula
-        sheet.copyRows(ddminRowNumber, ddminRowNumber, ddminRowNumber + 1, new CellCopyPolicy());
+        m_sheet.copyRows(m_ddminRowNumber, m_ddminRowNumber, m_ddminRowNumber + 1, new CellCopyPolicy());
 
         // start writing values in the originally last row of the document
-        activeDDminRow = sheet.getRow(ddminRowNumber);
-        getCell(activeDDminRow, 1).setCellValue(levelIdentifier);
-        getCell(activeDDminRow, 2).setCellValue(numberOfFragmentsForDDmin);
-        getCell(activeDDminRow, 5).setCellValue(totalFragments);
+        m_activeDDminRow = m_sheet.getRow(m_ddminRowNumber);
+        getCell(m_activeDDminRow, 1).setCellValue(levelIdentifier);
+        getCell(m_activeDDminRow, 2).setCellValue(numberOfFragmentsForDDmin);
+        getCell(m_activeDDminRow, 5).setCellValue(totalFragments);
     }
 
     public void trackDDminExecutionEnd(long startTime, long minConfigSize, long totalFragmentsLeft) {
-        if (activeDDminRow == null) {
+        getCell(23, 2).setCellValue(totalFragmentsLeft);
+
+        if (m_activeDDminRow == null) {
             return;
         }
-        getCell(activeDDminRow, 3).setCellValue(minConfigSize);
-        getCell(activeDDminRow, 6).setCellValue(totalFragmentsLeft);
-        getCell(activeDDminRow, 10).setCellValue(System.currentTimeMillis() - startTime);
-        ddminRowNumber++;
+        getCell(m_activeDDminRow, 3).setCellValue(minConfigSize);
+        getCell(m_activeDDminRow, 6).setCellValue(totalFragmentsLeft);
+        getCell(m_activeDDminRow, 10).setCellValue(System.currentTimeMillis() - startTime);
+        m_ddminRowNumber++;
+    }
+
+    public void trackDDMinCompilerStats(int compilerCallsTotal, int failedRunsTotal) {
+        // write global stats
+        getCell(27, 2).setCellValue(compilerCallsTotal);
+        getCell(28, 2).setCellValue(failedRunsTotal);
+
+        // write deltas to run row
+        if (m_activeDDminRow == null) {
+            return;
+        }
+
+        getCell(m_activeDDminRow, 8).setCellValue(compilerCallsTotal - m_compilerCalls);
+        getCell(m_activeDDminRow, 9).setCellValue(failedRunsTotal - m_failedRuns);
+        m_compilerCalls = compilerCallsTotal;
+        m_failedRuns = failedRunsTotal;
     }
 }

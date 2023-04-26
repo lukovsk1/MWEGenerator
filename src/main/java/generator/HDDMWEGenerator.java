@@ -7,6 +7,7 @@ import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import testexecutor.hdd.HDDTestExecutor;
 import utility.CollectionsUtility;
+import utility.StatsTracker;
 import utility.StatsUtility;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 	}
 
 	public void runGenerator() {
+		StatsTracker statsTracker = StatsUtility.getStatsTracker();
 		HDDTestExecutor executor = getTestExecutor();
 		try {
 			// extract code fragments
@@ -36,7 +38,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 			while (true) {
 				executor.initialize();
 				List<ICodeFragment> fullTree = executor.extractFragments();
-				List<ICodeFragment> fragments = new ArrayList<>(fullTree);
+				m_fragments = new ArrayList<>(fullTree);
 				analyzeTree(fullTree);
 				m_level = 0;
 				long runStart = System.currentTimeMillis();
@@ -44,29 +46,30 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 				while (true) {
 					long start = System.currentTimeMillis();
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " / " + m_maxLevel + " ##############");
-					List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
+					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, m_fragments.size(), calculateTotalNumberOfFragements(executor));
+					List<ICodeFragment> minConfig = runDDMin(executor, m_fragments, m_fragments.size());
 					logInfo("Level " + m_testNr + "-" + m_level + " / " + m_maxLevel + " took " + StatsUtility.formatDuration(start));
-					printConfigurationInfo(minConfig, fragments);
-					if (minConfig.isEmpty()) {
-						break;
-					}
+					printConfigurationInfo(minConfig, m_fragments);
 					executor.addFixedFragments(minConfig);
-					AtomicLong numberOfFragments = new AtomicLong();
-					fragments = minConfig.stream()
+					m_fragments = minConfig.stream()
 							.map(fr -> (IHierarchicalCodeFragment) fr)
 							.map(IHierarchicalCodeFragment::getChildren)
 							.flatMap(Collection::stream)
-							.peek(fr -> numberOfFragments.addAndGet(CollectionsUtility.getChildrenInDeep(fr).size()))
 							.map(fr -> (ICodeFragment) fr)
 							.collect(Collectors.toList());
-					logInfo("############## After level " + m_level + " there are " + (executor.getFixedFragments().size() + numberOfFragments.get()) + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
+					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor);
+					logInfo("############## After level " + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
+					executor.trackDDminCompilerStats();
+					statsTracker.trackDDminExecutionEnd(start, minConfig.size(), numberOfRemainingFragments);
+					if (minConfig.isEmpty()) {
+						break;
+					}
 					m_level++;
 				}
 
 				logInfo("Recreating result in testingoutput folder...");
-				executor.recreateCode(fragments);
+				executor.recreateCode(m_fragments);
 				int numberOfFragmentsLeft = executor.getFixedFragments().size();
-				StatsUtility.getStatsTracker().writeInputFragments(numberOfFragmentsLeft);
 				logInfo("############## FINISHED NR. " + m_testNr++ + " in " + StatsUtility.formatDuration(runStart) + " :::: Reduced to " + numberOfFragmentsLeft + " out of " + m_initialNumberOfFragments + " :::: " + executor.getStatistics() + " ##############");
 				if (!m_testExecutorOptions.isMultipleRuns() || numberOfFixedFragments == numberOfFragmentsLeft) {
 					break;
@@ -82,15 +85,18 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 			if (m_fragments != null && !m_fragments.isEmpty()) {
 				executor.recreateCode(m_fragments);
 				executor.formatOutputFolder();
-				StatsUtility.getStatsTracker().writeInputFragments(executor.getFixedFragments().size() + m_fragments.stream()
-						.map(IHierarchicalCodeFragment.class::cast)
-						.mapToLong(fr -> CollectionsUtility.getChildrenInDeep(fr).size())
-						.sum());
 			}
 			throw e;
 		} finally {
 			cleanup();
 		}
+	}
+
+	protected long calculateTotalNumberOfFragements(HDDTestExecutor executor) {
+		return executor.getFixedFragments().size() + m_fragments.stream()
+				.map(IHierarchicalCodeFragment.class::cast)
+				.mapToLong(fr -> CollectionsUtility.getChildrenInDeep(fr).size())
+				.sum();
 	}
 
 	@Override

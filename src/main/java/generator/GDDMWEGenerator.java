@@ -59,7 +59,6 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
                 logInfo("Recreating result in testingoutput folder...");
                 executor.recreateCode(Collections.emptyList());
                 int numberOfFragmentsLeft = executor.getNumberOfFragmentsInDB();
-                StatsUtility.getStatsTracker().writeOutputFragments(numberOfFragmentsLeft);
                 logInfo("############## FINISHED NR. " + testNr++ + " in " + StatsUtility.formatDuration(runStart) + " :::: Reduced to " + numberOfFragmentsLeft + " out of " + numberOfFragments + " :::: " + executor.getStatistics() + " ##############");
                 if (!m_testExecutorOptions.isMultipleRuns() || numberOfFixedFragments == numberOfFragmentsLeft) {
                     break;
@@ -77,7 +76,6 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
             if (m_fragments != null && !m_fragments.isEmpty()) {
                 executor.recreateCode(m_fragments);
                 executor.formatOutputFolder();
-                StatsUtility.getStatsTracker().writeOutputFragments(executor.getNumberOfFragmentsInDB());
             }
             throw e;
         } finally {
