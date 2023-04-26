@@ -37,7 +37,7 @@ public class CodeLineTestExecutor extends ATestExecutor {
 		try (Stream<Path> stream = Files.walk(FileSystems.getDefault().getPath(sourceFolder.getPath()))) {
 			filePaths = stream
 					.filter(file -> Files.isRegularFile(file)
-							&& isExcludedFile(file)
+							&& !isExcludedFile(file)
 							&& "java".equals(FilenameUtils.getExtension(file.toString()))
 							&& !file.toString().startsWith(unitTestFolderPath))
 					.collect(Collectors.toList());

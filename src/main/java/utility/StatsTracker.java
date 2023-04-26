@@ -16,6 +16,7 @@ public class StatsTracker {
     private final XSSFSheet sheet;
     private XSSFRow activeDDminRow;
     private long outputFragments = Long.MAX_VALUE;
+    private int ddminRowNumber = 31;
 
     public StatsTracker(String formattedDate) {
         sheetName = formattedDate;
@@ -123,23 +124,23 @@ public class StatsTracker {
 
 
     public void startTrackingDDminExecution(String levelIdentifier, long numberOfFragmentsForDDmin, long totalFragments) {
-        int lastRowNum = sheet.getLastRowNum();
         // duplicate the last row with its formula
-        sheet.copyRows(lastRowNum, lastRowNum, lastRowNum + 1, new CellCopyPolicy());
+        sheet.copyRows(ddminRowNumber, ddminRowNumber, ddminRowNumber + 1, new CellCopyPolicy());
 
         // start writing values in the originally last row of the document
-        activeDDminRow = sheet.getRow(lastRowNum);
-        activeDDminRow.getCell(1).setCellValue(levelIdentifier);
-        activeDDminRow.getCell(2).setCellValue(numberOfFragmentsForDDmin);
-        activeDDminRow.getCell(5).setCellValue(totalFragments);
+        activeDDminRow = sheet.getRow(ddminRowNumber);
+        getCell(activeDDminRow, 1).setCellValue(levelIdentifier);
+        getCell(activeDDminRow, 2).setCellValue(numberOfFragmentsForDDmin);
+        getCell(activeDDminRow, 5).setCellValue(totalFragments);
     }
 
     public void trackDDminExecutionEnd(long startTime, long minConfigSize, long totalFragmentsLeft) {
         if (activeDDminRow == null) {
             return;
         }
-        activeDDminRow.getCell(3).setCellValue(minConfigSize);
-        activeDDminRow.getCell(6).setCellValue(totalFragmentsLeft);
-        activeDDminRow.getCell(10).setCellValue(System.currentTimeMillis() - startTime);
+        getCell(activeDDminRow, 3).setCellValue(minConfigSize);
+        getCell(activeDDminRow, 6).setCellValue(totalFragmentsLeft);
+        getCell(activeDDminRow, 10).setCellValue(System.currentTimeMillis() - startTime);
+        ddminRowNumber++;
     }
 }

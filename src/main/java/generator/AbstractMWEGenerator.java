@@ -40,27 +40,29 @@ public abstract class AbstractMWEGenerator {
 		StatsTracker statsTracker = StatsUtility.getStatsTracker();
 		ITestExecutor executor = getTestExecutor();
 		try {
-			// extract code fragments
-			executor.initialize();
 			int testNr = 0;
 			int totalFragments = -1;
+			int activeFragments;
 			do {
-				logInfo("############## RUNNING TEST NR. " + testNr++ + " ##############");
+				logInfo("############## RUNNING TEST NR. " + testNr + " ##############");
+				// extract code fragments
+				executor.initialize();
 				m_fragments = executor.extractFragments();
 				if (totalFragments < 0) {
 					totalFragments = m_fragments.size();
 				}
+				activeFragments = m_fragments.size();
 				long start = System.currentTimeMillis();
-				statsTracker.startTrackingDDminExecution(String.valueOf(testNr), m_fragments.size(), totalFragments);
-				m_fragments = runDDMin(executor, m_fragments, m_fragments.size());
-				logInfo("############## FINISHED NR. " + testNr + " in " + StatsUtility.formatDuration(start) + " :::: Reduced to " + m_fragments.size() + " out of " + totalFragments + " :::: " + executor.getStatistics() + " ##############");
+				statsTracker.startTrackingDDminExecution(String.valueOf(testNr), activeFragments, activeFragments);
+				m_fragments = runDDMin(executor, m_fragments, activeFragments);
+				logInfo("############## FINISHED NR. " + testNr++ + " in " + StatsUtility.formatDuration(start) + " :::: Reduced to " + m_fragments.size() + " out of " + totalFragments + " :::: " + executor.getStatistics() + " ##############");
 				statsTracker.trackDDminExecutionEnd(start, m_fragments.size(), m_fragments.size());
 
 				// recreate mwe
 				logInfo("Recreating result in testingoutput folder...");
 				executor.recreateCode(m_fragments);
 				executor.changeSourceToOutputFolder();
-			} while (m_testExecutorOptions.isMultipleRuns() && m_fragments.size() < totalFragments);
+			} while (m_testExecutorOptions.isMultipleRuns() && m_fragments.size() < activeFragments);
 
 			logInfo("Formatting result in testingoutput folder...");
 			executor.formatOutputFolder();
