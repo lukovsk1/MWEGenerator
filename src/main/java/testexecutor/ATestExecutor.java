@@ -15,6 +15,7 @@ import org.eclipse.text.edits.TextEdit;
 import org.mdkt.compiler.CompilationException;
 import utility.FileUtility;
 import utility.SlicerUtility;
+import utility.StatsUtility;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -361,6 +362,10 @@ public abstract class ATestExecutor implements ITestExecutor {
 			SlicerUtility.doSlicing(testSourcePath, m_options);
 		}
 
+		System.out.println("Formatting code in source folder");
+		formatModuleFolder(testSourcePath);
+
+		StatsUtility.trackInputSize(getSourceFolder(testSourcePath, getOptions().getSourceFolderPath()));
 	}
 
 	public String getStatistics() {
@@ -373,12 +378,18 @@ public abstract class ATestExecutor implements ITestExecutor {
 	}
 
 	public void formatOutputFolder() {
+		Path outputPath = getTestOutputPath();
+		formatModuleFolder(outputPath);
+		StatsUtility.trackOutputSize(getSourceFolder(outputPath, getOptions().getSourceFolderPath()));
+	}
+
+	protected void formatModuleFolder(Path modulePath) {
 		final Map<String, String> options = new HashMap<>();
 		options.put(JavaCore.COMPILER_SOURCE, JAVA_VERSION);
 		options.put(JavaCore.COMPILER_COMPLIANCE, JAVA_VERSION);
 		options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JAVA_VERSION);
 		CodeFormatter formatter = ToolFactory.createCodeFormatter(options, ToolFactory.M_FORMAT_EXISTING);
-		File testSourceFolder = getSourceFolder(getTestOutputPath(), getOptions().getSourceFolderPath());
+		File testSourceFolder = getSourceFolder(modulePath, getOptions().getSourceFolderPath());
 		try (Stream<Path> walk = Files.walk(testSourceFolder.toPath())) {
 			walk.forEach(path -> {
 				try {

@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.TeeOutputStream;
 import testexecutor.ExecutorConstants;
 import testexecutor.TestExecutorOptions;
+import utility.StatsTracker;
 import utility.StatsUtility;
 
 import java.io.File;
@@ -33,6 +34,8 @@ public class Main {
 		} else {
 			System.out.println("ERROR: Unable to create log file " + logFile);
 		}
+
+		StatsTracker statTracker = StatsUtility.initStatsTracker(formattedDate);
 
 		AbstractMWEGenerator generator;
 		if (args.length == 0) {
@@ -101,6 +104,7 @@ public class Main {
 			// check output size:
 			long outputSize = FileUtils.sizeOfDirectory(new File(dir + File.separator + "testingoutput"));
 			System.out.println("TOTAL OUTPUT SIZE: " + outputSize + " bytes");
+			statTracker.saveStats();
 		}
 
 		if (fos != null) {

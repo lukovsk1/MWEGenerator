@@ -5,6 +5,7 @@ import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import testexecutor.TestingException;
 import utility.CollectionsUtility;
+import utility.StatsTracker;
 import utility.StatsUtility;
 
 import java.util.*;
@@ -31,31 +32,35 @@ public abstract class AbstractMWEGenerator {
 		} else {
 			m_executorService = null;
 		}
+
+		StatsUtility.getStatsTracker().writeExecutorOptions(options);
 	}
 
 	public void runGenerator() {
+		StatsTracker statsTracker = StatsUtility.getStatsTracker();
 		ITestExecutor executor = getTestExecutor();
 		try {
 			// extract code fragments
 			executor.initialize();
-			List<ICodeFragment> fragments;
 			int testNr = 0;
-			int totalFragments;
+			int totalFragments = -1;
 			do {
 				logInfo("############## RUNNING TEST NR. " + testNr++ + " ##############");
-				fragments = executor.extractFragments();
-				totalFragments = fragments.size();
+				m_fragments = executor.extractFragments();
+				if (totalFragments < 0) {
+					totalFragments = m_fragments.size();
+				}
 				long start = System.currentTimeMillis();
-				fragments = runDDMin(executor, fragments, totalFragments);
-				logInfo(null);
-				logInfo("Found a 1-minimal configuration in " + StatsUtility.formatDuration(start) + ":");
-				logInfo(getConfigurationIdentifier(fragments, totalFragments));
+				statsTracker.startTrackingDDminExecution(String.valueOf(testNr), m_fragments.size(), totalFragments);
+				m_fragments = runDDMin(executor, m_fragments, m_fragments.size());
+				logInfo("############## FINISHED NR. " + testNr + " in " + StatsUtility.formatDuration(start) + " :::: Reduced to " + m_fragments.size() + " out of " + totalFragments + " :::: " + executor.getStatistics() + " ##############");
+				statsTracker.trackDDminExecutionEnd(start, m_fragments.size(), m_fragments.size());
 
 				// recreate mwe
 				logInfo("Recreating result in testingoutput folder...");
-				executor.recreateCode(fragments);
+				executor.recreateCode(m_fragments);
 				executor.changeSourceToOutputFolder();
-			} while (m_testExecutorOptions.isMultipleRuns() && fragments.size() < totalFragments);
+			} while (m_testExecutorOptions.isMultipleRuns() && m_fragments.size() < totalFragments);
 
 			logInfo("Formatting result in testingoutput folder...");
 			executor.formatOutputFolder();
@@ -68,6 +73,7 @@ public abstract class AbstractMWEGenerator {
 			}
 			throw e;
 		} finally {
+			statsTracker.writeInputFragments(m_fragments.size());
 			cleanup();
 		}
 	}

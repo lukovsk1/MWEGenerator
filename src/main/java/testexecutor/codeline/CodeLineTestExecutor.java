@@ -6,6 +6,7 @@ import org.apache.commons.io.FilenameUtils;
 import testexecutor.ATestExecutor;
 import testexecutor.ExtractorException;
 import testexecutor.TestExecutorOptions;
+import utility.StatsUtility;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,6 +61,8 @@ public class CodeLineTestExecutor extends ATestExecutor {
 				throw new ExtractorException("Unable to read lines from file " + filePath, e);
 			}
 		}
+
+		StatsUtility.getStatsTracker().writeInputFragments(fragments.size());
 
 		return fragments;
 	}

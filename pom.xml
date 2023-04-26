@@ -94,6 +94,16 @@
             <artifactId>neo4j-java-driver</artifactId>
             <version>4.4.11</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.0</version>
+        </dependency>
         <!-- TODO: this is a dependency of defects4j/cli. Dependencies of tested projects should be added dynamically to the classpath -->
         <dependency>
             <groupId>commons-lang</groupId>

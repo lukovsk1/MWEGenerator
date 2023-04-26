@@ -33,6 +33,7 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
             long extractionStart = System.currentTimeMillis();
             executor.extractFragments();
             final int numberOfFragments = executor.getNumberOfFragmentsInDB();
+            StatsUtility.getStatsTracker().writeInputFragments(numberOfFragments);
             logInfo("Extracted " + numberOfFragments + " fragments to graph database in " + StatsUtility.formatDuration(extractionStart));
             int numberOfFixedFragments = 0;
             int testNr = 0;
@@ -41,16 +42,16 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
                 logInfo("############## RUNNING TEST NR. " + testNr + " ##############");
                 while (true) {
                     long levelStart = System.currentTimeMillis();
-                    List<ICodeFragment> fragments = executor.getActiveFragments();
-                    if (fragments.isEmpty()) {
+                    m_fragments = executor.getActiveFragments();
+                    if (m_fragments.isEmpty()) {
                         break;
                     }
-                    logInfo("############## EXECUTING LVL " + m_level + " with " + fragments.size() + " active fragments ##############");
-                    List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
+                    logInfo("############## EXECUTING LVL " + m_level + " with " + m_fragments.size() + " active fragments ##############");
+                    List<ICodeFragment> minConfig = runDDMin(executor, m_fragments, m_fragments.size());
                     logInfo("Level " + m_level + " took " + StatsUtility.formatDuration(levelStart));
-                    printConfigurationInfo(minConfig, fragments);
+                    printConfigurationInfo(minConfig, m_fragments);
                     executor.addFixedFragments(minConfig);
-                    executor.addDiscardedFragments(CollectionsUtility.listMinus(fragments, minConfig));
+                    executor.addDiscardedFragments(CollectionsUtility.listMinus(m_fragments, minConfig));
                     logInfo("############## After level " + m_level + " there are " + executor.getNumberOfFragmentsInDB() + " / " + numberOfFragments + " fragments left :::: " + executor.getStatistics());
                     m_level++;
                 }
@@ -58,6 +59,7 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
                 logInfo("Recreating result in testingoutput folder...");
                 executor.recreateCode(Collections.emptyList());
                 int numberOfFragmentsLeft = executor.getNumberOfFragmentsInDB();
+                StatsUtility.getStatsTracker().writeOutputFragments(numberOfFragmentsLeft);
                 logInfo("############## FINISHED NR. " + testNr++ + " in " + StatsUtility.formatDuration(runStart) + " :::: Reduced to " + numberOfFragmentsLeft + " out of " + numberOfFragments + " :::: " + executor.getStatistics() + " ##############");
                 if (!m_testExecutorOptions.isMultipleRuns() || numberOfFixedFragments == numberOfFragmentsLeft) {
                     break;
@@ -75,6 +77,7 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
             if (m_fragments != null && !m_fragments.isEmpty()) {
                 executor.recreateCode(m_fragments);
                 executor.formatOutputFolder();
+                StatsUtility.getStatsTracker().writeOutputFragments(executor.getNumberOfFragmentsInDB());
             }
             throw e;
         } finally {

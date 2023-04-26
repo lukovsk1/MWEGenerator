@@ -26,12 +26,10 @@ public class TestExecutorOptions {
 	private ECompilationType m_compilationType = ECompilationType.IN_MEMORY;
 	private ELogLevel m_logLevel = ELogLevel.INFO;
 	private boolean m_logCompilationErrors = false;
-
 	private boolean m_logRuntimeErrors = false;
 	private boolean m_multipleRuns = false;
 	private int m_numberOfThreads = 1;
 	private boolean m_preSliceCode = true;
-
 	private int m_graphAlgorithmFragmentLimit = 0;
 	private boolean m_graphAlgorithmEscalatingFragmentLimit = false;
 
