@@ -6,6 +6,7 @@ import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
 import testexecutor.hdd.HDDrecTestExecutor;
 import utility.CollectionsUtility;
+import utility.StatsTracker;
 import utility.StatsUtility;
 
 import java.util.*;
@@ -18,6 +19,7 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 	}
 
 	public void runGenerator() {
+		StatsTracker statsTracker = StatsUtility.getStatsTracker();
 		HDDrecTestExecutor executor = getTestExecutor();
 		try {
 			int numberOfFixedFragments = 0;
@@ -35,25 +37,22 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 					if (currentFragment == null) {
 						continue;
 					}
-					List<ICodeFragment> fragments = CollectionsUtility.castList(currentFragment.getChildren(), ICodeFragment.class);
-					if (fragments.isEmpty()) {
+					m_fragments = CollectionsUtility.castList(currentFragment.getChildren(), ICodeFragment.class);
+					if (m_fragments.isEmpty()) {
 						continue;
 					}
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " ##############");
-					List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
+					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, m_fragments.size(), calculateTotalNumberOfFragements(executor));
+					List<ICodeFragment> minConfig = runDDMin(executor, m_fragments, m_fragments.size());
 					logInfo("Level " + m_testNr + "-" + m_level + " took " + StatsUtility.formatDuration(levelStart));
-					printConfigurationInfo(minConfig, fragments);
+					printConfigurationInfo(minConfig, m_fragments);
 					executor.addFixedFragments(minConfig);
 					executor.getQueue().addAll(CollectionsUtility.castList(minConfig, IHierarchicalCodeFragment.class));
-					long numberOfFragments = executor.getQueue()
-							.stream()
-							.filter(Objects::nonNull)
-							.mapToLong(fr -> {
-								Set<IHierarchicalCodeFragment> subTree = CollectionsUtility.getChildrenInDeep(fr);
-								return subTree.size() - 1;
-							})
-							.sum();
-					logInfo("############## After level " + m_level + " there are " + (executor.getFixedFragments().size() + numberOfFragments) + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
+
+					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor);
+					logInfo("############## After level " + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
+					executor.trackDDminCompilerStats();
+					statsTracker.trackDDminExecutionEnd(levelStart, minConfig.size(), numberOfRemainingFragments);
 					m_level++;
 				}
 
@@ -80,6 +79,18 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 		} finally {
 			cleanup();
 		}
+	}
+
+	private long calculateTotalNumberOfFragements(HDDrecTestExecutor executor) {
+		long numberOfFragments = executor.getQueue()
+				.stream()
+				.filter(Objects::nonNull)
+				.mapToLong(fr -> {
+					Set<IHierarchicalCodeFragment> subTree = CollectionsUtility.getChildrenInDeep(fr);
+					return subTree.size() - 1;
+				})
+				.sum();
+		return executor.getFixedFragments().size() + numberOfFragments;
 	}
 
 	@Override

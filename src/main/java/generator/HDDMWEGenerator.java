@@ -44,11 +44,11 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 				long runStart = System.currentTimeMillis();
 				logInfo("############## RUNNING TEST NR. " + m_testNr + " ##############");
 				while (true) {
-					long start = System.currentTimeMillis();
+					long levelStart = System.currentTimeMillis();
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " / " + m_maxLevel + " ##############");
 					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, m_fragments.size(), calculateTotalNumberOfFragements(executor));
 					List<ICodeFragment> minConfig = runDDMin(executor, m_fragments, m_fragments.size());
-					logInfo("Level " + m_testNr + "-" + m_level + " / " + m_maxLevel + " took " + StatsUtility.formatDuration(start));
+					logInfo("Level " + m_testNr + "-" + m_level + " / " + m_maxLevel + " took " + StatsUtility.formatDuration(levelStart));
 					printConfigurationInfo(minConfig, m_fragments);
 					executor.addFixedFragments(minConfig);
 					m_fragments = minConfig.stream()
@@ -60,7 +60,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor);
 					logInfo("############## After level " + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
 					executor.trackDDminCompilerStats();
-					statsTracker.trackDDminExecutionEnd(start, minConfig.size(), numberOfRemainingFragments);
+					statsTracker.trackDDminExecutionEnd(levelStart, minConfig.size(), numberOfRemainingFragments);
 					if (minConfig.isEmpty()) {
 						break;
 					}
@@ -92,7 +92,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 		}
 	}
 
-	protected long calculateTotalNumberOfFragements(HDDTestExecutor executor) {
+	private long calculateTotalNumberOfFragements(HDDTestExecutor executor) {
 		return executor.getFixedFragments().size() + m_fragments.stream()
 				.map(IHierarchicalCodeFragment.class::cast)
 				.mapToLong(fr -> CollectionsUtility.getChildrenInDeep(fr).size())
