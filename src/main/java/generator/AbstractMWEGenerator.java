@@ -33,8 +33,7 @@ public abstract class AbstractMWEGenerator {
 			m_executorService = null;
 		}
 
-		StatsUtility.getStatsTracker().writeExecutorOptions(options);
-		StatsUtility.getStatsTracker().writeGeneratorName(this.getClass().getSimpleName());
+		StatsUtility.getStatsTracker().writeRunConfiguration(this.getClass().getSimpleName(), options);
 	}
 
 	public void runGenerator() {

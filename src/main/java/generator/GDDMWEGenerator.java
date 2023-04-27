@@ -56,7 +56,7 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
                     executor.addFixedFragments(minConfig);
                     executor.addDiscardedFragments(CollectionsUtility.listMinus(fragments, minConfig));
                     long numberOfRemainingFragments = executor.getNumberOfRemainingFragments();
-                    logInfo("############## After level " + m_level + " there are " + numberOfRemainingFragments + " / " + numberOfFragments + " fragments left :::: " + executor.getStatistics());
+                    logInfo("############## After level " + testNr + "-" + m_level + " there are " + numberOfRemainingFragments + " / " + numberOfFragments + " fragments left :::: " + executor.getStatistics());
                     executor.trackDDminCompilerStats();
                     statsTracker.trackDDminExecutionEnd(levelStart, minConfig.size(), numberOfRemainingFragments);
                     m_level++;

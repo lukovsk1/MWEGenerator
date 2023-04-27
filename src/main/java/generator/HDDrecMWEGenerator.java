@@ -42,15 +42,15 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 						continue;
 					}
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " ##############");
-					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, fragments.size(), calculateTotalNumberOfFragements(executor));
+					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, fragments.size(), calculateTotalNumberOfFragements(executor, fragments));
 					List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
 					logInfo("Level " + m_testNr + "-" + m_level + " took " + StatsUtility.formatDuration(levelStart));
 					printConfigurationInfo(minConfig, fragments);
 					executor.addFixedFragments(minConfig);
 					executor.getQueue().addAll(CollectionsUtility.castList(minConfig, IHierarchicalCodeFragment.class));
 
-					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor);
-					logInfo("############## After level " + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
+					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor, Collections.emptyList());
+					logInfo("############## After level " + m_testNr + "-" + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
 					executor.trackDDminCompilerStats();
 					statsTracker.trackDDminExecutionEnd(levelStart, minConfig.size(), numberOfRemainingFragments);
 					m_level++;
@@ -81,8 +81,8 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 		}
 	}
 
-	private long calculateTotalNumberOfFragements(HDDrecTestExecutor executor) {
-		long numberOfFragments = executor.getQueue()
+	private long calculateTotalNumberOfFragements(HDDrecTestExecutor executor, List<ICodeFragment> activeFragments) {
+		long numberOfQueuedFragments = executor.getQueue()
 				.stream()
 				.filter(Objects::nonNull)
 				.mapToLong(fr -> {
@@ -90,7 +90,12 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 					return subTree.size() - 1;
 				})
 				.sum();
-		return executor.getFixedFragments().size() + numberOfFragments;
+		int numberOfActiveFragments = activeFragments.stream()
+				.filter(Objects::nonNull)
+				.map(IHierarchicalCodeFragment.class::cast)
+				.mapToInt(fr -> CollectionsUtility.getChildrenInDeep(fr).size())
+				.sum();
+		return executor.getFixedFragments().size() + numberOfQueuedFragments + numberOfActiveFragments;
 	}
 
 	@Override

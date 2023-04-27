@@ -58,7 +58,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 							.map(fr -> (ICodeFragment) fr)
 							.collect(Collectors.toList());
 					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor, fragments);
-					logInfo("############## After level " + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
+					logInfo("############## After level " + m_testNr + "-" + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
 					executor.trackDDminCompilerStats();
 					statsTracker.trackDDminExecutionEnd(levelStart, minConfig.size(), numberOfRemainingFragments);
 					if (minConfig.isEmpty()) {
