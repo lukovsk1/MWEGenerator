@@ -132,7 +132,7 @@ public class StatsTracker {
         xNumRef.setF(xAreaReference.formatAsString());
         yNumRef.setF(yAreaReference.formatAsString());
 
-        // Update fragment number chart on overview sheet
+        /* TODO: Update fragment number chart on overview sheet
         XSSFSheet overviewSheet = m_workbook.getSheet(SHEET_NAME_OVERVIEW);
         XSSFChart overviewChart = getChart(overviewSheet, m_testCase); // get chart by test case name
         if (overviewChart == null) {
@@ -140,19 +140,14 @@ public class StatsTracker {
             return;
         }
 
-        ctChart = overviewChart.getCTChart();
-        ctPlotArea = ctChart.getPlotArea();
-        scatterChart = ctPlotArea.getScatterChartList().get(0);
-        ser = scatterChart.addNewSer();
-        CTSerTx tx = ser.addNewTx();
-        tx.setV(m_algorithmName);
-
-        CTAxDataSource xDataSource = ser.addNewXVal();
-        CTNumDataSource yDataSource = ser.addNewYVal();
-        xNumRef = xDataSource.addNewNumRef();
-        yNumRef = yDataSource.addNewNumRef();
-        xNumRef.setF(xAreaReference.formatAsString());
-        yNumRef.setF(yAreaReference.formatAsString());
+        XDDFCategoryAxis xAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
+        XDDFValueAxis yAxis = chart.createValueAxis(AxisPosition.LEFT);
+        XDDFChartData data = overviewChart.createData(ChartTypes.SCATTER, xAxis, yAxis);
+        XDDFChartData.Series series = data.addSeries(
+                XDDFDataSourcesFactory.fromNumericCellRange(m_sheet, new CellRangeAddress(xFirstCell.getRow(), m_ddminRowNumber, xFirstCell.getCol(), xFirstCell.getCol())),
+                XDDFDataSourcesFactory.fromNumericCellRange(m_sheet, new CellRangeAddress(yFirstCell.getRow(), m_ddminRowNumber, yFirstCell.getCol(), yFirstCell.getCol())));
+        series.setTitle("test", null);
+         */
     }
 
     private XSSFChart getChart(XSSFSheet sheet, String chartTitle) {
@@ -169,10 +164,6 @@ public class StatsTracker {
     }
 
     public void writeRunConfiguration(String generatorName, TestExecutorOptions options) {
-        // write generator name
-        getCell(1, 2).setCellValue(generatorName);
-
-
         // write module name
         String modulePath = options.getModulePath();
         m_testCase = modulePath.substring(modulePath.lastIndexOf(File.separator) + 1);
@@ -194,12 +185,11 @@ public class StatsTracker {
         getCell(16, 2).setCellValue(options.getGraphAlgorithmFragmentLimit());
         getCell(17, 2).setCellValue(options.isEscalatingFragmentLimit());
 
-        if (generatorName.endsWith(MWE_GENERATOR_SUFFIX)) {
-            m_algorithmName = generatorName.substring(0, generatorName.length() - MWE_GENERATOR_SUFFIX.length());
-            // max sheet name length is 32 chars
-            String shortTestCaseName = shortenString(m_testCase, 30 - m_algorithmName.length() - m_formattedDate.length());
-            m_workbook.setSheetName(m_workbook.getSheetIndex(m_sheet), m_algorithmName + "_" + shortTestCaseName + "_" + m_formattedDate);
-        }
+        m_algorithmName = generatorName.substring(0, generatorName.length() - MWE_GENERATOR_SUFFIX.length());
+        getCell(1, 2).setCellValue(m_algorithmName);
+        // max sheet name length is 32 chars
+        String shortTestCaseName = shortenString(m_testCase, 30 - m_algorithmName.length() - m_formattedDate.length());
+        m_workbook.setSheetName(m_workbook.getSheetIndex(m_sheet), m_algorithmName + "_" + shortTestCaseName + "_" + m_formattedDate);
     }
 
     private String shortenString(String str, int length) {
