@@ -166,6 +166,9 @@ public class StatsTracker {
     public void writeRunConfiguration(String generatorName, TestExecutorOptions options) {
         // write module name
         String modulePath = options.getModulePath();
+        if (modulePath.endsWith(File.separator)) {
+            modulePath = modulePath.substring(0, modulePath.length() - 1);
+        }
         m_testCase = modulePath.substring(modulePath.lastIndexOf(File.separator) + 1);
         getCell(1, 4).setCellValue(m_testCase);
 
