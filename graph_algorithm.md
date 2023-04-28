@@ -45,10 +45,9 @@ discarded := {}
 queue := {}
 
 while free != {} ∨ queue != {}
-  if(queue != {})
+  if queue != {} 
     w := queue.pop()
-    active := {f in free ∨ f in fixed | s.t. (f,w) in E}
-    fixed := fixed \ active
+    active := {f in free | s.t. (f,w) in E and not exists (f,v) in E with v in free}
   else
     active := {f in free | s.t. not exists (f,v) in E with v in free}
   
@@ -57,15 +56,17 @@ while free != {} ∨ queue != {}
   fixed := fixed u minconfig
   queue := queue u minconfig
   discarded := discarded u (active \ minconfig)
+  
+  if w != null and {f in free | (f,w) in E} != {}
+    queue := queue u w 
 
 return fixed
 ```
 
-The idea of the recursive GDD algorithm is to reconsider already fixed nodes.
-Nodes that are dependent on multiple other nodes, might be considered in multiple runs of the ddmin algorithm
-so there are multiple chances to discard them.
-
-TODO: implementation
+The idea of the recursive GDD algorithm is to only consider the intersection of possible active nodes (with no free
+dependencies)
+and the dependent nodes of a specific node, that was already fixed.
+If the queued node has other dependent nodes, that were not considered in this set, requeue the node.
 
 ## Graph DB
 

@@ -272,20 +272,20 @@ public class GraphDB {
 
 	public Set<Long> calculateActiveFragmentsDependentOn(long dependentOn) {
         /*
-            MATCH (f:Fragment_20230419_183624)-[:DEPENDS_ON]->(p:Fragment_20230419_183624)
-            WHERE ID(p) = 1962870
-            AND (f:Free OR f:Fixed)
+            MATCH (f:Fragment_20230428_155847:Free)-[:DEPENDS_ON]->(p:Fragment_20230428_155847)
+            WHERE ID(p) = 3739
+            AND NOT EXISTS {MATCH (f)-[:DEPENDS_ON]->(:Free)}
             SET f:Active
-            REMOVE f:Free:Fixed
-            RETURN ID(f);
+            REMOVE f:Free
+            RETURN f;
          */
 		Map<String, Object> params = new HashMap<>();
-		String query = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + ")-[" +
+		String query = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + LABEL_FREE + ")-[" +
 				RELATIONSHIP_LABEL_DEPENDS_ON + "]->(p" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix +
 				") WHERE ID(p) = $dependentOn" +
-				" AND (f" + LABEL_FREE + " OR f" + LABEL_FIXED +
-				") SET f" + LABEL_ACTIVE +
-				" REMOVE f" + LABEL_FREE + LABEL_FIXED +
+				" AND NOT EXISTS {MATCH (f)-[" + RELATIONSHIP_LABEL_DEPENDS_ON + "]->(" + LABEL_FREE +
+				"}) SET f" + LABEL_ACTIVE +
+				" REMOVE f" + LABEL_FREE +
 				" RETURN ID(f);";
 
 		params.put("dependentOn", dependentOn);
@@ -294,6 +294,24 @@ public class GraphDB {
 		return res.stream()
 				.map(rec -> rec.get(0).asLong())
 				.collect(Collectors.toSet());
+	}
+
+	public int checkForFreeDependentNodes(long nodeId) {
+        /*
+            MATCH (f:Fragment_20230428_155847:Free)-[:DEPENDS_ON]->(p:Fragment_20230428_155847)
+            WHERE ID(p) = 3739
+            RETURN COUNT(f);
+         */
+		Map<String, Object> params = new HashMap<>();
+		String query = "MATCH (f" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix + LABEL_FREE + ")-[" +
+				RELATIONSHIP_LABEL_DEPENDS_ON + "]->(p" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix +
+				") WHERE ID(p) = $dependentOn" +
+				" RETURN COUNT(f);";
+
+		params.put("dependentOn", nodeId);
+		Session session = m_driver.session();
+		Result res = session.run(query, params);
+		return res.single().get(0).asInt();
 	}
 
 	public Set<Long> getAllExcludedNodeIds(Set<Long> deselectedActiveNodes) {
