@@ -284,7 +284,7 @@ public class GraphDB {
 				RELATIONSHIP_LABEL_DEPENDS_ON + "]->(p" + LABEL_PREFIX_FRAGMENT + m_nodeIdentifierSuffix +
 				") WHERE ID(p) = $dependentOn" +
 				" AND NOT EXISTS {MATCH (f)-[" + RELATIONSHIP_LABEL_DEPENDS_ON + "]->(" + LABEL_FREE +
-				"}) SET f" + LABEL_ACTIVE +
+				")} SET f" + LABEL_ACTIVE +
 				" REMOVE f" + LABEL_FREE +
 				" RETURN ID(f);";
 

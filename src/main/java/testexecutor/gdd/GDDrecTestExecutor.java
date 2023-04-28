@@ -20,7 +20,7 @@ public class GDDrecTestExecutor extends GDDTestExecutor {
 
     @Override
     public List<ICodeFragment> getActiveFragments() {
-        if (!m_queue.isEmpty()) {
+        while (!m_queue.isEmpty()) {
             m_activeParentNode = m_queue.poll();
             m_activeFragments = m_graphDB.calculateActiveFragmentsDependentOn(m_activeParentNode);
             if (!m_activeFragments.isEmpty()) {
@@ -28,6 +28,9 @@ public class GDDrecTestExecutor extends GDDTestExecutor {
                         .map(m_fragments::get)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
+            }
+            if (m_graphDB.checkForFreeDependentNodes(m_activeParentNode) > 0) {
+                m_queue.add(m_activeParentNode);
             }
         }
 
