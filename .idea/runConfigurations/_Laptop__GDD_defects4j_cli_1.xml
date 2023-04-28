@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="[Laptop] GRAPH defects4j cli_1" type="Application" factoryName="Application" folderName="Laptop">
+  <configuration default="false" name="[Laptop] GDD defects4j cli_1" type="Application" factoryName="Application" folderName="Laptop">
     <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
     <option name="MAIN_CLASS_NAME" value="Main" />
     <module name="ddminj" />
