@@ -15,13 +15,16 @@ import java.util.Objects;
 
 public class StatsTracker {
 
-    private static final String WORKBOOK_PATH = File.separator + "stats" + File.separator + "Statistics.xlsx";
+    private static final String STATS_FOLDER = File.separator + "stats" + File.separator;
+    private static final String FALLBACK_WORKBOOK_PATH = STATS_FOLDER + "Statistics.xlsx";
     private static final String SHEET_NAME_OVERVIEW = "Overview";
     private static final String SHEET_NAME_TEMPLATE = "Template";
     private static final String MWE_GENERATOR_SUFFIX = "MWEGenerator";
     private final String m_formattedDate;
-    private final XSSFWorkbook m_workbook;
-    private final XSSFSheet m_sheet;
+
+    private File m_workbookFile;
+    private XSSFWorkbook m_workbook;
+    private XSSFSheet m_sheet;
     private XSSFRow m_activeDDminRow;
     private int m_ddminRowNumber = 31;
     private int m_compilerCalls = 0;
@@ -32,22 +35,6 @@ public class StatsTracker {
 
     public StatsTracker(String formattedDate) {
         m_formattedDate = formattedDate;
-        String dir = System.getProperty("user.dir");
-        File workbookFile = new File(dir + WORKBOOK_PATH);
-        if (!workbookFile.exists()) {
-            throw new StatsException("Unable to find stats file " + workbookFile);
-        }
-        try {
-            FileInputStream fis = new FileInputStream(workbookFile);
-            m_workbook = new XSSFWorkbook(fis);
-            int sheetIndex = m_workbook.getSheetIndex(SHEET_NAME_TEMPLATE);
-            if (sheetIndex < 0) {
-                throw new StatsException("Unable to find template sheet");
-            }
-            m_sheet = m_workbook.cloneSheet(sheetIndex, formattedDate);
-        } catch (Exception e) {
-            throw new StatsException("Error while initializing StatsTracker", e);
-        }
     }
 
     // get cell with real coordinates (starting from 1)
@@ -82,14 +69,12 @@ public class StatsTracker {
         updateFormulas();
         updateCharts();
 
-        String dir = System.getProperty("user.dir");
-        File workbookFile = new File(dir + WORKBOOK_PATH);
         try {
-            FileOutputStream fos = new FileOutputStream(workbookFile);
+            FileOutputStream fos = new FileOutputStream(m_workbookFile);
             m_workbook.write(fos);
             m_workbook.close();
         } catch (Exception e) {
-            throw new StatsException("Unable to write stats to excel file " + workbookFile, e);
+            throw new StatsException("Unable to write stats to excel file " + m_workbookFile, e);
         }
     }
 
@@ -166,12 +151,32 @@ public class StatsTracker {
     }
 
     public void writeRunConfiguration(String generatorName, TestExecutorOptions options) {
-        // write module name
+        // get test case name
         String modulePath = options.getModulePath();
         if (modulePath.endsWith(File.separator)) {
             modulePath = modulePath.substring(0, modulePath.length() - 1);
         }
         m_testCase = modulePath.substring(modulePath.lastIndexOf(File.separator) + 1);
+
+        String dir = System.getProperty("user.dir");
+        m_workbookFile = new File(dir + STATS_FOLDER + m_testCase + ".xlsx");
+        if (!m_workbookFile.exists()) {
+            m_workbookFile = new File(dir + FALLBACK_WORKBOOK_PATH);
+            if (!m_workbookFile.exists()) {
+                throw new StatsException("Unable to find stats file " + m_workbookFile);
+            }
+        }
+        try {
+            FileInputStream fis = new FileInputStream(m_workbookFile);
+            m_workbook = new XSSFWorkbook(fis);
+            int sheetIndex = m_workbook.getSheetIndex(SHEET_NAME_TEMPLATE);
+            if (sheetIndex < 0) {
+                throw new StatsException("Unable to find template sheet");
+            }
+            m_sheet = m_workbook.cloneSheet(sheetIndex, m_formattedDate);
+        } catch (Exception e) {
+            throw new StatsException("Error while initializing StatsTracker", e);
+        }
         getCell(1, 4).setCellValue(m_testCase);
 
         // write executor options
