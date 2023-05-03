@@ -96,6 +96,8 @@ public class StatsTracker {
     private void updateFormulas() {
         XSSFCell runNumberCell = getCell(20, 4);
         runNumberCell.setCellFormula("COUNTA(A32:A" + m_ddminRowNumber + ")");
+        XSSFCell averageRunSize = getCell(25, 4);
+        averageRunSize.setCellFormula("AVERAGE(B32:B" + m_ddminRowNumber + ")");
 
         // Evaluate all formulas in the workbook
         XSSFFormulaEvaluator formulaEvaluator = m_workbook.getCreationHelper().createFormulaEvaluator();
