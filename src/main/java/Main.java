@@ -94,7 +94,7 @@ public class Main {
 		// stop execution after 3 hours
 		Thread timerThread = new Thread(() -> {
 			try {
-				Thread.sleep(TimeUnit.HOURS.toMillis(4));
+				Thread.sleep(TimeUnit.HOURS.toMillis(3));
 				generator.cancelAndWriteIntermediateResult();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
