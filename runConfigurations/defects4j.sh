@@ -6,32 +6,32 @@ git pull
 ALGORITHMS=()
 BUGS=()
 
-echo "Select algorithms (anything else to continue)"
+echo "Select algorithms:"
 select algorithm in HDD GDD HDDrec GDDrec CodeLine; do
   if [ -z "$algorithm" ]; then
-    echo "breaking"
     break
   fi
   ALGORITHMS+=($algorithm)
-  echo "You have chosen ${ALGORITHMS[@]}"
+  echo "You have chosen ${ALGORITHMS[@]}. Add another algorithm or write 'ok' to continue."
 done
 
-echo "Select bugs (anything else to continue)"
+echo "Select bugs:"
 select bug in csv_4 gson_6 cli_1 lang_5 jsoup_9; do
   if [ -z "$bug" ]; then
-    echo "breaking"
     break
   fi
   BUGS+=($bug)
-  echo "You have chosen ${BUGS[@]}"
+  echo "You have chosen ${BUGS[@]}. Add another bug or write 'ok' to continue."
 done
 
 # build the jar
+echo "building jar file with dependencies"
 java -jar target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 for bug in $BUGS; do
   for algorithm in $ALGORITHMS; do
     echo "Running algorithm $algorithm for bug $bug"
+    echo "generator.${algorithm}MWEGenerator"
     if [[ $bug == csv_4 ]]; then
       java -jar ~/workspace/ddminj/target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar "generator.${algorithm}MWEGenerator" ~/workspace/defects4j/bugs/csv_4_b/ src/main/java src/test/java org.apache.commons.csv.CSVParserTest#testNoHeaderMap "java.lang.NullPointerException"
     elif [[ $bug == gson_6 ]]; then
