@@ -127,5 +127,5 @@ Steps:
 - Install defects4j and check out a bug
 - Clone the ddminj git repo
 - mvn clean compile assembly:single
-- java -jar target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar
+- java -jar target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar ...
 

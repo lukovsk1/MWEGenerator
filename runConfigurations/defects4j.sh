@@ -26,7 +26,7 @@ done
 
 # build the jar
 echo "building jar file with dependencies"
-java -jar target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar
+mvn clean compile assembly:single
 
 for bug in $BUGS; do
   for algorithm in $ALGORITHMS; do
