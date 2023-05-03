@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -89,6 +90,17 @@ public class Main {
 			}
 		});
 		readerThread.start();
+
+		// stop execution after 3 hours
+		Thread timerThread = new Thread(() -> {
+			try {
+				Thread.sleep(TimeUnit.HOURS.toMillis(4));
+				generator.cancelAndWriteIntermediateResult();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		});
+		timerThread.start();
 		long start = System.currentTimeMillis();
 
 		try {
