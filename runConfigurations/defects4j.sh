@@ -45,7 +45,7 @@ done
 
 echo "checking in logs and stats files to git"
 git add ./stats
-git add ./logs
+git add ./logs/2023*
 git commit -m "VM run"
 git push
 
