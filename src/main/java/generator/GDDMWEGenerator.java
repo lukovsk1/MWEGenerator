@@ -16,6 +16,7 @@ import java.util.concurrent.CancellationException;
 public class GDDMWEGenerator extends AbstractMWEGenerator {
 
     private int m_level = 0;
+    protected List<ICodeFragment> m_activeFragments;
 
     public GDDMWEGenerator(TestExecutorOptions options) {
         super(options);
@@ -43,22 +44,22 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
                 long runStart = System.currentTimeMillis();
                 logInfo("############## RUNNING TEST NR. " + testNr + " ##############");
                 while (true) {
-                    long levelStart = System.currentTimeMillis();
-                    List<ICodeFragment> fragments = executor.getActiveFragments();
-                    if (fragments.isEmpty()) {
+                    m_levelStart = System.currentTimeMillis();
+                    m_activeFragments = executor.getActiveFragments();
+                    if (m_activeFragments.isEmpty()) {
                         break;
                     }
-                    logInfo("############## EXECUTING LVL " + testNr + "-" + m_level + " with " + fragments.size() + " active fragments ##############");
-                    statsTracker.startTrackingDDminExecution(testNr + "-" + m_level, fragments.size(), executor.getNumberOfRemainingFragments());
-                    List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
-                    logInfo("Level " + testNr + "-" + m_level + " took " + StatsUtility.formatDuration(levelStart));
-                    printConfigurationInfo(minConfig, fragments);
+                    logInfo("############## EXECUTING LVL " + testNr + "-" + m_level + " with " + m_activeFragments.size() + " active fragments ##############");
+                    statsTracker.startTrackingDDminExecution(testNr + "-" + m_level, m_activeFragments.size(), executor.getNumberOfRemainingFragments());
+                    List<ICodeFragment> minConfig = runDDMin(executor, m_activeFragments, m_activeFragments.size());
+                    logInfo("Level " + testNr + "-" + m_level + " took " + StatsUtility.formatDuration(m_levelStart));
+                    printConfigurationInfo(minConfig, m_activeFragments);
                     executor.addFixedFragments(minConfig);
-                    executor.addDiscardedFragments(CollectionsUtility.listMinus(fragments, minConfig));
+                    executor.addDiscardedFragments(CollectionsUtility.listMinus(m_activeFragments, minConfig));
                     long numberOfRemainingFragments = executor.getNumberOfRemainingFragments();
                     logInfo("############## After level " + testNr + "-" + m_level + " there are " + numberOfRemainingFragments + " / " + numberOfFragments + " fragments left :::: " + executor.getStatistics());
                     executor.trackDDminCompilerStats();
-                    statsTracker.trackDDminExecutionEnd(levelStart, minConfig.size(), numberOfRemainingFragments);
+                    statsTracker.trackDDminExecutionEnd(m_levelStart, minConfig.size(), numberOfRemainingFragments);
                     m_level++;
                 }
 
@@ -80,6 +81,11 @@ public class GDDMWEGenerator extends AbstractMWEGenerator {
         } catch (CancellationException e) {
             logInfo("Execution was manually cancelled. Recreate intermediate result in testingoutput folder...");
             if (m_fragments != null && !m_fragments.isEmpty()) {
+                executor.addFixedFragments(m_fragments);
+                executor.addDiscardedFragments(CollectionsUtility.listMinus(m_activeFragments, m_fragments));
+                long numberOfRemainingFragments = executor.getNumberOfRemainingFragments();
+                executor.trackDDminCompilerStats();
+                statsTracker.trackDDminExecutionEnd(m_levelStart, m_fragments.size(), numberOfRemainingFragments);
                 executor.recreateCode(m_fragments);
                 executor.formatOutputFolder();
             }

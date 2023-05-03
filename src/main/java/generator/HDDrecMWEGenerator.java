@@ -2,14 +2,17 @@ package generator;
 
 import fragment.ICodeFragment;
 import fragment.IHierarchicalCodeFragment;
-import testexecutor.ITestExecutor;
 import testexecutor.TestExecutorOptions;
+import testexecutor.hdd.HDDTestExecutor;
 import testexecutor.hdd.HDDrecTestExecutor;
 import utility.CollectionsUtility;
 import utility.StatsTracker;
 import utility.StatsUtility;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CancellationException;
 
 public class HDDrecMWEGenerator extends HDDMWEGenerator {
@@ -32,7 +35,7 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 				long runStart = System.currentTimeMillis();
 				logInfo("############## RUNNING TEST NR. " + m_testNr + " ##############");
 				while (!executor.getQueue().isEmpty()) {
-					long levelStart = System.currentTimeMillis();
+					m_levelStart = System.currentTimeMillis();
 					IHierarchicalCodeFragment currentFragment = executor.getQueue().poll();
 					if (currentFragment == null) {
 						continue;
@@ -44,7 +47,7 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " ##############");
 					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, fragments.size(), calculateTotalNumberOfFragements(executor, fragments));
 					List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
-					logInfo("Level " + m_testNr + "-" + m_level + " took " + StatsUtility.formatDuration(levelStart));
+					logInfo("Level " + m_testNr + "-" + m_level + " took " + StatsUtility.formatDuration(m_levelStart));
 					printConfigurationInfo(minConfig, fragments);
 					executor.addFixedFragments(minConfig);
 					executor.getQueue().addAll(CollectionsUtility.castList(minConfig, IHierarchicalCodeFragment.class));
@@ -52,7 +55,7 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor, Collections.emptyList());
 					logInfo("############## After level " + m_testNr + "-" + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
 					executor.trackDDminCompilerStats();
-					statsTracker.trackDDminExecutionEnd(levelStart, minConfig.size(), numberOfRemainingFragments);
+					statsTracker.trackDDminExecutionEnd(m_levelStart, minConfig.size(), numberOfRemainingFragments);
 					m_level++;
 				}
 
@@ -70,18 +73,16 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 			logInfo("Formatting result in testingoutput folder...");
 			executor.formatOutputFolder();
 		} catch (CancellationException e) {
-			logInfo("Execution was manually cancelled. Recreate intermediate result in testingoutput folder...");
-			if (m_fragments != null && !m_fragments.isEmpty()) {
-				executor.recreateCode(m_fragments);
-				executor.formatOutputFolder();
-			}
+			handleRunCancellation(statsTracker, executor);
 			throw e;
 		} finally {
 			cleanup();
 		}
 	}
 
-	private long calculateTotalNumberOfFragements(HDDrecTestExecutor executor, List<ICodeFragment> activeFragments) {
+	@Override
+	protected long calculateTotalNumberOfFragements(HDDTestExecutor executor0, List<ICodeFragment> activeFragments) {
+		HDDrecTestExecutor executor = (HDDrecTestExecutor) executor0;
 		long numberOfQueuedFragments = executor.getQueue()
 				.stream()
 				.filter(Objects::nonNull)
@@ -96,13 +97,6 @@ public class HDDrecMWEGenerator extends HDDMWEGenerator {
 				.mapToInt(fr -> CollectionsUtility.getChildrenInDeep(fr).size())
 				.sum();
 		return executor.getFixedFragments().size() + numberOfQueuedFragments + numberOfActiveFragments;
-	}
-
-	@Override
-	protected ITestExecutor.ETestResult executeTest(ITestExecutor executor, List<ICodeFragment> configuration, int totalFragments, Map<String, ITestExecutor.ETestResult> resultMap) {
-		ITestExecutor.ETestResult result = executor.test(configuration);
-		log(":::: " + result + " :::: level: " + m_testNr + "-" + m_level + " :::: size: " + configuration.size() + " / " + totalFragments + " :::: " + executor.getStatistics(), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
-		return result;
 	}
 
 	@Override

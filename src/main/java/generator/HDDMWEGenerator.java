@@ -44,11 +44,11 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 				long runStart = System.currentTimeMillis();
 				logInfo("############## RUNNING TEST NR. " + m_testNr + " ##############");
 				while (true) {
-					long levelStart = System.currentTimeMillis();
+					m_levelStart = System.currentTimeMillis();
 					logInfo("############## EXECUTING LVL " + m_testNr + "-" + m_level + " / " + m_maxLevel + " ##############");
 					statsTracker.startTrackingDDminExecution(m_testNr + "-" + m_level, fragments.size(), calculateTotalNumberOfFragements(executor, fragments));
 					List<ICodeFragment> minConfig = runDDMin(executor, fragments, fragments.size());
-					logInfo("Level " + m_testNr + "-" + m_level + " / " + m_maxLevel + " took " + StatsUtility.formatDuration(levelStart));
+					logInfo("Level " + m_testNr + "-" + m_level + " / " + m_maxLevel + " took " + StatsUtility.formatDuration(m_levelStart));
 					printConfigurationInfo(minConfig, fragments);
 					executor.addFixedFragments(minConfig);
 					fragments = minConfig.stream()
@@ -60,7 +60,7 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 					long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor, fragments);
 					logInfo("############## After level " + m_testNr + "-" + m_level + " there are " + numberOfRemainingFragments + " / " + m_initialNumberOfFragments + " fragments left :::: " + executor.getStatistics());
 					executor.trackDDminCompilerStats();
-					statsTracker.trackDDminExecutionEnd(levelStart, minConfig.size(), numberOfRemainingFragments);
+					statsTracker.trackDDminExecutionEnd(m_levelStart, minConfig.size(), numberOfRemainingFragments);
 					if (minConfig.isEmpty()) {
 						break;
 					}
@@ -81,18 +81,25 @@ public class HDDMWEGenerator extends AbstractMWEGenerator {
 			logInfo("Formatting result in testingoutput folder...");
 			executor.formatOutputFolder();
 		} catch (CancellationException e) {
-			logInfo("Execution was manually cancelled. Recreate intermediate result in testingoutput folder...");
-			if (m_fragments != null && !m_fragments.isEmpty()) {
-				executor.recreateCode(m_fragments);
-				executor.formatOutputFolder();
-			}
+			handleRunCancellation(statsTracker, executor);
 			throw e;
 		} finally {
 			cleanup();
 		}
 	}
 
-	private long calculateTotalNumberOfFragements(HDDTestExecutor executor, List<ICodeFragment> fragments) {
+	protected void handleRunCancellation(StatsTracker statsTracker, HDDTestExecutor executor) {
+		logInfo("Execution was manually cancelled. Track stats and recreate intermediate result in testingoutput folder...");
+		executor.trackDDminCompilerStats();
+		if (m_fragments != null && !m_fragments.isEmpty()) {
+			long numberOfRemainingFragments = calculateTotalNumberOfFragements(executor, m_fragments);
+			statsTracker.trackDDminExecutionEnd(m_levelStart, m_fragments.size(), numberOfRemainingFragments);
+			executor.recreateCode(m_fragments);
+			executor.formatOutputFolder();
+		}
+	}
+
+	protected long calculateTotalNumberOfFragements(HDDTestExecutor executor, List<ICodeFragment> fragments) {
 		return executor.getFixedFragments().size() + fragments.stream()
 				.map(IHierarchicalCodeFragment.class::cast)
 				.mapToLong(fr -> CollectionsUtility.getChildrenInDeep(fr).size())

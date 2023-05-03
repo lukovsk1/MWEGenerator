@@ -20,6 +20,7 @@ public abstract class AbstractMWEGenerator {
 	protected final ExecutorService m_executorService;
 	protected List<ICodeFragment> m_fragments;
 	protected AtomicBoolean m_isCancelled = new AtomicBoolean();
+	protected long m_levelStart;
 
 	public AbstractMWEGenerator(TestExecutorOptions options) {
 		m_testExecutorOptions = options;
@@ -52,12 +53,12 @@ public abstract class AbstractMWEGenerator {
 					totalFragments = m_fragments.size();
 				}
 				activeFragments = m_fragments.size();
-				long start = System.currentTimeMillis();
+				m_levelStart = System.currentTimeMillis();
 				statsTracker.startTrackingDDminExecution(String.valueOf(testNr), activeFragments, activeFragments);
 				m_fragments = runDDMin(executor, m_fragments, activeFragments);
-				logInfo("############## FINISHED NR. " + testNr++ + " in " + StatsUtility.formatDuration(start) + " :::: Reduced to " + m_fragments.size() + " out of " + totalFragments + " :::: " + executor.getStatistics() + " ##############");
+				logInfo("############## FINISHED NR. " + testNr++ + " in " + StatsUtility.formatDuration(m_levelStart) + " :::: Reduced to " + m_fragments.size() + " out of " + totalFragments + " :::: " + executor.getStatistics() + " ##############");
 				executor.trackDDminCompilerStats();
-				statsTracker.trackDDminExecutionEnd(start, m_fragments.size(), m_fragments.size());
+				statsTracker.trackDDminExecutionEnd(m_levelStart, m_fragments.size(), m_fragments.size());
 
 				// recreate mwe
 				logInfo("Recreating result in testingoutput folder...");
@@ -70,7 +71,9 @@ public abstract class AbstractMWEGenerator {
 			logInfo("############## FINISHED ##############");
 		} catch (CancellationException e) {
 			logInfo("Execution was manually cancelled. Recreate intermediate result in testingoutput folder...");
+			executor.trackDDminCompilerStats();
 			if (m_fragments != null && !m_fragments.isEmpty()) {
+				statsTracker.trackDDminExecutionEnd(m_levelStart, m_fragments.size(), m_fragments.size());
 				executor.recreateCode(m_fragments);
 				executor.formatOutputFolder();
 			}
