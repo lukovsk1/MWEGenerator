@@ -1,0 +1,27 @@
+Using executor CodeLineTestExecutor with executor options:
+{
+	m_modulePath='/home/lukasbosshart/workspace/defects4j/bugs/csv_4_b/',
+	m_sourceFolderPath='src/main/java',
+	m_unitTestFolderPath='src/test/java',
+	m_unitTestMethod='org.apache.commons.csv.CSVParserTest#testNoHeaderMap',
+	m_expectedResult='java.lang.NullPointerException',
+	m_compilationType=IN_MEMORY,
+	m_logLevel=INFO,
+	m_logCompilationErrors=false,
+	m_logRuntimeErrors=false,
+	m_multipleRuns=false,
+	m_numberOfThreads=16,
+	m_preSliceCode=false,
+	m_graphAlgorithmFragmentLimit=0,
+	m_graphAlgorithmEscalatingFragmentLimit=false,
+}
+############## RUNNING TEST NR. 0 ##############
+Formatting code in source folder
+############## FINISHED NR. 0 in 16m 46s 593ms :::: Reduced to 496 out of 2835 :::: Compiler calls: 109349, compilation errors: 106912, runtime errors: 900, failed runs: 1537, ok runs: 0 ##############
+Recreating result in testingoutput folder...
+Formatting result in testingoutput folder...
+############## FINISHED ##############
+#### MWE GENERATOR FINISHED SUCCESSFULLY ####
+
+TOTAL EXECUTION TIME: 16m 47s 326ms.
+TOTAL OUTPUT SIZE: 107503113 bytes
