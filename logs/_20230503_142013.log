@@ -1,0 +1,144 @@
+Using executor HDDrecTestExecutor with executor options:
+{
+	m_modulePath='/home/lukasbosshart/workspace/defects4j/bugs/csv_4_b/',
+	m_sourceFolderPath='src/main/java',
+	m_unitTestFolderPath='src/test/java',
+	m_unitTestMethod='org.apache.commons.csv.CSVParserTest#testNoHeaderMap',
+	m_expectedResult='java.lang.NullPointerException',
+	m_compilationType=IN_MEMORY,
+	m_logLevel=INFO,
+	m_logCompilationErrors=false,
+	m_logRuntimeErrors=false,
+	m_multipleRuns=false,
+	m_numberOfThreads=16,
+	m_preSliceCode=false,
+	m_graphAlgorithmFragmentLimit=0,
+	m_graphAlgorithmEscalatingFragmentLimit=false,
+}
+Formatting code in source folder
+Level: 0 :::: fragments: 10
+Level: 1 :::: fragments: 83
+Level: 2 :::: fragments: 639
+Level: 3 :::: fragments: 909
+Level: 4 :::: fragments: 429
+Level: 5 :::: fragments: 613
+Level: 6 :::: fragments: 672
+Level: 7 :::: fragments: 517
+Level: 8 :::: fragments: 382
+Level: 9 :::: fragments: 264
+Level: 10 :::: fragments: 179
+Level: 11 :::: fragments: 133
+Level: 12 :::: fragments: 91
+Level: 13 :::: fragments: 58
+Level: 14 :::: fragments: 43
+Level: 15 :::: fragments: 37
+Level: 16 :::: fragments: 26
+Level: 17 :::: fragments: 15
+Level: 18 :::: fragments: 9
+Level: 19 :::: fragments: 3
+Level: 20 :::: fragments: 2
+Level: 21 :::: fragments: 3
+Level: 22 :::: fragments: 1
+Total :::: fragments: 5118 out of 5118 originally
+############## RUNNING TEST NR. 0 ##############
+############## EXECUTING LVL 0-0 ##############
+:::: FAILED :::: level: 0-0 :::: size: 10 / 10 :::: Compiler calls: 2, compilation errors: 1, runtime errors: 0, failed runs: 1, ok runs: 0
+Level 0-0 took 3s 918ms
+1111111111
+############## After level 0-0 there are 5118 / 5118 fragments left :::: Compiler calls: 26, compilation errors: 25, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-1 ##############
+Level 0-1 took 2s 62ms
+1111111111111111
+############## After level 0-1 there are 5118 / 5118 fragments left :::: Compiler calls: 56, compilation errors: 55, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-2 ##############
+Level 0-2 took 1s 247ms
+11111111111
+############## After level 0-2 there are 5118 / 5118 fragments left :::: Compiler calls: 81, compilation errors: 80, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-3 ##############
+Level 0-3 took 622ms
+111111
+############## After level 0-3 there are 5118 / 5118 fragments left :::: Compiler calls: 93, compilation errors: 92, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-4 ##############
+Level 0-4 took 182ms
+11
+############## After level 0-4 there are 5118 / 5118 fragments left :::: Compiler calls: 95, compilation errors: 94, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-5 ##############
+Level 0-5 took 5ms
+1
+############## After level 0-5 there are 5118 / 5118 fragments left :::: Compiler calls: 95, compilation errors: 94, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-6 ##############
+Level 0-6 took 1s 25ms
+111111111111111
+############## After level 0-6 there are 5118 / 5118 fragments left :::: Compiler calls: 124, compilation errors: 123, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-7 ##############
+Level 0-7 took 1s 751ms
+111111111111111111
+############## After level 0-7 there are 5118 / 5118 fragments left :::: Compiler calls: 172, compilation errors: 171, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-8 ##############
+Level 0-8 took 1s 53ms
+111111111
+############## After level 0-8 there are 5118 / 5118 fragments left :::: Compiler calls: 195, compilation errors: 194, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-9 ##############
+Level 0-9 took 132ms
+11
+############## After level 0-9 there are 5118 / 5118 fragments left :::: Compiler calls: 197, compilation errors: 196, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-10 ##############
+Level 0-10 took 306ms
+111
+############## After level 0-10 there are 5118 / 5118 fragments left :::: Compiler calls: 202, compilation errors: 201, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-11 ##############
+Level 0-11 took 511ms
+111111
+############## After level 0-11 there are 5118 / 5118 fragments left :::: Compiler calls: 214, compilation errors: 213, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-12 ##############
+Level 0-12 took 145ms
+111
+############## After level 0-12 there are 5118 / 5118 fragments left :::: Compiler calls: 219, compilation errors: 218, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-13 ##############
+Level 0-13 took 144ms
+111
+############## After level 0-13 there are 5118 / 5118 fragments left :::: Compiler calls: 224, compilation errors: 223, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-14 ##############
+:::: FAILED :::: level: 0-14 :::: size: 80 / 82 :::: Compiler calls: 286, compilation errors: 282, runtime errors: 1, failed runs: 2, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 80 / 82 :::: Compiler calls: 303, compilation errors: 284, runtime errors: 1, failed runs: 3, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 78 / 82 :::: Compiler calls: 317, compilation errors: 309, runtime errors: 1, failed runs: 4, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 78 / 82 :::: Compiler calls: 333, compilation errors: 312, runtime errors: 2, failed runs: 5, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 76 / 82 :::: Compiler calls: 347, compilation errors: 338, runtime errors: 3, failed runs: 6, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 75 / 82 :::: Compiler calls: 398, compilation errors: 374, runtime errors: 4, failed runs: 7, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 75 / 82 :::: Compiler calls: 401, compilation errors: 377, runtime errors: 4, failed runs: 8, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 75 / 82 :::: Compiler calls: 402, compilation errors: 377, runtime errors: 4, failed runs: 9, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 75 / 82 :::: Compiler calls: 407, compilation errors: 378, runtime errors: 4, failed runs: 10, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 74 / 82 :::: Compiler calls: 423, compilation errors: 396, runtime errors: 4, failed runs: 11, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 74 / 82 :::: Compiler calls: 429, compilation errors: 398, runtime errors: 4, failed runs: 12, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 74 / 82 :::: Compiler calls: 430, compilation errors: 399, runtime errors: 4, failed runs: 13, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 73 / 82 :::: Compiler calls: 446, compilation errors: 414, runtime errors: 4, failed runs: 14, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 72 / 82 :::: Compiler calls: 484, compilation errors: 450, runtime errors: 4, failed runs: 15, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 70 / 82 :::: Compiler calls: 539, compilation errors: 510, runtime errors: 7, failed runs: 16, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 71 / 82 :::: Compiler calls: 539, compilation errors: 510, runtime errors: 7, failed runs: 17, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 70 / 82 :::: Compiler calls: 550, compilation errors: 511, runtime errors: 7, failed runs: 18, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 71 / 82 :::: Compiler calls: 551, compilation errors: 511, runtime errors: 7, failed runs: 19, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 71 / 82 :::: Compiler calls: 553, compilation errors: 511, runtime errors: 7, failed runs: 20, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 71 / 82 :::: Compiler calls: 554, compilation errors: 511, runtime errors: 7, failed runs: 21, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 69 / 82 :::: Compiler calls: 592, compilation errors: 558, runtime errors: 8, failed runs: 22, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 69 / 82 :::: Compiler calls: 598, compilation errors: 558, runtime errors: 8, failed runs: 23, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 69 / 82 :::: Compiler calls: 602, compilation errors: 558, runtime errors: 8, failed runs: 24, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 68 / 82 :::: Compiler calls: 606, compilation errors: 558, runtime errors: 8, failed runs: 25, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 69 / 82 :::: Compiler calls: 607, compilation errors: 558, runtime errors: 8, failed runs: 26, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 67 / 82 :::: Compiler calls: 644, compilation errors: 605, runtime errors: 10, failed runs: 27, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 67 / 82 :::: Compiler calls: 646, compilation errors: 605, runtime errors: 10, failed runs: 28, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 68 / 82 :::: Compiler calls: 649, compilation errors: 605, runtime errors: 10, failed runs: 29, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 66 / 82 :::: Compiler calls: 695, compilation errors: 644, runtime errors: 10, failed runs: 30, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 66 / 82 :::: Compiler calls: 703, compilation errors: 647, runtime errors: 11, failed runs: 31, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 64 / 82 :::: Compiler calls: 745, compilation errors: 698, runtime errors: 13, failed runs: 32, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 65 / 82 :::: Compiler calls: 755, compilation errors: 698, runtime errors: 13, failed runs: 33, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 65 / 82 :::: Compiler calls: 760, compilation errors: 698, runtime errors: 13, failed runs: 34, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 63 / 82 :::: Compiler calls: 794, compilation errors: 744, runtime errors: 14, failed runs: 35, ok runs: 0
+:::: FAILED :::: level: 0-14 :::: size: 63 / 82 :::: Compiler calls: 809, compilation errors: 744, runtime errors: 14, failed runs: 36, ok runs: 0
+Execution was manually cancelled. Recreate intermediate result in testingoutput folder...
+java.util.concurrent.CancellationException: Cancelled by user
+	at generator.AbstractMWEGenerator.runDDMin(AbstractMWEGenerator.java:109)
+	at generator.HDDrecMWEGenerator.runGenerator(HDDrecMWEGenerator.java:46)
+	at Main.main(Main.java:95)
+
+TOTAL EXECUTION TIME: 27s 163ms.
+TOTAL OUTPUT SIZE: 107520387 bytes
