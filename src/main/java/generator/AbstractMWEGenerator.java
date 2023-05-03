@@ -170,9 +170,7 @@ public abstract class AbstractMWEGenerator {
 		}
 
 		result = executor.test(configuration);
-
-		logDebug(configurationIdentifier + " -> " + result);
-
+		log(":::: " + result + " :::: size: " + configuration.size() + " / " + totalFragments + " :::: " + executor.getStatistics(), result == ITestExecutor.ETestResult.FAILED ? TestExecutorOptions.ELogLevel.INFO : TestExecutorOptions.ELogLevel.DEBUG);
 		resultMap.put(configurationIdentifier, result);
 
 		return result;
