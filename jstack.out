@@ -1,0 +1,82 @@
+'s password:
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-137-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Thu 04 May 2023 02:13:36 PM CEST
+
+  System load:  4.0                 Users logged in:          1
+  Usage of /:   54.2% of 209.29GB   IPv4 address for docker0: 172.17.0.1
+  Memory usage: 26%                 IPv4 address for eno1:    130.92.64.122
+  Swap usage:   0%                  IPv4 address for virbr0:  192.168.122.1
+  Processes:    2379
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+26 additional security updates can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+New release '22.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+*** System restart required ***
+Last login: Thu May  4 08:46:33 2023 from 172.30.72.33
+lukasbosshart@calculon:~$ ssh 192.168.122.129
+lukasbosshart@192.168.122.129's password:
+Welcome to Ubuntu 18.04.6 LTS (GNU/Linux 4.15.0-209-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+Last login: Thu May  4 09:26:14 2023 from 192.168.122.1
+lukasbosshart@ubuntu:~$ screen -ls
+There is a screen on:
+        15834.pts-0.ubuntu      (05/03/2023 03:27:22 PM)        (Detached)
+1 Socket in /run/screen/S-lukasbosshart.
+lukasbosshart@ubuntu:~$ screen -RD
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at java.util.concurrent.ExecutorCompletionService.take(ExecutorCompletionService.java:193)
+        at java.util.concurrent.AbstractExecutorService.doInvokeAny(AbstractExecutorService.java:188)
+        at java.util.concurrent.AbstractExecutorService.invokeAny(AbstractExecutorService.java:215)
+        at generator.AbstractMWEGenerator.runDDMin(AbstractMWEGenerator.java:133)
+        at generator.HDDMWEGenerator.runGenerator(HDDMWEGenerator.java:50)
+        at Main.main(Main.java:107)
+
+"VM Thread" os_prio=0 tid=0x00007f54cc1eb800 nid=0x4d2d runnable
+
+"GC task thread#0 (ParallelGC)" os_prio=0 tid=0x00007f54cc021000 nid=0x4d24 runnable
+
+"GC task thread#1 (ParallelGC)" os_prio=0 tid=0x00007f54cc023000 nid=0x4d25 runnable
+
+"GC task thread#2 (ParallelGC)" os_prio=0 tid=0x00007f54cc024800 nid=0x4d26 runnable
+
+"GC task thread#3 (ParallelGC)" os_prio=0 tid=0x00007f54cc026800 nid=0x4d27 runnable
+
+"GC task thread#4 (ParallelGC)" os_prio=0 tid=0x00007f54cc028000 nid=0x4d28 runnable
+
+"GC task thread#5 (ParallelGC)" os_prio=0 tid=0x00007f54cc02a000 nid=0x4d29 runnable
+
+"GC task thread#6 (ParallelGC)" os_prio=0 tid=0x00007f54cc02b800 nid=0x4d2a runnable
+
+"GC task thread#7 (ParallelGC)" os_prio=0 tid=0x00007f54cc02d800 nid=0x4d2b runnable
+
+"GC task thread#8 (ParallelGC)" os_prio=0 tid=0x00007f54cc02f800 nid=0x4d2c runnable
+
+"VM Periodic Task Thread" os_prio=0 tid=0x00007f54cc25c000 nid=0x4d36 waiting on condition
+
+JNI global references: 736
+
+Heap
+ PSYoungGen      total 944640K, used 647459K [0x0000000782b00000, 0x00000007c0000000, 0x00000007c0000000)
+  eden space 884736K, 73% used [0x0000000782b00000,0x00000007aa348f28,0x00000007b8b00000)
+  from space 59904K, 0% used [0x00000007b8b00000,0x00000007b8b00000,0x00000007bc580000)
+  to   space 59904K, 0% used [0x00000007bc580000,0x00000007bc580000,0x00000007c0000000)
+ ParOldGen       total 2010112K, used 2009895K [0x0000000708000000, 0x0000000782b00000, 0x0000000782b00000)
+  object space 2010112K, 99% used [0x0000000708000000,0x0000000782ac9c30,0x0000000782b00000)
+ Metaspace       used 36940K, capacity 38030K, committed 42792K, reserved 1087488K
+  class space    used 3821K, capacity 4153K, committed 5672K, reserved 1048576K
