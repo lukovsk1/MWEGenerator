@@ -1,7 +1,5 @@
 #!/bin/bash
 
-git pull
-
 ALGORITHMS=()
 BUGS=()
 
@@ -23,11 +21,14 @@ select bug in csv_4 gson_6 cli_1 lang_5 jsoup_9; do
   echo "You have chosen ${BUGS[@]}. Add another bug or write 'ok' to continue."
 done
 
-echo "building jar file with dependencies"
-mvn clean compile assembly:single
 
 for bug in "${BUGS[@]}"; do
   for algorithm in "${ALGORITHMS[@]}"; do
+
+    git pull
+    echo "building jar file with dependencies"
+    mvn clean compile assembly:single
+
     echo "Running algorithm $algorithm for bug $bug"
     if [[ $bug == csv_4 ]]; then
       java -jar ~/workspace/ddminj/target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar "generator.${algorithm}MWEGenerator" ~/workspace/defects4j/bugs/csv_4_b/ src/main/java src/test/java org.apache.commons.csv.CSVParserTest#testNoHeaderMap "java.lang.NullPointerException"
@@ -40,12 +41,13 @@ for bug in "${BUGS[@]}"; do
     elif [[ $bug == jsoup_9 ]]; then
       java -jar ~/workspace/ddminj/target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar "generator.${algorithm}MWEGenerator" ~/workspace/defects4j/bugs/jsoup_9_b/ src/main/java/ src/test/java/ org.jsoup.nodes.EntitiesTest#unescape org.junit.ComparisonFailure
     fi
+
+    echo "checking in logs and stats files to git"
+    git add ./stats
+    git add ./logs/2023*
+    git commit -m "VM run $algorithm for $bug"
+    git push
   done
 done
 
-echo "checking in logs and stats files to git"
-git add ./stats
-git add ./logs/2023*
-git commit -m "VM run"
-git push
 

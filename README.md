@@ -124,8 +124,13 @@ For the defects4j example CLI 1 this reduces the runtime for a single execution 
 
 Steps:
 
+- Make sure java -version returns a java 8 version
 - Install defects4j and check out a bug
 - Clone the ddminj git repo
-- mvn clean compile assembly:single
-- java -jar target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar ...
+- `mvn clean compile assembly:single`
+- `java -jar target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar ...args`
+- Running GDD algorithms requires an installation of neo4j
+  - Make sure Java 11 is installed and JAVA_HOME points to its installation folder
+  - Install version [4.4.19 of neo4j](https://neo4j.com/docs/operations-manual/4.4/installation/linux/)
+  - Manually query the database with `cypher-shell`
 
