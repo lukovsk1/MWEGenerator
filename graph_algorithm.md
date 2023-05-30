@@ -18,15 +18,14 @@ HDD algorithm on any directed acyclic graph representing the code and its intern
 ```
 free := V
 fixed := {}
-discarded := {}
 
 while free != {}
     active := {f in free | s.t. not exists (f,v) in E with v in free}
     free := free \ active
     minconfig := ddmin(active)
     fixed := fixed u minconfig
-    discarded := discarded u (active \ minconfig)
-
+    discarded := PruneGraph(G, active \ minconfig)
+    free := free \ discarded
 return fixed
 ```
 
@@ -41,24 +40,24 @@ The set of fixed fragments that is returned at the end of the run, is an MWE.
 ```
 free := V
 fixed := {}
-discarded := {}
 queue := {}
 
-while free != {} ∨ queue != {}
+while free != {}
   if queue != {} 
-    w := queue.pop()
+    w := queue.dequeue()
     active := {f in free | s.t. (f,w) in E and not exists (f,v) in E with v in free}
   else
     active := {f in free | s.t. not exists (f,v) in E with v in free}
-  
   free := free \ active
   minconfig := ddmin(active)
   fixed := fixed u minconfig
-  queue := queue u minconfig
-  discarded := discarded u (active \ minconfig)
+  discarded := PruneGraph(G, active \ minconfig)
+  free := free \ discarded
+  queue.enqueue(minconfig)
   
   if w != null and {f in free | (f,w) in E} != {}
-    queue := queue u w 
+    queue.enqueue(w)
+    w := NULL
 
 return fixed
 ```

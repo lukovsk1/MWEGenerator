@@ -38,6 +38,7 @@ public class Main {
 
 		StatsTracker statTracker = StatsUtility.initStatsTracker(formattedDate);
 
+		int timeoutHours = 4;
 		AbstractMWEGenerator generator;
 		if (args.length == 0) {
 			generator = new GDDMWEGenerator(ExecutorConstants.CALCULATOR_OPTIONS_MULTI);
@@ -64,10 +65,13 @@ public class Main {
 				options.withMultipleRuns(Boolean.parseBoolean(args[6]));
 			}
 			if (args.length >= 8) {
-				options.withGraphAlgorithmFragmentLimit(Integer.parseInt(args[7]));
+				timeoutHours = Integer.parseInt(args[7]);
 			}
 			if (args.length >= 9) {
-				options.withEscalatingFragmentLimit(Boolean.parseBoolean(args[8]));
+				options.withGraphAlgorithmFragmentLimit(Integer.parseInt(args[8]));
+			}
+			if (args.length >= 10) {
+				options.withEscalatingFragmentLimit(Boolean.parseBoolean(args[9]));
 			}
 
 			generator = (AbstractMWEGenerator) constructor.newInstance(options);
@@ -91,10 +95,11 @@ public class Main {
 		});
 		readerThread.start();
 
-		// stop execution after 3 hours
+		// stop execution after the defined number of hours
+		int finalTimeoutHours = timeoutHours;
 		Thread timerThread = new Thread(() -> {
 			try {
-				Thread.sleep(TimeUnit.HOURS.toMillis(3));
+				Thread.sleep(TimeUnit.HOURS.toMillis(finalTimeoutHours));
 				generator.cancelAndWriteIntermediateResult();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
