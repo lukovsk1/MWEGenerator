@@ -42,4 +42,35 @@
         - variable usage
     - Comparisons / Benchmark
         - directly generate csv / latex
-        - 
+
+### 05.05.2023
+
+- Aufbau Arbeit:
+    - Einleitung / Motivation:
+        - Historisches
+        - Andere Methoden für MWE Generation
+        - effizienter Algorithmus für compilierte Sprachen
+        - Probleme mit DDmin
+    - Background
+        - DDmin
+        - HDD
+        - HDDrec
+    - Approach
+        - GDD
+        - GDDrec
+    - Impl
+        - Design / Architecture
+        - GraphDB
+    - Evaluation
+        - Research Question
+            - runtime
+            - compiler calls
+            - reduction factor
+        - Subject selection: defects4j
+        - Setup
+        - Results
+        - Threats to validity
+    - Summary and Further Work
+        - Dependency extraction
+        - Hoisting?
+    - 40-70 pages

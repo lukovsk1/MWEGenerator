@@ -374,11 +374,11 @@ public class GraphDB {
 
 	public void calculateCrossTreeDependencies() {
 		// calculate cross tree dependencies depending on node types
+		addMethodInvocationToDeclarationDependencies();
 		addInstantiationToDeclarationDependencies();
 		addImportToUnitDependencies();
 		addClassToImportDependencies();
 		addClassToUnitInPackageDependencies();
-		addLocalMethodInvocationsDependencies();
 	}
 
 	public void calculateGuarantees() {
@@ -525,7 +525,7 @@ public class GraphDB {
 		System.out.println("Added " + res.consume().counters().relationshipsCreated() + " class to unit in package cross tree dependencies.");
 	}
 
-	private void addLocalMethodInvocationsDependencies() {
+	private void addMethodInvocationToDeclarationDependencies() {
         /*
         MATCH (i:Fragment_20230420_172659 {nodeType:'MethodInvocation'}), (d:Fragment_20230420_172659 {nodeType:'MethodDeclaration'})
         WHERE i.bindingKey IS NOT NULL AND i.bindingKey = d.bindingKey
