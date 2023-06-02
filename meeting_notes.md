@@ -74,3 +74,16 @@
         - Dependency extraction
         - Hoisting?
     - 40-70 pages
+
+### 02.06.2023
+
+- Subject selection: more reasoning for selection and subset
+- RQ0: is the algorithm applicable/working on a larger real-world set of bugs
+- Goal -> Questions -> Metric:
+    - Research question without metrics in them
+    - RQ0: Feasibility
+    - RQ1 + RQ2: Efficiency
+    - RQ3 + RQ4: Effectiveness
+    - Evaluation metrics as own section distinct from setup
+- Threats to validity:
+    - Effect of formatter on algorithm
