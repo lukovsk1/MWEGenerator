@@ -15,7 +15,7 @@ select algorithm in HDD GDD HDDrec GDDrec CodeLine; do
 done
 
 echo "Select bugs:"
-select bug in csv_4 gson_6 cli_1 lang_5 jsoup_9; do
+select bug in csv_4 gson_6 cli_1 lang_5 jsoup_9 chart_2; do
   if [ -z "$bug" ]; then
     break
   fi
@@ -53,6 +53,8 @@ for bug in "${BUGS[@]}"; do
       java -jar ~/workspace/ddminj/target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar "generator.${algorithm}MWEGenerator" ~/workspace/defects4j/bugs/lang_5_b/ src/main/java/ src/test/java/ org.apache.commons.lang3.LocaleUtilsTest#testLang865 "java.lang.IllegalArgumentException: Invalid locale format: _GB" "$MULTIPLE_RUNS" "$TIMEOUT_HOURS"
     elif [[ $bug == jsoup_9 ]]; then
       java -jar ~/workspace/ddminj/target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar "generator.${algorithm}MWEGenerator" ~/workspace/defects4j/bugs/jsoup_9_b/ src/main/java/ src/test/java/ org.jsoup.nodes.EntitiesTest#unescape org.junit.ComparisonFailure "$MULTIPLE_RUNS" "$TIMEOUT_HOURS"
+    elif [[ $bug == chart_2 ]]; then
+      java -jar ~/workspace/ddminj/target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar "generator.${algorithm}MWEGenerator" ~/workspace/defects4j/bugs/chart_2_b/ source/ tests/ org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_2 java.lang.NullPointerException "$MULTIPLE_RUNS" "$TIMEOUT_HOURS"
     fi
 
     echo "checking in logs and stats files to git"
