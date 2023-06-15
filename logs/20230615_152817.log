@@ -1,0 +1,113 @@
+Using executor HDDrecTestExecutor with executor options:
+{
+	m_modulePath='/home/lukasbosshart/workspace/defects4j/bugs/chart_2_b/',
+	m_sourceFolderPath='source/',
+	m_unitTestFolderPath='tests/',
+	m_unitTestMethod='org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_2',
+	m_expectedResult='java.lang.NullPointerException',
+	m_compilationType=IN_MEMORY,
+	m_logLevel=INFO,
+	m_logCompilationErrors=false,
+	m_logRuntimeErrors=false,
+	m_multipleRuns=false,
+	m_numberOfThreads=16,
+	m_preSliceCode=false,
+	m_graphAlgorithmFragmentLimit=0,
+	m_graphAlgorithmEscalatingFragmentLimit=false,
+}
+Formatting code in source folder
+Level: 0 :::: fragments: 654
+Level: 1 :::: fragments: 7019
+Level: 2 :::: fragments: 40885
+Level: 3 :::: fragments: 69584
+Level: 4 :::: fragments: 36191
+Level: 5 :::: fragments: 63220
+Level: 6 :::: fragments: 57814
+Level: 7 :::: fragments: 42078
+Level: 8 :::: fragments: 28881
+Level: 9 :::: fragments: 19716
+Level: 10 :::: fragments: 13605
+Level: 11 :::: fragments: 9729
+Level: 12 :::: fragments: 6765
+Level: 13 :::: fragments: 4510
+Level: 14 :::: fragments: 2971
+Level: 15 :::: fragments: 1743
+Level: 16 :::: fragments: 998
+Level: 17 :::: fragments: 720
+Level: 18 :::: fragments: 398
+Level: 19 :::: fragments: 229
+Level: 20 :::: fragments: 160
+Level: 21 :::: fragments: 97
+Level: 22 :::: fragments: 80
+Level: 23 :::: fragments: 80
+Level: 24 :::: fragments: 80
+Level: 25 :::: fragments: 70
+Level: 26 :::: fragments: 74
+Level: 27 :::: fragments: 64
+Level: 28 :::: fragments: 57
+Level: 29 :::: fragments: 58
+Level: 30 :::: fragments: 48
+Level: 31 :::: fragments: 28
+Level: 32 :::: fragments: 24
+Level: 33 :::: fragments: 10
+Level: 34 :::: fragments: 3
+Total :::: fragments: 408643 out of 408643 originally
+############## RUNNING TEST NR. 0 ##############
+############## EXECUTING LVL 0-0 ##############
+:::: FAILED :::: level: 0-0 / 34 :::: size: 654 / 654 :::: Compiler calls: 2, compilation errors: 1, runtime errors: 0, failed runs: 1, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 649 / 654 :::: Compiler calls: 168, compilation errors: 158, runtime errors: 0, failed runs: 2, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 647 / 654 :::: Compiler calls: 556, compilation errors: 553, runtime errors: 0, failed runs: 3, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 646 / 654 :::: Compiler calls: 846, compilation errors: 837, runtime errors: 0, failed runs: 4, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 646 / 654 :::: Compiler calls: 864, compilation errors: 852, runtime errors: 0, failed runs: 5, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 645 / 654 :::: Compiler calls: 912, compilation errors: 899, runtime errors: 0, failed runs: 6, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 645 / 654 :::: Compiler calls: 918, compilation errors: 899, runtime errors: 0, failed runs: 7, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 645 / 654 :::: Compiler calls: 921, compilation errors: 899, runtime errors: 0, failed runs: 8, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 645 / 654 :::: Compiler calls: 925, compilation errors: 902, runtime errors: 0, failed runs: 9, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 645 / 654 :::: Compiler calls: 926, compilation errors: 906, runtime errors: 0, failed runs: 10, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 644 / 654 :::: Compiler calls: 983, compilation errors: 959, runtime errors: 0, failed runs: 11, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 644 / 654 :::: Compiler calls: 984, compilation errors: 960, runtime errors: 0, failed runs: 12, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 644 / 654 :::: Compiler calls: 985, compilation errors: 960, runtime errors: 0, failed runs: 13, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 644 / 654 :::: Compiler calls: 990, compilation errors: 964, runtime errors: 0, failed runs: 14, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 643 / 654 :::: Compiler calls: 1050, compilation errors: 1023, runtime errors: 0, failed runs: 15, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 643 / 654 :::: Compiler calls: 1052, compilation errors: 1025, runtime errors: 0, failed runs: 16, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 643 / 654 :::: Compiler calls: 1054, compilation errors: 1025, runtime errors: 0, failed runs: 17, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 642 / 654 :::: Compiler calls: 1117, compilation errors: 1086, runtime errors: 0, failed runs: 18, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 642 / 654 :::: Compiler calls: 1120, compilation errors: 1090, runtime errors: 0, failed runs: 19, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 641 / 654 :::: Compiler calls: 1185, compilation errors: 1151, runtime errors: 0, failed runs: 20, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 640 / 654 :::: Compiler calls: 1288, compilation errors: 1255, runtime errors: 0, failed runs: 21, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 639 / 654 :::: Compiler calls: 1413, compilation errors: 1380, runtime errors: 0, failed runs: 22, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 639 / 654 :::: Compiler calls: 1431, compilation errors: 1396, runtime errors: 0, failed runs: 23, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 638 / 654 :::: Compiler calls: 1555, compilation errors: 1517, runtime errors: 0, failed runs: 24, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 638 / 654 :::: Compiler calls: 1570, compilation errors: 1532, runtime errors: 0, failed runs: 25, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 637 / 654 :::: Compiler calls: 1708, compilation errors: 1668, runtime errors: 0, failed runs: 26, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 636 / 654 :::: Compiler calls: 1911, compilation errors: 1876, runtime errors: 0, failed runs: 27, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 635 / 654 :::: Compiler calls: 2168, compilation errors: 2126, runtime errors: 0, failed runs: 28, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 635 / 654 :::: Compiler calls: 2168, compilation errors: 2126, runtime errors: 0, failed runs: 29, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 635 / 654 :::: Compiler calls: 2178, compilation errors: 2137, runtime errors: 0, failed runs: 30, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 635 / 654 :::: Compiler calls: 2179, compilation errors: 2138, runtime errors: 0, failed runs: 31, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 634 / 654 :::: Compiler calls: 2418, compilation errors: 2375, runtime errors: 0, failed runs: 32, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 634 / 654 :::: Compiler calls: 2427, compilation errors: 2388, runtime errors: 0, failed runs: 33, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 634 / 654 :::: Compiler calls: 2428, compilation errors: 2388, runtime errors: 0, failed runs: 34, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 633 / 654 :::: Compiler calls: 2672, compilation errors: 2625, runtime errors: 0, failed runs: 35, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 633 / 654 :::: Compiler calls: 2676, compilation errors: 2629, runtime errors: 0, failed runs: 36, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 633 / 654 :::: Compiler calls: 2680, compilation errors: 2631, runtime errors: 0, failed runs: 37, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 632 / 654 :::: Compiler calls: 2929, compilation errors: 2882, runtime errors: 0, failed runs: 38, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 632 / 654 :::: Compiler calls: 2930, compilation errors: 2883, runtime errors: 0, failed runs: 39, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 631 / 654 :::: Compiler calls: 3191, compilation errors: 3142, runtime errors: 0, failed runs: 40, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 630 / 654 :::: Compiler calls: 3447, compilation errors: 3394, runtime errors: 0, failed runs: 41, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 629 / 654 :::: Compiler calls: 3834, compilation errors: 3785, runtime errors: 0, failed runs: 42, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 628 / 654 :::: Compiler calls: 4094, compilation errors: 4040, runtime errors: 0, failed runs: 43, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 627 / 654 :::: Compiler calls: 4512, compilation errors: 4458, runtime errors: 0, failed runs: 44, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 626 / 654 :::: Compiler calls: 4819, compilation errors: 4761, runtime errors: 0, failed runs: 45, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 626 / 654 :::: Compiler calls: 4822, compilation errors: 4764, runtime errors: 0, failed runs: 46, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 625 / 654 :::: Compiler calls: 5071, compilation errors: 5013, runtime errors: 0, failed runs: 47, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 624 / 654 :::: Compiler calls: 5378, compilation errors: 5317, runtime errors: 0, failed runs: 48, ok runs: 0
+:::: FAILED :::: level: 0-0 / 34 :::: size: 623 / 654 :::: Compiler calls: 5710, compilation errors: 5652, runtime errors: 0, failed runs: 49, ok runs: 0
+Execution was manually cancelled. Track stats and recreate intermediate result in testingoutput folder...
+java.util.concurrent.CancellationException: Cancelled by user
+	at generator.AbstractMWEGenerator.runDDMin(AbstractMWEGenerator.java:112)
+	at generator.HDDrecMWEGenerator.runGenerator(HDDrecMWEGenerator.java:49)
+	at Main.main(Main.java:112)
+
+TOTAL EXECUTION TIME: 4h 7s 488ms.
+TOTAL OUTPUT SIZE: 34667617 bytes
