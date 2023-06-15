@@ -59,7 +59,7 @@ for bug in "${BUGS[@]}"; do
 
     echo "checking in logs and stats files to git"
     git add ./stats
-    git add ./logs/2023*
+    git add ./logs
     git commit -m "VM run $algorithm for $bug"
     git push
   done
