@@ -27,6 +27,7 @@ read -n 1 -p "Execute multiple runs (y/n)? " answer
 if [ "$answer" == "y" ] || [ "$answer" == "Y" ]; then
   MULTIPLE_RUNS=true
 fi
+echo
 
 read -p "Set timeout in hours (default 4h): " answer
 re='^[0-9]+$'
