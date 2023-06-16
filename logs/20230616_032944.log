@@ -1,0 +1,28 @@
+Using executor CodeLineTestExecutor with executor options:
+{
+	m_modulePath='/home/lukasbosshart/workspace/defects4j/bugs/chart_2_b/',
+	m_sourceFolderPath='source/',
+	m_unitTestFolderPath='tests/',
+	m_unitTestMethod='org.jfree.data.general.junit.DatasetUtilitiesTests#testBug2849731_2',
+	m_expectedResult='java.lang.NullPointerException',
+	m_compilationType=IN_MEMORY,
+	m_logLevel=INFO,
+	m_logCompilationErrors=false,
+	m_logRuntimeErrors=false,
+	m_multipleRuns=false,
+	m_numberOfThreads=16,
+	m_preSliceCode=false,
+	m_graphAlgorithmFragmentLimit=0,
+	m_graphAlgorithmEscalatingFragmentLimit=false,
+}
+############## RUNNING TEST NR. 0 ##############
+Formatting code in source folder
+:::: FAILED :::: size: 227306 / 227306 :::: Compiler calls: 2, compilation errors: 1, runtime errors: 0, failed runs: 1, ok runs: 0
+Execution was manually cancelled. Recreate intermediate result in testingoutput folder...
+java.util.concurrent.CancellationException: Cancelled by user
+	at generator.AbstractMWEGenerator.runDDMin(AbstractMWEGenerator.java:112)
+	at generator.AbstractMWEGenerator.runGenerator(AbstractMWEGenerator.java:58)
+	at Main.main(Main.java:112)
+
+TOTAL EXECUTION TIME: 4h 31m 5s 642ms.
+TOTAL OUTPUT SIZE: 38462189 bytes
