@@ -42,6 +42,10 @@ for bug in "${BUGS[@]}"; do
     echo "building jar file with dependencies"
     mvn clean compile assembly:single
 
+
+    echo "Cleaning graph database"
+    cypher-shell "MATCH (n) DETACH DELETE n;"
+
     echo "Running algorithm $algorithm for bug $bug"
     if [[ $bug == csv_4 ]]; then
       java -jar ~/workspace/ddminj/target/ddminj-1.0-SNAPSHOT-jar-with-dependencies.jar "generator.${algorithm}MWEGenerator" ~/workspace/defects4j/bugs/csv_4_b/ src/main/java src/test/java org.apache.commons.csv.CSVParserTest#testNoHeaderMap "java.lang.NullPointerException" "$MULTIPLE_RUNS" "$TIMEOUT_HOURS"
