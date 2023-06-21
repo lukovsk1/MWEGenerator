@@ -454,6 +454,7 @@ public class GraphDB {
         /*
          MATCH (s:Fragment_20230323_090434 {nodeType:'SimpleType'}), (i:Fragment_20230323_090434 {nodeType:'ImportDeclaration'})
          WHERE LAST(SPLIT(i.importName, '.')) = s.simpleName
+         AND i.className = s.className
          CREATE (s)-[:DEPENDS_ON]->(i);
          */
 		Map<String, Object> params = new HashMap<>();
@@ -471,6 +472,10 @@ public class GraphDB {
 				ATTR_IMPORT_NAME +
 				", '.')) = s." +
 				ATTR_SIMPLE_NAME +
+				" AND i." +
+				ATTR_CLASS_NAME +
+				" = s." +
+				ATTR_CLASS_NAME +
 				" CREATE (s)-[" +
 				RELATIONSHIP_LABEL_DEPENDS_ON +
 				"{" +
