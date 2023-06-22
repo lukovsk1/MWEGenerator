@@ -4,6 +4,7 @@ ALGORITHMS=()
 BUGS=()
 MULTIPLE_RUNS=false
 TIMEOUT_HOURS=4
+SUFFIX=""
 
 echo "Select algorithms:"
 select algorithm in HDD GDD HDDrec GDDrec CodeLine; do
@@ -26,6 +27,7 @@ done
 read -n 1 -p "Execute multiple runs (y/n)? " answer
 if [ "$answer" == "y" ] || [ "$answer" == "Y" ]; then
   MULTIPLE_RUNS=true
+  SUFFIX="*"
 fi
 echo
 
@@ -64,7 +66,7 @@ for bug in "${BUGS[@]}"; do
     echo "checking in logs and stats files to git"
     git add ./stats
     git add ./logs
-    git commit -m "VM run $algorithm for $bug"
+    git commit -m "VM run ${algorithm}${SUFFIX} for ${bug}"
     git push
   done
 done
