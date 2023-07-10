@@ -1,0 +1,1304 @@
+Using executor GDDTestExecutor with executor options:
+{
+	m_modulePath='/home/lukasbosshart/workspace/defects4j/bugs/cli_1_b/',
+	m_sourceFolderPath='src/java/',
+	m_unitTestFolderPath='src/test/',
+	m_unitTestMethod='org.apache.commons.cli.bug.BugCLI13Test#testCLI13',
+	m_expectedResult='junit.framework.AssertionFailedError',
+	m_compilationType=IN_MEMORY,
+	m_logLevel=INFO,
+	m_logCompilationErrors=false,
+	m_logRuntimeErrors=false,
+	m_multipleRuns=true,
+	m_numberOfThreads=16,
+	m_preSliceCode=false,
+	m_graphAlgorithmFragmentLimit=0,
+	m_graphAlgorithmEscalatingFragmentLimit=false,
+}
+Manually query the graph in the neo4j browser: http://localhost:7474/browser/
+Example Query: "MATCH (f:Fragment_20230710_080114) RETURN *;"
+Formatting code in source folder
+Removed 20 javadoc fragments.
+Added 86 method invocation to declaration cross tree dependencies.
+Added 10 instantiation to declaration cross tree dependencies.
+Added 0 import to unit cross tree dependencies.
+Added 81 class to import cross tree dependencies.
+Added 111 class to unit in package cross tree dependencies.
+Extracted 6317 fragments to graph database in 1m 15s 630ms
+############## RUNNING TEST NR. 0 ##############
+############## EXECUTING LVL 0-0 with 20 active fragments ##############
+:::: FAILED :::: level: 0 :::: size: 20 / 20 :::: Compiler calls: 2, compilation errors: 1, runtime errors: 0, failed runs: 1, ok runs: 0
+:::: FAILED :::: level: 0 :::: size: 19 / 20 :::: Compiler calls: 32, compilation errors: 30, runtime errors: 0, failed runs: 2, ok runs: 0
+Level 0-0 took 4s 1ms
+10111111111111111111
+Fixed 19 active nodes and 0 free nodes guaranteed by them.
+Discarded 1 active fragments. 25 fragments, including dependent nodes
+############## After level 0-0 there are 6292 / 6317 fragments left :::: Compiler calls: 66, compilation errors: 64, runtime errors: 0, failed runs: 2, ok runs: 0
+############## EXECUTING LVL 0-1 with 79 active fragments ##############
+Level 0-1 took 6s 335ms
+1111111111111111111111111111111111111111111111111111111111111111111111111111111
+Fixed 79 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## After level 0-1 there are 6292 / 6317 fragments left :::: Compiler calls: 271, compilation errors: 269, runtime errors: 0, failed runs: 2, ok runs: 0
+############## EXECUTING LVL 0-2 with 493 active fragments ##############
+:::: FAILED :::: level: 2 :::: size: 491 / 493 :::: Compiler calls: 573, compilation errors: 558, runtime errors: 0, failed runs: 3, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 489 / 493 :::: Compiler calls: 713, compilation errors: 694, runtime errors: 0, failed runs: 4, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 488 / 493 :::: Compiler calls: 954, compilation errors: 936, runtime errors: 0, failed runs: 5, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 487 / 493 :::: Compiler calls: 968, compilation errors: 949, runtime errors: 0, failed runs: 6, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 486 / 493 :::: Compiler calls: 1203, compilation errors: 1182, runtime errors: 0, failed runs: 7, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 485 / 493 :::: Compiler calls: 1445, compilation errors: 1426, runtime errors: 0, failed runs: 8, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 485 / 493 :::: Compiler calls: 1446, compilation errors: 1427, runtime errors: 0, failed runs: 9, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 484 / 493 :::: Compiler calls: 1453, compilation errors: 1429, runtime errors: 0, failed runs: 10, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 484 / 493 :::: Compiler calls: 1453, compilation errors: 1430, runtime errors: 0, failed runs: 11, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 483 / 493 :::: Compiler calls: 1694, compilation errors: 1668, runtime errors: 0, failed runs: 12, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 484 / 493 :::: Compiler calls: 1697, compilation errors: 1671, runtime errors: 0, failed runs: 13, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 484 / 493 :::: Compiler calls: 1703, compilation errors: 1676, runtime errors: 0, failed runs: 14, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 482 / 493 :::: Compiler calls: 1933, compilation errors: 1904, runtime errors: 0, failed runs: 15, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 481 / 493 :::: Compiler calls: 2174, compilation errors: 2144, runtime errors: 0, failed runs: 16, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 480 / 493 :::: Compiler calls: 2423, compilation errors: 2395, runtime errors: 0, failed runs: 17, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 479 / 493 :::: Compiler calls: 2423, compilation errors: 2395, runtime errors: 0, failed runs: 18, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 480 / 493 :::: Compiler calls: 2428, compilation errors: 2399, runtime errors: 0, failed runs: 19, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 479 / 493 :::: Compiler calls: 2670, compilation errors: 2635, runtime errors: 0, failed runs: 20, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 478 / 493 :::: Compiler calls: 2916, compilation errors: 2886, runtime errors: 0, failed runs: 21, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 477 / 493 :::: Compiler calls: 2935, compilation errors: 2900, runtime errors: 0, failed runs: 22, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 477 / 493 :::: Compiler calls: 3161, compilation errors: 3130, runtime errors: 0, failed runs: 23, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 477 / 493 :::: Compiler calls: 3161, compilation errors: 3130, runtime errors: 0, failed runs: 24, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 476 / 493 :::: Compiler calls: 3173, compilation errors: 3138, runtime errors: 0, failed runs: 25, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 475 / 493 :::: Compiler calls: 3405, compilation errors: 3367, runtime errors: 0, failed runs: 26, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 474 / 493 :::: Compiler calls: 3648, compilation errors: 3617, runtime errors: 0, failed runs: 27, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 473 / 493 :::: Compiler calls: 3890, compilation errors: 3855, runtime errors: 0, failed runs: 28, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 472 / 493 :::: Compiler calls: 4175, compilation errors: 4134, runtime errors: 0, failed runs: 29, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 472 / 493 :::: Compiler calls: 4194, compilation errors: 4149, runtime errors: 0, failed runs: 30, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 471 / 493 :::: Compiler calls: 4235, compilation errors: 4189, runtime errors: 0, failed runs: 31, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 471 / 493 :::: Compiler calls: 4237, compilation errors: 4191, runtime errors: 0, failed runs: 32, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 470 / 493 :::: Compiler calls: 4295, compilation errors: 4250, runtime errors: 0, failed runs: 33, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 469 / 493 :::: Compiler calls: 4385, compilation errors: 4337, runtime errors: 0, failed runs: 34, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 468 / 493 :::: Compiler calls: 4529, compilation errors: 4481, runtime errors: 0, failed runs: 35, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 467 / 493 :::: Compiler calls: 4707, compilation errors: 4659, runtime errors: 0, failed runs: 36, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 467 / 493 :::: Compiler calls: 4710, compilation errors: 4660, runtime errors: 0, failed runs: 37, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 466 / 493 :::: Compiler calls: 4894, compilation errors: 4841, runtime errors: 0, failed runs: 38, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 466 / 493 :::: Compiler calls: 4894, compilation errors: 4842, runtime errors: 0, failed runs: 39, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 466 / 493 :::: Compiler calls: 4898, compilation errors: 4847, runtime errors: 0, failed runs: 40, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 466 / 493 :::: Compiler calls: 4900, compilation errors: 4848, runtime errors: 0, failed runs: 41, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 465 / 493 :::: Compiler calls: 5068, compilation errors: 5013, runtime errors: 0, failed runs: 42, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 464 / 493 :::: Compiler calls: 5258, compilation errors: 5201, runtime errors: 0, failed runs: 43, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 464 / 493 :::: Compiler calls: 5270, compilation errors: 5212, runtime errors: 0, failed runs: 44, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 463 / 493 :::: Compiler calls: 5451, compilation errors: 5391, runtime errors: 0, failed runs: 45, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 463 / 493 :::: Compiler calls: 5452, compilation errors: 5393, runtime errors: 0, failed runs: 46, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 463 / 493 :::: Compiler calls: 5454, compilation errors: 5396, runtime errors: 0, failed runs: 47, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 462 / 493 :::: Compiler calls: 5643, compilation errors: 5583, runtime errors: 0, failed runs: 48, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 462 / 493 :::: Compiler calls: 5648, compilation errors: 5584, runtime errors: 0, failed runs: 49, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 461 / 493 :::: Compiler calls: 5845, compilation errors: 5781, runtime errors: 0, failed runs: 50, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 460 / 493 :::: Compiler calls: 6033, compilation errors: 5967, runtime errors: 0, failed runs: 51, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 459 / 493 :::: Compiler calls: 6236, compilation errors: 6170, runtime errors: 0, failed runs: 52, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 459 / 493 :::: Compiler calls: 6236, compilation errors: 6171, runtime errors: 0, failed runs: 53, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 459 / 493 :::: Compiler calls: 6241, compilation errors: 6175, runtime errors: 0, failed runs: 54, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 459 / 493 :::: Compiler calls: 6247, compilation errors: 6178, runtime errors: 0, failed runs: 55, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 459 / 493 :::: Compiler calls: 6247, compilation errors: 6178, runtime errors: 0, failed runs: 56, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 458 / 493 :::: Compiler calls: 6437, compilation errors: 6367, runtime errors: 0, failed runs: 57, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 458 / 493 :::: Compiler calls: 6442, compilation errors: 6371, runtime errors: 0, failed runs: 58, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 458 / 493 :::: Compiler calls: 6455, compilation errors: 6383, runtime errors: 0, failed runs: 59, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 457 / 493 :::: Compiler calls: 6640, compilation errors: 6566, runtime errors: 0, failed runs: 60, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 457 / 493 :::: Compiler calls: 6649, compilation errors: 6577, runtime errors: 0, failed runs: 61, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 456 / 493 :::: Compiler calls: 6846, compilation errors: 6772, runtime errors: 0, failed runs: 62, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 456 / 493 :::: Compiler calls: 6855, compilation errors: 6780, runtime errors: 0, failed runs: 63, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 455 / 493 :::: Compiler calls: 7049, compilation errors: 6972, runtime errors: 0, failed runs: 64, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 455 / 493 :::: Compiler calls: 7058, compilation errors: 6981, runtime errors: 0, failed runs: 65, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 454 / 493 :::: Compiler calls: 7255, compilation errors: 7174, runtime errors: 0, failed runs: 66, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 453 / 493 :::: Compiler calls: 7470, compilation errors: 7390, runtime errors: 0, failed runs: 67, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 452 / 493 :::: Compiler calls: 7700, compilation errors: 7619, runtime errors: 0, failed runs: 68, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 452 / 493 :::: Compiler calls: 7705, compilation errors: 7621, runtime errors: 0, failed runs: 69, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 451 / 493 :::: Compiler calls: 7930, compilation errors: 7846, runtime errors: 0, failed runs: 70, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 450 / 493 :::: Compiler calls: 8161, compilation errors: 8076, runtime errors: 0, failed runs: 71, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 450 / 493 :::: Compiler calls: 8191, compilation errors: 8106, runtime errors: 0, failed runs: 72, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 449 / 493 :::: Compiler calls: 8396, compilation errors: 8308, runtime errors: 0, failed runs: 73, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 449 / 493 :::: Compiler calls: 8399, compilation errors: 8315, runtime errors: 0, failed runs: 74, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 448 / 493 :::: Compiler calls: 8593, compilation errors: 8507, runtime errors: 0, failed runs: 75, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 447 / 493 :::: Compiler calls: 8777, compilation errors: 8688, runtime errors: 0, failed runs: 76, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 446 / 493 :::: Compiler calls: 9015, compilation errors: 8923, runtime errors: 0, failed runs: 77, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 446 / 493 :::: Compiler calls: 9016, compilation errors: 8925, runtime errors: 0, failed runs: 78, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 445 / 493 :::: Compiler calls: 9249, compilation errors: 9158, runtime errors: 0, failed runs: 79, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 444 / 493 :::: Compiler calls: 9497, compilation errors: 9404, runtime errors: 0, failed runs: 80, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 443 / 493 :::: Compiler calls: 9760, compilation errors: 9664, runtime errors: 0, failed runs: 81, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 442 / 493 :::: Compiler calls: 10061, compilation errors: 9965, runtime errors: 0, failed runs: 82, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 442 / 493 :::: Compiler calls: 10070, compilation errors: 9974, runtime errors: 0, failed runs: 83, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 441 / 493 :::: Compiler calls: 10369, compilation errors: 10272, runtime errors: 0, failed runs: 84, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 441 / 493 :::: Compiler calls: 10369, compilation errors: 10272, runtime errors: 0, failed runs: 85, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 441 / 493 :::: Compiler calls: 10374, compilation errors: 10275, runtime errors: 0, failed runs: 86, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 440 / 493 :::: Compiler calls: 10671, compilation errors: 10572, runtime errors: 0, failed runs: 87, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 439 / 493 :::: Compiler calls: 10984, compilation errors: 10882, runtime errors: 0, failed runs: 88, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 438 / 493 :::: Compiler calls: 11321, compilation errors: 11217, runtime errors: 0, failed runs: 89, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 438 / 493 :::: Compiler calls: 11329, compilation errors: 11226, runtime errors: 0, failed runs: 90, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 437 / 493 :::: Compiler calls: 11647, compilation errors: 11543, runtime errors: 0, failed runs: 91, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 436 / 493 :::: Compiler calls: 12002, compilation errors: 11896, runtime errors: 0, failed runs: 92, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 435 / 493 :::: Compiler calls: 12378, compilation errors: 12271, runtime errors: 0, failed runs: 93, ok runs: 0
+:::: FAILED :::: level: 2 :::: size: 434 / 493 :::: Compiler calls: 12766, compilation errors: 12662, runtime errors: 0, failed runs: 94, ok runs: 0
+Level 0-2 took 3m 10s 764ms
+1111111111111111111111111011111111111011110001111111111111111111111111111111110111111111111111111111111111111111111111111111111111110111111111111111111111111111101011101111111001110111010101011111111111010101011011101111011111111111110101101100011101111011101111111111110111111111111111111111111111111111111111111111011101111101011111111111111111110101111111111111101111111111111111111111111111111110111111111111110111111111111111111111111110001001001000111111111011111101100111001111111111111
+Fixed 434 active nodes and 0 free nodes guaranteed by them.
+Discarded 59 active fragments. 1012 fragments, including dependent nodes
+############## After level 0-2 there are 5280 / 6317 fragments left :::: Compiler calls: 13206, compilation errors: 13112, runtime errors: 0, failed runs: 94, ok runs: 0
+############## EXECUTING LVL 0-3 with 1165 active fragments ##############
+:::: FAILED :::: level: 3 :::: size: 1163 / 1165 :::: Compiler calls: 13832, compilation errors: 13729, runtime errors: 0, failed runs: 95, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1163 / 1165 :::: Compiler calls: 13839, compilation errors: 13738, runtime errors: 0, failed runs: 96, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1161 / 1165 :::: Compiler calls: 13942, compilation errors: 13837, runtime errors: 0, failed runs: 97, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1159 / 1165 :::: Compiler calls: 14117, compilation errors: 14007, runtime errors: 0, failed runs: 98, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1159 / 1165 :::: Compiler calls: 14120, compilation errors: 14010, runtime errors: 0, failed runs: 99, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1159 / 1165 :::: Compiler calls: 14137, compilation errors: 14024, runtime errors: 0, failed runs: 100, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1157 / 1165 :::: Compiler calls: 14297, compilation errors: 14184, runtime errors: 0, failed runs: 101, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1157 / 1165 :::: Compiler calls: 14299, compilation errors: 14184, runtime errors: 0, failed runs: 102, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1157 / 1165 :::: Compiler calls: 14318, compilation errors: 14203, runtime errors: 0, failed runs: 103, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1155 / 1165 :::: Compiler calls: 14491, compilation errors: 14375, runtime errors: 0, failed runs: 104, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1155 / 1165 :::: Compiler calls: 14494, compilation errors: 14385, runtime errors: 0, failed runs: 105, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1153 / 1165 :::: Compiler calls: 14676, compilation errors: 14557, runtime errors: 0, failed runs: 106, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1153 / 1165 :::: Compiler calls: 14693, compilation errors: 14573, runtime errors: 0, failed runs: 107, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1151 / 1165 :::: Compiler calls: 14943, compilation errors: 14828, runtime errors: 0, failed runs: 108, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1151 / 1165 :::: Compiler calls: 14952, compilation errors: 14837, runtime errors: 0, failed runs: 109, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1149 / 1165 :::: Compiler calls: 15196, compilation errors: 15077, runtime errors: 0, failed runs: 110, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1147 / 1165 :::: Compiler calls: 15530, compilation errors: 15410, runtime errors: 0, failed runs: 111, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1147 / 1165 :::: Compiler calls: 15546, compilation errors: 15424, runtime errors: 0, failed runs: 112, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1145 / 1165 :::: Compiler calls: 15879, compilation errors: 15756, runtime errors: 0, failed runs: 113, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1143 / 1165 :::: Compiler calls: 16282, compilation errors: 16160, runtime errors: 0, failed runs: 114, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1141 / 1165 :::: Compiler calls: 16737, compilation errors: 16615, runtime errors: 0, failed runs: 115, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1139 / 1165 :::: Compiler calls: 17085, compilation errors: 16959, runtime errors: 0, failed runs: 116, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1137 / 1165 :::: Compiler calls: 17547, compilation errors: 17417, runtime errors: 0, failed runs: 117, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1134 / 1165 :::: Compiler calls: 18025, compilation errors: 17896, runtime errors: 0, failed runs: 118, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1131 / 1165 :::: Compiler calls: 18527, compilation errors: 18404, runtime errors: 0, failed runs: 119, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1130 / 1165 :::: Compiler calls: 19098, compilation errors: 18966, runtime errors: 0, failed runs: 120, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1129 / 1165 :::: Compiler calls: 19197, compilation errors: 19064, runtime errors: 0, failed runs: 121, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1129 / 1165 :::: Compiler calls: 19200, compilation errors: 19069, runtime errors: 0, failed runs: 122, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1129 / 1165 :::: Compiler calls: 19200, compilation errors: 19070, runtime errors: 0, failed runs: 123, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1129 / 1165 :::: Compiler calls: 19200, compilation errors: 19073, runtime errors: 0, failed runs: 124, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1128 / 1165 :::: Compiler calls: 19302, compilation errors: 19168, runtime errors: 0, failed runs: 125, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1128 / 1165 :::: Compiler calls: 19308, compilation errors: 19175, runtime errors: 0, failed runs: 126, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1127 / 1165 :::: Compiler calls: 19418, compilation errors: 19280, runtime errors: 0, failed runs: 127, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1127 / 1165 :::: Compiler calls: 19423, compilation errors: 19289, runtime errors: 0, failed runs: 128, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1127 / 1165 :::: Compiler calls: 19423, compilation errors: 19289, runtime errors: 0, failed runs: 129, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1126 / 1165 :::: Compiler calls: 19534, compilation errors: 19394, runtime errors: 0, failed runs: 130, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1125 / 1165 :::: Compiler calls: 19676, compilation errors: 19534, runtime errors: 0, failed runs: 131, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1125 / 1165 :::: Compiler calls: 19677, compilation errors: 19536, runtime errors: 0, failed runs: 132, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1125 / 1165 :::: Compiler calls: 19680, compilation errors: 19540, runtime errors: 0, failed runs: 133, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1125 / 1165 :::: Compiler calls: 19680, compilation errors: 19540, runtime errors: 0, failed runs: 134, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1125 / 1165 :::: Compiler calls: 19683, compilation errors: 19541, runtime errors: 0, failed runs: 135, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1125 / 1165 :::: Compiler calls: 19692, compilation errors: 19549, runtime errors: 0, failed runs: 136, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1124 / 1165 :::: Compiler calls: 19809, compilation errors: 19660, runtime errors: 0, failed runs: 137, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1124 / 1165 :::: Compiler calls: 19811, compilation errors: 19663, runtime errors: 0, failed runs: 138, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1124 / 1165 :::: Compiler calls: 19813, compilation errors: 19668, runtime errors: 0, failed runs: 139, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1123 / 1165 :::: Compiler calls: 19948, compilation errors: 19799, runtime errors: 0, failed runs: 140, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1123 / 1165 :::: Compiler calls: 19952, compilation errors: 19800, runtime errors: 0, failed runs: 141, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1123 / 1165 :::: Compiler calls: 19954, compilation errors: 19806, runtime errors: 0, failed runs: 142, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1122 / 1165 :::: Compiler calls: 20092, compilation errors: 19937, runtime errors: 0, failed runs: 143, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1122 / 1165 :::: Compiler calls: 20106, compilation errors: 19954, runtime errors: 0, failed runs: 144, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1121 / 1165 :::: Compiler calls: 20252, compilation errors: 20094, runtime errors: 0, failed runs: 145, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1121 / 1165 :::: Compiler calls: 20253, compilation errors: 20096, runtime errors: 0, failed runs: 146, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1121 / 1165 :::: Compiler calls: 20264, compilation errors: 20106, runtime errors: 0, failed runs: 147, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1120 / 1165 :::: Compiler calls: 20417, compilation errors: 20255, runtime errors: 0, failed runs: 148, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1119 / 1165 :::: Compiler calls: 20581, compilation errors: 20421, runtime errors: 0, failed runs: 149, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1119 / 1165 :::: Compiler calls: 20585, compilation errors: 20429, runtime errors: 0, failed runs: 150, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1119 / 1165 :::: Compiler calls: 20585, compilation errors: 20429, runtime errors: 0, failed runs: 151, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1118 / 1165 :::: Compiler calls: 20767, compilation errors: 20601, runtime errors: 0, failed runs: 152, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1118 / 1165 :::: Compiler calls: 20769, compilation errors: 20611, runtime errors: 0, failed runs: 153, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1118 / 1165 :::: Compiler calls: 20769, compilation errors: 20613, runtime errors: 0, failed runs: 154, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1117 / 1165 :::: Compiler calls: 20962, compilation errors: 20794, runtime errors: 0, failed runs: 155, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1117 / 1165 :::: Compiler calls: 20964, compilation errors: 20797, runtime errors: 0, failed runs: 156, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1117 / 1165 :::: Compiler calls: 20964, compilation errors: 20797, runtime errors: 0, failed runs: 157, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1117 / 1165 :::: Compiler calls: 20965, compilation errors: 20800, runtime errors: 0, failed runs: 158, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1117 / 1165 :::: Compiler calls: 20965, compilation errors: 20801, runtime errors: 0, failed runs: 159, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1117 / 1165 :::: Compiler calls: 20965, compilation errors: 20801, runtime errors: 0, failed runs: 160, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1117 / 1165 :::: Compiler calls: 20965, compilation errors: 20801, runtime errors: 0, failed runs: 161, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1116 / 1165 :::: Compiler calls: 21160, compilation errors: 20984, runtime errors: 0, failed runs: 162, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1116 / 1165 :::: Compiler calls: 21162, compilation errors: 20986, runtime errors: 0, failed runs: 163, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1116 / 1165 :::: Compiler calls: 21162, compilation errors: 20986, runtime errors: 0, failed runs: 164, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1116 / 1165 :::: Compiler calls: 21162, compilation errors: 20990, runtime errors: 0, failed runs: 165, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1116 / 1165 :::: Compiler calls: 21162, compilation errors: 20991, runtime errors: 0, failed runs: 166, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1115 / 1165 :::: Compiler calls: 21368, compilation errors: 21189, runtime errors: 0, failed runs: 167, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1115 / 1165 :::: Compiler calls: 21371, compilation errors: 21191, runtime errors: 0, failed runs: 168, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1115 / 1165 :::: Compiler calls: 21372, compilation errors: 21196, runtime errors: 0, failed runs: 169, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1115 / 1165 :::: Compiler calls: 21372, compilation errors: 21196, runtime errors: 0, failed runs: 170, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1115 / 1165 :::: Compiler calls: 21372, compilation errors: 21196, runtime errors: 0, failed runs: 171, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1115 / 1165 :::: Compiler calls: 21384, compilation errors: 21201, runtime errors: 0, failed runs: 172, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1115 / 1165 :::: Compiler calls: 21429, compilation errors: 21244, runtime errors: 0, failed runs: 173, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1114 / 1165 :::: Compiler calls: 21561, compilation errors: 21376, runtime errors: 0, failed runs: 174, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1114 / 1165 :::: Compiler calls: 21565, compilation errors: 21381, runtime errors: 0, failed runs: 175, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1113 / 1165 :::: Compiler calls: 21774, compilation errors: 21587, runtime errors: 0, failed runs: 176, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1113 / 1165 :::: Compiler calls: 21774, compilation errors: 21587, runtime errors: 0, failed runs: 177, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1113 / 1165 :::: Compiler calls: 21777, compilation errors: 21590, runtime errors: 0, failed runs: 178, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1113 / 1165 :::: Compiler calls: 21778, compilation errors: 21591, runtime errors: 0, failed runs: 179, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1113 / 1165 :::: Compiler calls: 21778, compilation errors: 21593, runtime errors: 0, failed runs: 180, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1112 / 1165 :::: Compiler calls: 21978, compilation errors: 21790, runtime errors: 0, failed runs: 181, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1112 / 1165 :::: Compiler calls: 21978, compilation errors: 21790, runtime errors: 0, failed runs: 182, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1111 / 1165 :::: Compiler calls: 22182, compilation errors: 21991, runtime errors: 0, failed runs: 183, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1111 / 1165 :::: Compiler calls: 22188, compilation errors: 21994, runtime errors: 0, failed runs: 184, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1111 / 1165 :::: Compiler calls: 22237, compilation errors: 22042, runtime errors: 0, failed runs: 185, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1110 / 1165 :::: Compiler calls: 22410, compilation errors: 22213, runtime errors: 0, failed runs: 186, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1110 / 1165 :::: Compiler calls: 22414, compilation errors: 22215, runtime errors: 0, failed runs: 187, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1110 / 1165 :::: Compiler calls: 22415, compilation errors: 22217, runtime errors: 0, failed runs: 188, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1110 / 1165 :::: Compiler calls: 22426, compilation errors: 22228, runtime errors: 0, failed runs: 189, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1109 / 1165 :::: Compiler calls: 22642, compilation errors: 22439, runtime errors: 0, failed runs: 190, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1109 / 1165 :::: Compiler calls: 22644, compilation errors: 22441, runtime errors: 0, failed runs: 191, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1109 / 1165 :::: Compiler calls: 22644, compilation errors: 22443, runtime errors: 0, failed runs: 192, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1108 / 1165 :::: Compiler calls: 22848, compilation errors: 22649, runtime errors: 0, failed runs: 193, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1108 / 1165 :::: Compiler calls: 22918, compilation errors: 22719, runtime errors: 0, failed runs: 194, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1107 / 1165 :::: Compiler calls: 23092, compilation errors: 22884, runtime errors: 0, failed runs: 195, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1107 / 1165 :::: Compiler calls: 23093, compilation errors: 22885, runtime errors: 0, failed runs: 196, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1107 / 1165 :::: Compiler calls: 23095, compilation errors: 22886, runtime errors: 0, failed runs: 197, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1107 / 1165 :::: Compiler calls: 23095, compilation errors: 22886, runtime errors: 0, failed runs: 198, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1107 / 1165 :::: Compiler calls: 23095, compilation errors: 22889, runtime errors: 0, failed runs: 199, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1107 / 1165 :::: Compiler calls: 23095, compilation errors: 22889, runtime errors: 0, failed runs: 200, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1107 / 1165 :::: Compiler calls: 23095, compilation errors: 22890, runtime errors: 0, failed runs: 201, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1107 / 1165 :::: Compiler calls: 23140, compilation errors: 22931, runtime errors: 0, failed runs: 202, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1106 / 1165 :::: Compiler calls: 23331, compilation errors: 23115, runtime errors: 0, failed runs: 203, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1106 / 1165 :::: Compiler calls: 23331, compilation errors: 23115, runtime errors: 0, failed runs: 204, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1106 / 1165 :::: Compiler calls: 23332, compilation errors: 23120, runtime errors: 0, failed runs: 205, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1106 / 1165 :::: Compiler calls: 23332, compilation errors: 23122, runtime errors: 0, failed runs: 206, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1105 / 1165 :::: Compiler calls: 23583, compilation errors: 23366, runtime errors: 0, failed runs: 207, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1105 / 1165 :::: Compiler calls: 23583, compilation errors: 23366, runtime errors: 0, failed runs: 208, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1105 / 1165 :::: Compiler calls: 23586, compilation errors: 23368, runtime errors: 0, failed runs: 209, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1105 / 1165 :::: Compiler calls: 23586, compilation errors: 23370, runtime errors: 0, failed runs: 210, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1105 / 1165 :::: Compiler calls: 23586, compilation errors: 23370, runtime errors: 0, failed runs: 211, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1105 / 1165 :::: Compiler calls: 23592, compilation errors: 23372, runtime errors: 0, failed runs: 212, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1105 / 1165 :::: Compiler calls: 23593, compilation errors: 23374, runtime errors: 0, failed runs: 213, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1104 / 1165 :::: Compiler calls: 23824, compilation errors: 23598, runtime errors: 0, failed runs: 214, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1104 / 1165 :::: Compiler calls: 23826, compilation errors: 23600, runtime errors: 0, failed runs: 215, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1103 / 1165 :::: Compiler calls: 24072, compilation errors: 23847, runtime errors: 0, failed runs: 216, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1103 / 1165 :::: Compiler calls: 24073, compilation errors: 23850, runtime errors: 0, failed runs: 217, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1103 / 1165 :::: Compiler calls: 24073, compilation errors: 23850, runtime errors: 0, failed runs: 218, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1103 / 1165 :::: Compiler calls: 24073, compilation errors: 23850, runtime errors: 0, failed runs: 219, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1102 / 1165 :::: Compiler calls: 24325, compilation errors: 24096, runtime errors: 0, failed runs: 220, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1102 / 1165 :::: Compiler calls: 24332, compilation errors: 24105, runtime errors: 0, failed runs: 221, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1102 / 1165 :::: Compiler calls: 24332, compilation errors: 24106, runtime errors: 0, failed runs: 222, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1101 / 1165 :::: Compiler calls: 24597, compilation errors: 24363, runtime errors: 0, failed runs: 223, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1101 / 1165 :::: Compiler calls: 24602, compilation errors: 24368, runtime errors: 0, failed runs: 224, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1101 / 1165 :::: Compiler calls: 24602, compilation errors: 24369, runtime errors: 0, failed runs: 225, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1101 / 1165 :::: Compiler calls: 24602, compilation errors: 24369, runtime errors: 0, failed runs: 226, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1101 / 1165 :::: Compiler calls: 24604, compilation errors: 24373, runtime errors: 0, failed runs: 227, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1101 / 1165 :::: Compiler calls: 24604, compilation errors: 24373, runtime errors: 0, failed runs: 228, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1101 / 1165 :::: Compiler calls: 24680, compilation errors: 24443, runtime errors: 0, failed runs: 229, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1100 / 1165 :::: Compiler calls: 24871, compilation errors: 24630, runtime errors: 0, failed runs: 230, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1100 / 1165 :::: Compiler calls: 24873, compilation errors: 24632, runtime errors: 0, failed runs: 231, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1100 / 1165 :::: Compiler calls: 24874, compilation errors: 24635, runtime errors: 0, failed runs: 232, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1099 / 1165 :::: Compiler calls: 25146, compilation errors: 24901, runtime errors: 0, failed runs: 233, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1099 / 1165 :::: Compiler calls: 25150, compilation errors: 24907, runtime errors: 0, failed runs: 234, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1098 / 1165 :::: Compiler calls: 25432, compilation errors: 25185, runtime errors: 0, failed runs: 235, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1098 / 1165 :::: Compiler calls: 25436, compilation errors: 25193, runtime errors: 0, failed runs: 236, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1098 / 1165 :::: Compiler calls: 25436, compilation errors: 25193, runtime errors: 0, failed runs: 237, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1098 / 1165 :::: Compiler calls: 25436, compilation errors: 25194, runtime errors: 0, failed runs: 238, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1097 / 1165 :::: Compiler calls: 25723, compilation errors: 25476, runtime errors: 0, failed runs: 239, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1097 / 1165 :::: Compiler calls: 25728, compilation errors: 25478, runtime errors: 0, failed runs: 240, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1097 / 1165 :::: Compiler calls: 25730, compilation errors: 25482, runtime errors: 0, failed runs: 241, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1097 / 1165 :::: Compiler calls: 25731, compilation errors: 25483, runtime errors: 0, failed runs: 242, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1096 / 1165 :::: Compiler calls: 26010, compilation errors: 25756, runtime errors: 0, failed runs: 243, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1095 / 1165 :::: Compiler calls: 26301, compilation errors: 26048, runtime errors: 0, failed runs: 244, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1094 / 1165 :::: Compiler calls: 26604, compilation errors: 26349, runtime errors: 0, failed runs: 245, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1094 / 1165 :::: Compiler calls: 26609, compilation errors: 26350, runtime errors: 0, failed runs: 246, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1094 / 1165 :::: Compiler calls: 26610, compilation errors: 26356, runtime errors: 0, failed runs: 247, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1094 / 1165 :::: Compiler calls: 26634, compilation errors: 26379, runtime errors: 0, failed runs: 248, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1093 / 1165 :::: Compiler calls: 26914, compilation errors: 26653, runtime errors: 0, failed runs: 249, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1093 / 1165 :::: Compiler calls: 26919, compilation errors: 26662, runtime errors: 0, failed runs: 250, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1093 / 1165 :::: Compiler calls: 27020, compilation errors: 26758, runtime errors: 0, failed runs: 251, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1092 / 1165 :::: Compiler calls: 27241, compilation errors: 26976, runtime errors: 0, failed runs: 252, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1092 / 1165 :::: Compiler calls: 27244, compilation errors: 26982, runtime errors: 0, failed runs: 253, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1092 / 1165 :::: Compiler calls: 27259, compilation errors: 27000, runtime errors: 0, failed runs: 254, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1091 / 1165 :::: Compiler calls: 27559, compilation errors: 27295, runtime errors: 0, failed runs: 255, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1090 / 1165 :::: Compiler calls: 27887, compilation errors: 27619, runtime errors: 0, failed runs: 256, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1089 / 1165 :::: Compiler calls: 28227, compilation errors: 27961, runtime errors: 0, failed runs: 257, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1089 / 1165 :::: Compiler calls: 28234, compilation errors: 27971, runtime errors: 0, failed runs: 258, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1088 / 1165 :::: Compiler calls: 28574, compilation errors: 28302, runtime errors: 0, failed runs: 259, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1088 / 1165 :::: Compiler calls: 28579, compilation errors: 28314, runtime errors: 0, failed runs: 260, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1088 / 1165 :::: Compiler calls: 28580, compilation errors: 28314, runtime errors: 0, failed runs: 261, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1087 / 1165 :::: Compiler calls: 28915, compilation errors: 28642, runtime errors: 0, failed runs: 262, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1086 / 1165 :::: Compiler calls: 29273, compilation errors: 29000, runtime errors: 0, failed runs: 263, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1086 / 1165 :::: Compiler calls: 29279, compilation errors: 29007, runtime errors: 0, failed runs: 264, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1086 / 1165 :::: Compiler calls: 29279, compilation errors: 29008, runtime errors: 0, failed runs: 265, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1085 / 1165 :::: Compiler calls: 29629, compilation errors: 29356, runtime errors: 0, failed runs: 266, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1085 / 1165 :::: Compiler calls: 29681, compilation errors: 29403, runtime errors: 0, failed runs: 267, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1084 / 1165 :::: Compiler calls: 30013, compilation errors: 29730, runtime errors: 0, failed runs: 268, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1084 / 1165 :::: Compiler calls: 30013, compilation errors: 29730, runtime errors: 0, failed runs: 269, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1084 / 1165 :::: Compiler calls: 30014, compilation errors: 29734, runtime errors: 0, failed runs: 270, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1084 / 1165 :::: Compiler calls: 30014, compilation errors: 29734, runtime errors: 0, failed runs: 271, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1084 / 1165 :::: Compiler calls: 30014, compilation errors: 29734, runtime errors: 0, failed runs: 272, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1083 / 1165 :::: Compiler calls: 30393, compilation errors: 30107, runtime errors: 0, failed runs: 273, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1083 / 1165 :::: Compiler calls: 30394, compilation errors: 30107, runtime errors: 0, failed runs: 274, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1083 / 1165 :::: Compiler calls: 30395, compilation errors: 30108, runtime errors: 0, failed runs: 275, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1083 / 1165 :::: Compiler calls: 30396, compilation errors: 30111, runtime errors: 0, failed runs: 276, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1083 / 1165 :::: Compiler calls: 30396, compilation errors: 30112, runtime errors: 0, failed runs: 277, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1083 / 1165 :::: Compiler calls: 30404, compilation errors: 30114, runtime errors: 0, failed runs: 278, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1082 / 1165 :::: Compiler calls: 30771, compilation errors: 30481, runtime errors: 0, failed runs: 279, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1082 / 1165 :::: Compiler calls: 30771, compilation errors: 30483, runtime errors: 0, failed runs: 280, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1082 / 1165 :::: Compiler calls: 30771, compilation errors: 30483, runtime errors: 0, failed runs: 281, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1082 / 1165 :::: Compiler calls: 30771, compilation errors: 30483, runtime errors: 0, failed runs: 282, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1081 / 1165 :::: Compiler calls: 31155, compilation errors: 30858, runtime errors: 0, failed runs: 283, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1081 / 1165 :::: Compiler calls: 31156, compilation errors: 30861, runtime errors: 0, failed runs: 284, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1081 / 1165 :::: Compiler calls: 31156, compilation errors: 30861, runtime errors: 0, failed runs: 285, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1081 / 1165 :::: Compiler calls: 31157, compilation errors: 30862, runtime errors: 0, failed runs: 286, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1081 / 1165 :::: Compiler calls: 31157, compilation errors: 30863, runtime errors: 0, failed runs: 287, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1080 / 1165 :::: Compiler calls: 31535, compilation errors: 31235, runtime errors: 0, failed runs: 288, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1079 / 1165 :::: Compiler calls: 31927, compilation errors: 31625, runtime errors: 0, failed runs: 289, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1079 / 1165 :::: Compiler calls: 31927, compilation errors: 31628, runtime errors: 0, failed runs: 290, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1079 / 1165 :::: Compiler calls: 31927, compilation errors: 31628, runtime errors: 0, failed runs: 291, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1079 / 1165 :::: Compiler calls: 31929, compilation errors: 31631, runtime errors: 0, failed runs: 292, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1079 / 1165 :::: Compiler calls: 31929, compilation errors: 31631, runtime errors: 0, failed runs: 293, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1078 / 1165 :::: Compiler calls: 32313, compilation errors: 32007, runtime errors: 0, failed runs: 294, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1078 / 1165 :::: Compiler calls: 32316, compilation errors: 32013, runtime errors: 0, failed runs: 295, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1077 / 1165 :::: Compiler calls: 32712, compilation errors: 32402, runtime errors: 0, failed runs: 296, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1077 / 1165 :::: Compiler calls: 32712, compilation errors: 32403, runtime errors: 0, failed runs: 297, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1077 / 1165 :::: Compiler calls: 32713, compilation errors: 32406, runtime errors: 0, failed runs: 298, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1077 / 1165 :::: Compiler calls: 32714, compilation errors: 32408, runtime errors: 0, failed runs: 299, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1076 / 1165 :::: Compiler calls: 33111, compilation errors: 32801, runtime errors: 0, failed runs: 300, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1076 / 1165 :::: Compiler calls: 33111, compilation errors: 32801, runtime errors: 0, failed runs: 301, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1076 / 1165 :::: Compiler calls: 33114, compilation errors: 32806, runtime errors: 0, failed runs: 302, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1075 / 1165 :::: Compiler calls: 33518, compilation errors: 33201, runtime errors: 0, failed runs: 303, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1075 / 1165 :::: Compiler calls: 33530, compilation errors: 33218, runtime errors: 0, failed runs: 304, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1074 / 1165 :::: Compiler calls: 33921, compilation errors: 33607, runtime errors: 0, failed runs: 305, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1074 / 1165 :::: Compiler calls: 33925, compilation errors: 33608, runtime errors: 0, failed runs: 306, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1074 / 1165 :::: Compiler calls: 33984, compilation errors: 33669, runtime errors: 0, failed runs: 307, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1073 / 1165 :::: Compiler calls: 34341, compilation errors: 34020, runtime errors: 0, failed runs: 308, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1073 / 1165 :::: Compiler calls: 34341, compilation errors: 34021, runtime errors: 0, failed runs: 309, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1073 / 1165 :::: Compiler calls: 34342, compilation errors: 34029, runtime errors: 0, failed runs: 310, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1073 / 1165 :::: Compiler calls: 34342, compilation errors: 34029, runtime errors: 0, failed runs: 311, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1072 / 1165 :::: Compiler calls: 34758, compilation errors: 34435, runtime errors: 0, failed runs: 312, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1072 / 1165 :::: Compiler calls: 34764, compilation errors: 34446, runtime errors: 0, failed runs: 313, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1072 / 1165 :::: Compiler calls: 34772, compilation errors: 34448, runtime errors: 0, failed runs: 314, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1071 / 1165 :::: Compiler calls: 35190, compilation errors: 34861, runtime errors: 0, failed runs: 315, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1070 / 1165 :::: Compiler calls: 35615, compilation errors: 35291, runtime errors: 0, failed runs: 316, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1070 / 1165 :::: Compiler calls: 35622, compilation errors: 35297, runtime errors: 0, failed runs: 317, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1069 / 1165 :::: Compiler calls: 36058, compilation errors: 35731, runtime errors: 0, failed runs: 318, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1068 / 1165 :::: Compiler calls: 36501, compilation errors: 36173, runtime errors: 0, failed runs: 319, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1068 / 1165 :::: Compiler calls: 36505, compilation errors: 36181, runtime errors: 0, failed runs: 320, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1068 / 1165 :::: Compiler calls: 36509, compilation errors: 36182, runtime errors: 0, failed runs: 321, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1068 / 1165 :::: Compiler calls: 36571, compilation errors: 36245, runtime errors: 0, failed runs: 322, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1067 / 1165 :::: Compiler calls: 36958, compilation errors: 36627, runtime errors: 0, failed runs: 323, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1067 / 1165 :::: Compiler calls: 36962, compilation errors: 36630, runtime errors: 0, failed runs: 324, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1067 / 1165 :::: Compiler calls: 36964, compilation errors: 36630, runtime errors: 0, failed runs: 325, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1067 / 1165 :::: Compiler calls: 36965, compilation errors: 36637, runtime errors: 0, failed runs: 326, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1066 / 1165 :::: Compiler calls: 37429, compilation errors: 37090, runtime errors: 0, failed runs: 327, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1066 / 1165 :::: Compiler calls: 37430, compilation errors: 37094, runtime errors: 0, failed runs: 328, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1066 / 1165 :::: Compiler calls: 37495, compilation errors: 37157, runtime errors: 0, failed runs: 329, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1065 / 1165 :::: Compiler calls: 37905, compilation errors: 37565, runtime errors: 0, failed runs: 330, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1065 / 1165 :::: Compiler calls: 37911, compilation errors: 37573, runtime errors: 0, failed runs: 331, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1064 / 1165 :::: Compiler calls: 38387, compilation errors: 38045, runtime errors: 0, failed runs: 332, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1064 / 1165 :::: Compiler calls: 38398, compilation errors: 38061, runtime errors: 0, failed runs: 333, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1063 / 1165 :::: Compiler calls: 38883, compilation errors: 38539, runtime errors: 0, failed runs: 334, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1063 / 1165 :::: Compiler calls: 38886, compilation errors: 38544, runtime errors: 0, failed runs: 335, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1063 / 1165 :::: Compiler calls: 38901, compilation errors: 38558, runtime errors: 0, failed runs: 336, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1062 / 1165 :::: Compiler calls: 39381, compilation errors: 39034, runtime errors: 0, failed runs: 337, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1062 / 1165 :::: Compiler calls: 39383, compilation errors: 39037, runtime errors: 0, failed runs: 338, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1061 / 1165 :::: Compiler calls: 39881, compilation errors: 39531, runtime errors: 0, failed runs: 339, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1061 / 1165 :::: Compiler calls: 39883, compilation errors: 39532, runtime errors: 0, failed runs: 340, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1061 / 1165 :::: Compiler calls: 39884, compilation errors: 39533, runtime errors: 0, failed runs: 341, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1061 / 1165 :::: Compiler calls: 39885, compilation errors: 39540, runtime errors: 0, failed runs: 342, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1060 / 1165 :::: Compiler calls: 40399, compilation errors: 40045, runtime errors: 0, failed runs: 343, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1060 / 1165 :::: Compiler calls: 40401, compilation errors: 40048, runtime errors: 0, failed runs: 344, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1060 / 1165 :::: Compiler calls: 40402, compilation errors: 40054, runtime errors: 0, failed runs: 345, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1060 / 1165 :::: Compiler calls: 40409, compilation errors: 40054, runtime errors: 0, failed runs: 346, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1060 / 1165 :::: Compiler calls: 40414, compilation errors: 40057, runtime errors: 0, failed runs: 347, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1059 / 1165 :::: Compiler calls: 40911, compilation errors: 40554, runtime errors: 0, failed runs: 348, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1059 / 1165 :::: Compiler calls: 40917, compilation errors: 40562, runtime errors: 0, failed runs: 349, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1059 / 1165 :::: Compiler calls: 40923, compilation errors: 40566, runtime errors: 0, failed runs: 350, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1058 / 1165 :::: Compiler calls: 41423, compilation errors: 41065, runtime errors: 0, failed runs: 351, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1058 / 1165 :::: Compiler calls: 41463, compilation errors: 41100, runtime errors: 0, failed runs: 352, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1058 / 1165 :::: Compiler calls: 41465, compilation errors: 41105, runtime errors: 0, failed runs: 353, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1057 / 1165 :::: Compiler calls: 41960, compilation errors: 41595, runtime errors: 0, failed runs: 354, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1057 / 1165 :::: Compiler calls: 41963, compilation errors: 41596, runtime errors: 0, failed runs: 355, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1057 / 1165 :::: Compiler calls: 41964, compilation errors: 41603, runtime errors: 0, failed runs: 356, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1057 / 1165 :::: Compiler calls: 41970, compilation errors: 41605, runtime errors: 0, failed runs: 357, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1056 / 1165 :::: Compiler calls: 42498, compilation errors: 42129, runtime errors: 0, failed runs: 358, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1056 / 1165 :::: Compiler calls: 42502, compilation errors: 42137, runtime errors: 0, failed runs: 359, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1056 / 1165 :::: Compiler calls: 42502, compilation errors: 42137, runtime errors: 0, failed runs: 360, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1056 / 1165 :::: Compiler calls: 42502, compilation errors: 42138, runtime errors: 0, failed runs: 361, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1055 / 1165 :::: Compiler calls: 43041, compilation errors: 42669, runtime errors: 0, failed runs: 362, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1055 / 1165 :::: Compiler calls: 43044, compilation errors: 42676, runtime errors: 0, failed runs: 363, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1054 / 1165 :::: Compiler calls: 43591, compilation errors: 43220, runtime errors: 0, failed runs: 364, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1054 / 1165 :::: Compiler calls: 43596, compilation errors: 43229, runtime errors: 0, failed runs: 365, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1054 / 1165 :::: Compiler calls: 43636, compilation errors: 43264, runtime errors: 0, failed runs: 366, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1053 / 1165 :::: Compiler calls: 44150, compilation errors: 43775, runtime errors: 0, failed runs: 367, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1053 / 1165 :::: Compiler calls: 44154, compilation errors: 43781, runtime errors: 0, failed runs: 368, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1053 / 1165 :::: Compiler calls: 44154, compilation errors: 43783, runtime errors: 0, failed runs: 369, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1052 / 1165 :::: Compiler calls: 44730, compilation errors: 44350, runtime errors: 0, failed runs: 370, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1052 / 1165 :::: Compiler calls: 44734, compilation errors: 44354, runtime errors: 0, failed runs: 371, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1052 / 1165 :::: Compiler calls: 44734, compilation errors: 44354, runtime errors: 0, failed runs: 372, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1051 / 1165 :::: Compiler calls: 45306, compilation errors: 44920, runtime errors: 0, failed runs: 373, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1051 / 1165 :::: Compiler calls: 45308, compilation errors: 44928, runtime errors: 0, failed runs: 374, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1050 / 1165 :::: Compiler calls: 45886, compilation errors: 45499, runtime errors: 0, failed runs: 375, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1049 / 1165 :::: Compiler calls: 46478, compilation errors: 46091, runtime errors: 0, failed runs: 376, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1049 / 1165 :::: Compiler calls: 46479, compilation errors: 46091, runtime errors: 0, failed runs: 377, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1049 / 1165 :::: Compiler calls: 46482, compilation errors: 46091, runtime errors: 0, failed runs: 378, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1049 / 1165 :::: Compiler calls: 46482, compilation errors: 46094, runtime errors: 0, failed runs: 379, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1048 / 1165 :::: Compiler calls: 47072, compilation errors: 46681, runtime errors: 0, failed runs: 380, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1048 / 1165 :::: Compiler calls: 47073, compilation errors: 46684, runtime errors: 0, failed runs: 381, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1048 / 1165 :::: Compiler calls: 47086, compilation errors: 46700, runtime errors: 0, failed runs: 382, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1047 / 1165 :::: Compiler calls: 47666, compilation errors: 47273, runtime errors: 0, failed runs: 383, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1047 / 1165 :::: Compiler calls: 47668, compilation errors: 47273, runtime errors: 0, failed runs: 384, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1047 / 1165 :::: Compiler calls: 47672, compilation errors: 47279, runtime errors: 0, failed runs: 385, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1046 / 1165 :::: Compiler calls: 48271, compilation errors: 47874, runtime errors: 0, failed runs: 386, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1046 / 1165 :::: Compiler calls: 48289, compilation errors: 47897, runtime errors: 0, failed runs: 387, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1046 / 1165 :::: Compiler calls: 48318, compilation errors: 47924, runtime errors: 0, failed runs: 388, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1045 / 1165 :::: Compiler calls: 48878, compilation errors: 48476, runtime errors: 0, failed runs: 389, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1045 / 1165 :::: Compiler calls: 48878, compilation errors: 48476, runtime errors: 0, failed runs: 390, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1045 / 1165 :::: Compiler calls: 48878, compilation errors: 48476, runtime errors: 0, failed runs: 391, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1045 / 1165 :::: Compiler calls: 48878, compilation errors: 48476, runtime errors: 0, failed runs: 392, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1045 / 1165 :::: Compiler calls: 48881, compilation errors: 48480, runtime errors: 0, failed runs: 393, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1044 / 1165 :::: Compiler calls: 49478, compilation errors: 49074, runtime errors: 0, failed runs: 394, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1044 / 1165 :::: Compiler calls: 49482, compilation errors: 49077, runtime errors: 0, failed runs: 395, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1044 / 1165 :::: Compiler calls: 49482, compilation errors: 49080, runtime errors: 0, failed runs: 396, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1044 / 1165 :::: Compiler calls: 49482, compilation errors: 49081, runtime errors: 0, failed runs: 397, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1043 / 1165 :::: Compiler calls: 50088, compilation errors: 49676, runtime errors: 0, failed runs: 398, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1043 / 1165 :::: Compiler calls: 50089, compilation errors: 49682, runtime errors: 0, failed runs: 399, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1042 / 1165 :::: Compiler calls: 50699, compilation errors: 50287, runtime errors: 0, failed runs: 400, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1042 / 1165 :::: Compiler calls: 50701, compilation errors: 50296, runtime errors: 0, failed runs: 401, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1041 / 1165 :::: Compiler calls: 51316, compilation errors: 50902, runtime errors: 0, failed runs: 402, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1040 / 1165 :::: Compiler calls: 51931, compilation errors: 51519, runtime errors: 0, failed runs: 403, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1039 / 1165 :::: Compiler calls: 52562, compilation errors: 52148, runtime errors: 0, failed runs: 404, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1039 / 1165 :::: Compiler calls: 52614, compilation errors: 52200, runtime errors: 0, failed runs: 405, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1038 / 1165 :::: Compiler calls: 53205, compilation errors: 52786, runtime errors: 0, failed runs: 406, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1038 / 1165 :::: Compiler calls: 53207, compilation errors: 52796, runtime errors: 0, failed runs: 407, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1037 / 1165 :::: Compiler calls: 53845, compilation errors: 53426, runtime errors: 0, failed runs: 408, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1036 / 1165 :::: Compiler calls: 54515, compilation errors: 54096, runtime errors: 0, failed runs: 409, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1036 / 1165 :::: Compiler calls: 54520, compilation errors: 54105, runtime errors: 0, failed runs: 410, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1036 / 1165 :::: Compiler calls: 54542, compilation errors: 54121, runtime errors: 0, failed runs: 411, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1034 / 1165 :::: Compiler calls: 55182, compilation errors: 54761, runtime errors: 0, failed runs: 412, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1035 / 1165 :::: Compiler calls: 55284, compilation errors: 54862, runtime errors: 0, failed runs: 413, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1033 / 1165 :::: Compiler calls: 55847, compilation errors: 55424, runtime errors: 0, failed runs: 414, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1033 / 1165 :::: Compiler calls: 55851, compilation errors: 55430, runtime errors: 0, failed runs: 415, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1032 / 1165 :::: Compiler calls: 56546, compilation errors: 56119, runtime errors: 0, failed runs: 416, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1031 / 1165 :::: Compiler calls: 57258, compilation errors: 56832, runtime errors: 0, failed runs: 417, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1031 / 1165 :::: Compiler calls: 57265, compilation errors: 56840, runtime errors: 0, failed runs: 418, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1030 / 1165 :::: Compiler calls: 57936, compilation errors: 57507, runtime errors: 0, failed runs: 419, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1030 / 1165 :::: Compiler calls: 57948, compilation errors: 57524, runtime errors: 0, failed runs: 420, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1029 / 1165 :::: Compiler calls: 58678, compilation errors: 58244, runtime errors: 0, failed runs: 421, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1029 / 1165 :::: Compiler calls: 58680, compilation errors: 58245, runtime errors: 0, failed runs: 422, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1029 / 1165 :::: Compiler calls: 58681, compilation errors: 58248, runtime errors: 0, failed runs: 423, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1028 / 1165 :::: Compiler calls: 59378, compilation errors: 58942, runtime errors: 0, failed runs: 424, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1028 / 1165 :::: Compiler calls: 59382, compilation errors: 58950, runtime errors: 0, failed runs: 425, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1028 / 1165 :::: Compiler calls: 59382, compilation errors: 58950, runtime errors: 0, failed runs: 426, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1028 / 1165 :::: Compiler calls: 59382, compilation errors: 58954, runtime errors: 0, failed runs: 427, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1028 / 1165 :::: Compiler calls: 59383, compilation errors: 58954, runtime errors: 0, failed runs: 428, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1027 / 1165 :::: Compiler calls: 60067, compilation errors: 59627, runtime errors: 0, failed runs: 429, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1027 / 1165 :::: Compiler calls: 60081, compilation errors: 59641, runtime errors: 0, failed runs: 430, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1027 / 1165 :::: Compiler calls: 60130, compilation errors: 59696, runtime errors: 0, failed runs: 431, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1026 / 1165 :::: Compiler calls: 60799, compilation errors: 60357, runtime errors: 0, failed runs: 432, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1025 / 1165 :::: Compiler calls: 61530, compilation errors: 61087, runtime errors: 0, failed runs: 433, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1025 / 1165 :::: Compiler calls: 61537, compilation errors: 61096, runtime errors: 0, failed runs: 434, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1025 / 1165 :::: Compiler calls: 61543, compilation errors: 61096, runtime errors: 0, failed runs: 435, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1024 / 1165 :::: Compiler calls: 62219, compilation errors: 61771, runtime errors: 0, failed runs: 436, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1024 / 1165 :::: Compiler calls: 62220, compilation errors: 61774, runtime errors: 0, failed runs: 437, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1023 / 1165 :::: Compiler calls: 62917, compilation errors: 62466, runtime errors: 0, failed runs: 438, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1023 / 1165 :::: Compiler calls: 62919, compilation errors: 62473, runtime errors: 0, failed runs: 439, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1023 / 1165 :::: Compiler calls: 62920, compilation errors: 62478, runtime errors: 0, failed runs: 440, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1023 / 1165 :::: Compiler calls: 62921, compilation errors: 62478, runtime errors: 0, failed runs: 441, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1022 / 1165 :::: Compiler calls: 63609, compilation errors: 63158, runtime errors: 0, failed runs: 442, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1022 / 1165 :::: Compiler calls: 63615, compilation errors: 63169, runtime errors: 0, failed runs: 443, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1021 / 1165 :::: Compiler calls: 64363, compilation errors: 63905, runtime errors: 0, failed runs: 444, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1021 / 1165 :::: Compiler calls: 64365, compilation errors: 63908, runtime errors: 0, failed runs: 445, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1021 / 1165 :::: Compiler calls: 64370, compilation errors: 63913, runtime errors: 0, failed runs: 446, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1021 / 1165 :::: Compiler calls: 64370, compilation errors: 63913, runtime errors: 0, failed runs: 447, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1020 / 1165 :::: Compiler calls: 65084, compilation errors: 64624, runtime errors: 0, failed runs: 448, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1020 / 1165 :::: Compiler calls: 65088, compilation errors: 64633, runtime errors: 0, failed runs: 449, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1019 / 1165 :::: Compiler calls: 65763, compilation errors: 65301, runtime errors: 0, failed runs: 450, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1018 / 1165 :::: Compiler calls: 66462, compilation errors: 65999, runtime errors: 0, failed runs: 451, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1018 / 1165 :::: Compiler calls: 66496, compilation errors: 66035, runtime errors: 0, failed runs: 452, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1017 / 1165 :::: Compiler calls: 67196, compilation errors: 66730, runtime errors: 0, failed runs: 453, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1016 / 1165 :::: Compiler calls: 67923, compilation errors: 67457, runtime errors: 0, failed runs: 454, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1016 / 1165 :::: Compiler calls: 67927, compilation errors: 67465, runtime errors: 0, failed runs: 455, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1015 / 1165 :::: Compiler calls: 68622, compilation errors: 68153, runtime errors: 0, failed runs: 456, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1015 / 1165 :::: Compiler calls: 68625, compilation errors: 68164, runtime errors: 0, failed runs: 457, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1014 / 1165 :::: Compiler calls: 69336, compilation errors: 68868, runtime errors: 0, failed runs: 458, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1013 / 1165 :::: Compiler calls: 70079, compilation errors: 69607, runtime errors: 0, failed runs: 459, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1013 / 1165 :::: Compiler calls: 70081, compilation errors: 69614, runtime errors: 0, failed runs: 460, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1013 / 1165 :::: Compiler calls: 70091, compilation errors: 69621, runtime errors: 0, failed runs: 461, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1012 / 1165 :::: Compiler calls: 70832, compilation errors: 70357, runtime errors: 0, failed runs: 462, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1012 / 1165 :::: Compiler calls: 70840, compilation errors: 70367, runtime errors: 0, failed runs: 463, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1011 / 1165 :::: Compiler calls: 71580, compilation errors: 71104, runtime errors: 0, failed runs: 464, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1010 / 1165 :::: Compiler calls: 72317, compilation errors: 71842, runtime errors: 0, failed runs: 465, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1009 / 1165 :::: Compiler calls: 73098, compilation errors: 72619, runtime errors: 0, failed runs: 466, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1008 / 1165 :::: Compiler calls: 73101, compilation errors: 72630, runtime errors: 0, failed runs: 467, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1008 / 1165 :::: Compiler calls: 73856, compilation errors: 73376, runtime errors: 0, failed runs: 468, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1007 / 1165 :::: Compiler calls: 74593, compilation errors: 74112, runtime errors: 0, failed runs: 469, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1007 / 1165 :::: Compiler calls: 74593, compilation errors: 74114, runtime errors: 0, failed runs: 470, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1007 / 1165 :::: Compiler calls: 74597, compilation errors: 74117, runtime errors: 0, failed runs: 471, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1006 / 1165 :::: Compiler calls: 75342, compilation errors: 74859, runtime errors: 0, failed runs: 472, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1005 / 1165 :::: Compiler calls: 76109, compilation errors: 75621, runtime errors: 0, failed runs: 473, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1004 / 1165 :::: Compiler calls: 76859, compilation errors: 76372, runtime errors: 0, failed runs: 474, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1004 / 1165 :::: Compiler calls: 76862, compilation errors: 76379, runtime errors: 0, failed runs: 475, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1004 / 1165 :::: Compiler calls: 76876, compilation errors: 76395, runtime errors: 0, failed runs: 476, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1003 / 1165 :::: Compiler calls: 77617, compilation errors: 77131, runtime errors: 0, failed runs: 477, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1003 / 1165 :::: Compiler calls: 77624, compilation errors: 77141, runtime errors: 0, failed runs: 478, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1002 / 1165 :::: Compiler calls: 77864, compilation errors: 77376, runtime errors: 0, failed runs: 479, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1001 / 1165 :::: Compiler calls: 78653, compilation errors: 78162, runtime errors: 0, failed runs: 480, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1001 / 1165 :::: Compiler calls: 78666, compilation errors: 78174, runtime errors: 0, failed runs: 481, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1000 / 1165 :::: Compiler calls: 79424, compilation errors: 78931, runtime errors: 0, failed runs: 482, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 1000 / 1165 :::: Compiler calls: 79425, compilation errors: 78933, runtime errors: 0, failed runs: 483, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 999 / 1165 :::: Compiler calls: 80192, compilation errors: 79701, runtime errors: 0, failed runs: 484, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 998 / 1165 :::: Compiler calls: 80998, compilation errors: 80501, runtime errors: 0, failed runs: 485, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 998 / 1165 :::: Compiler calls: 81001, compilation errors: 80506, runtime errors: 0, failed runs: 486, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 998 / 1165 :::: Compiler calls: 81034, compilation errors: 80538, runtime errors: 0, failed runs: 487, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 997 / 1165 :::: Compiler calls: 81763, compilation errors: 81266, runtime errors: 0, failed runs: 488, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 996 / 1165 :::: Compiler calls: 82561, compilation errors: 82061, runtime errors: 0, failed runs: 489, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 996 / 1165 :::: Compiler calls: 82566, compilation errors: 82068, runtime errors: 0, failed runs: 490, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 995 / 1165 :::: Compiler calls: 83375, compilation errors: 82872, runtime errors: 0, failed runs: 491, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 995 / 1165 :::: Compiler calls: 83378, compilation errors: 82876, runtime errors: 0, failed runs: 492, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 993 / 1165 :::: Compiler calls: 84184, compilation errors: 83677, runtime errors: 0, failed runs: 493, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 993 / 1165 :::: Compiler calls: 84186, compilation errors: 83683, runtime errors: 0, failed runs: 494, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 994 / 1165 :::: Compiler calls: 84193, compilation errors: 83689, runtime errors: 0, failed runs: 495, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 992 / 1165 :::: Compiler calls: 84979, compilation errors: 84471, runtime errors: 0, failed runs: 496, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 991 / 1165 :::: Compiler calls: 84982, compilation errors: 84477, runtime errors: 0, failed runs: 497, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 992 / 1165 :::: Compiler calls: 84998, compilation errors: 84493, runtime errors: 0, failed runs: 498, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 992 / 1165 :::: Compiler calls: 84999, compilation errors: 84493, runtime errors: 0, failed runs: 499, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 991 / 1165 :::: Compiler calls: 85783, compilation errors: 85270, runtime errors: 0, failed runs: 500, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 991 / 1165 :::: Compiler calls: 85785, compilation errors: 85272, runtime errors: 0, failed runs: 501, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 991 / 1165 :::: Compiler calls: 85785, compilation errors: 85276, runtime errors: 0, failed runs: 502, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 990 / 1165 :::: Compiler calls: 86595, compilation errors: 86080, runtime errors: 0, failed runs: 503, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 989 / 1165 :::: Compiler calls: 86596, compilation errors: 86083, runtime errors: 0, failed runs: 504, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 990 / 1165 :::: Compiler calls: 86599, compilation errors: 86085, runtime errors: 0, failed runs: 505, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 989 / 1165 :::: Compiler calls: 86599, compilation errors: 86091, runtime errors: 0, failed runs: 506, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 990 / 1165 :::: Compiler calls: 86678, compilation errors: 86162, runtime errors: 0, failed runs: 507, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 989 / 1165 :::: Compiler calls: 87397, compilation errors: 86879, runtime errors: 0, failed runs: 508, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 988 / 1165 :::: Compiler calls: 88205, compilation errors: 87683, runtime errors: 0, failed runs: 509, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 987 / 1165 :::: Compiler calls: 89016, compilation errors: 88493, runtime errors: 0, failed runs: 510, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 987 / 1165 :::: Compiler calls: 89018, compilation errors: 88498, runtime errors: 0, failed runs: 511, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 987 / 1165 :::: Compiler calls: 89141, compilation errors: 88621, runtime errors: 0, failed runs: 512, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 985 / 1165 :::: Compiler calls: 89832, compilation errors: 89308, runtime errors: 0, failed runs: 513, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 986 / 1165 :::: Compiler calls: 89837, compilation errors: 89317, runtime errors: 0, failed runs: 514, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 984 / 1165 :::: Compiler calls: 90654, compilation errors: 90129, runtime errors: 0, failed runs: 515, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 984 / 1165 :::: Compiler calls: 90678, compilation errors: 90154, runtime errors: 0, failed runs: 516, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 983 / 1165 :::: Compiler calls: 91471, compilation errors: 90941, runtime errors: 0, failed runs: 517, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 982 / 1165 :::: Compiler calls: 92302, compilation errors: 91770, runtime errors: 0, failed runs: 518, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 982 / 1165 :::: Compiler calls: 92304, compilation errors: 91776, runtime errors: 0, failed runs: 519, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 982 / 1165 :::: Compiler calls: 92315, compilation errors: 91788, runtime errors: 0, failed runs: 520, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 981 / 1165 :::: Compiler calls: 93120, compilation errors: 92586, runtime errors: 0, failed runs: 521, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 981 / 1165 :::: Compiler calls: 93123, compilation errors: 92592, runtime errors: 0, failed runs: 522, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 981 / 1165 :::: Compiler calls: 93123, compilation errors: 92592, runtime errors: 0, failed runs: 523, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 981 / 1165 :::: Compiler calls: 93123, compilation errors: 92592, runtime errors: 0, failed runs: 524, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 981 / 1165 :::: Compiler calls: 93141, compilation errors: 92605, runtime errors: 0, failed runs: 525, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 980 / 1165 :::: Compiler calls: 93938, compilation errors: 93399, runtime errors: 0, failed runs: 526, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 980 / 1165 :::: Compiler calls: 93946, compilation errors: 93407, runtime errors: 0, failed runs: 527, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 980 / 1165 :::: Compiler calls: 93954, compilation errors: 93419, runtime errors: 0, failed runs: 528, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 979 / 1165 :::: Compiler calls: 94760, compilation errors: 94218, runtime errors: 0, failed runs: 529, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 978 / 1165 :::: Compiler calls: 95591, compilation errors: 95048, runtime errors: 0, failed runs: 530, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 978 / 1165 :::: Compiler calls: 95594, compilation errors: 95057, runtime errors: 0, failed runs: 531, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 977 / 1165 :::: Compiler calls: 96409, compilation errors: 95867, runtime errors: 0, failed runs: 532, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 976 / 1165 :::: Compiler calls: 97254, compilation errors: 96708, runtime errors: 0, failed runs: 533, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 976 / 1165 :::: Compiler calls: 97256, compilation errors: 96714, runtime errors: 0, failed runs: 534, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 976 / 1165 :::: Compiler calls: 97256, compilation errors: 96714, runtime errors: 0, failed runs: 535, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 976 / 1165 :::: Compiler calls: 97264, compilation errors: 96722, runtime errors: 0, failed runs: 536, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 975 / 1165 :::: Compiler calls: 98087, compilation errors: 97540, runtime errors: 0, failed runs: 537, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 974 / 1165 :::: Compiler calls: 98090, compilation errors: 97541, runtime errors: 0, failed runs: 538, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 975 / 1165 :::: Compiler calls: 98096, compilation errors: 97549, runtime errors: 0, failed runs: 539, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 974 / 1165 :::: Compiler calls: 98929, compilation errors: 98376, runtime errors: 0, failed runs: 540, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 973 / 1165 :::: Compiler calls: 99760, compilation errors: 99207, runtime errors: 0, failed runs: 541, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 972 / 1165 :::: Compiler calls: 100572, compilation errors: 100018, runtime errors: 0, failed runs: 542, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 971 / 1165 :::: Compiler calls: 101407, compilation errors: 100852, runtime errors: 0, failed runs: 543, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 971 / 1165 :::: Compiler calls: 101418, compilation errors: 100865, runtime errors: 0, failed runs: 544, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 970 / 1165 :::: Compiler calls: 102245, compilation errors: 101694, runtime errors: 0, failed runs: 545, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 968 / 1165 :::: Compiler calls: 103079, compilation errors: 102529, runtime errors: 0, failed runs: 546, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 969 / 1165 :::: Compiler calls: 103079, compilation errors: 102531, runtime errors: 0, failed runs: 547, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 967 / 1165 :::: Compiler calls: 103912, compilation errors: 103362, runtime errors: 0, failed runs: 548, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 967 / 1165 :::: Compiler calls: 103912, compilation errors: 103362, runtime errors: 0, failed runs: 549, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 966 / 1165 :::: Compiler calls: 104744, compilation errors: 104193, runtime errors: 0, failed runs: 550, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 965 / 1165 :::: Compiler calls: 105575, compilation errors: 105023, runtime errors: 0, failed runs: 551, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 964 / 1165 :::: Compiler calls: 107370, compilation errors: 106815, runtime errors: 0, failed runs: 552, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 964 / 1165 :::: Compiler calls: 107370, compilation errors: 106815, runtime errors: 0, failed runs: 553, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 964 / 1165 :::: Compiler calls: 107370, compilation errors: 106816, runtime errors: 0, failed runs: 554, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 963 / 1165 :::: Compiler calls: 108334, compilation errors: 107777, runtime errors: 0, failed runs: 555, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 963 / 1165 :::: Compiler calls: 108334, compilation errors: 107778, runtime errors: 0, failed runs: 556, ok runs: 0
+:::: FAILED :::: level: 3 :::: size: 962 / 1165 :::: Compiler calls: 109297, compilation errors: 108739, runtime errors: 0, failed runs: 557, ok runs: 0
+Level 0-3 took 3m 37s 226ms
+1111111111111111110111111111111111011110111111111111101101111111111111110011111111111111101011010111011111111111011111110011111111111111011011111111011110111011110101111111001011111111111111110101111101111111000110001111111101011110101110110111111111101011110011111011011101111111011111111111111101111011110110111111110111111111110011110111111110111111110101111111111101101100111111100111111111111111101111011010111101111110111110101110101111011111110111111101111111011111111101111011111111101110111111111111111110011101101111111111011111110111011011011111111111101111011111011111110011111101111110110111111111010001111111111111111111111111111111111110111011101101011111111111110101111101101011111111111001111110111111111111111110111011100111111001111111111111111101000111110110101111101111111111101101111101010110111111111111011111101111111111110111011101101111111111001111101111110110001111111101111101110110110111110111101111011011111001100111110111111011101111111111111111111111110111111011111111111111011111011111111111110111111111100111001010101011001111011111111111111000100101111111111010111110110010110111111111111011111111111001100111101011111101111111111
+Fixed 962 active nodes and 0 free nodes guaranteed by them.
+Discarded 203 active fragments. 203 fragments, including dependent nodes
+############## After level 0-3 there are 5077 / 6317 fragments left :::: Compiler calls: 110259, compilation errors: 109702, runtime errors: 0, failed runs: 557, ok runs: 0
+############## EXECUTING LVL 0-4 with 437 active fragments ##############
+:::: FAILED :::: level: 4 :::: size: 434 / 437 :::: Compiler calls: 110414, compilation errors: 109842, runtime errors: 1, failed runs: 558, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 434 / 437 :::: Compiler calls: 110422, compilation errors: 109850, runtime errors: 1, failed runs: 559, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 431 / 437 :::: Compiler calls: 110456, compilation errors: 109879, runtime errors: 2, failed runs: 560, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 431 / 437 :::: Compiler calls: 110465, compilation errors: 109888, runtime errors: 2, failed runs: 561, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 428 / 437 :::: Compiler calls: 110507, compilation errors: 109928, runtime errors: 3, failed runs: 562, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 424 / 437 :::: Compiler calls: 110589, compilation errors: 110009, runtime errors: 6, failed runs: 563, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 425 / 437 :::: Compiler calls: 110600, compilation errors: 110017, runtime errors: 7, failed runs: 564, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 421 / 437 :::: Compiler calls: 110675, compilation errors: 110086, runtime errors: 9, failed runs: 565, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 419 / 437 :::: Compiler calls: 110835, compilation errors: 110240, runtime errors: 14, failed runs: 566, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 419 / 437 :::: Compiler calls: 110837, compilation errors: 110241, runtime errors: 14, failed runs: 567, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 419 / 437 :::: Compiler calls: 110839, compilation errors: 110244, runtime errors: 15, failed runs: 568, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 417 / 437 :::: Compiler calls: 110860, compilation errors: 110262, runtime errors: 15, failed runs: 569, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 417 / 437 :::: Compiler calls: 110863, compilation errors: 110264, runtime errors: 15, failed runs: 570, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 415 / 437 :::: Compiler calls: 110890, compilation errors: 110289, runtime errors: 16, failed runs: 571, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 413 / 437 :::: Compiler calls: 110935, compilation errors: 110329, runtime errors: 19, failed runs: 572, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 413 / 437 :::: Compiler calls: 110945, compilation errors: 110338, runtime errors: 20, failed runs: 573, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 411 / 437 :::: Compiler calls: 111001, compilation errors: 110391, runtime errors: 23, failed runs: 574, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 411 / 437 :::: Compiler calls: 111030, compilation errors: 110418, runtime errors: 23, failed runs: 575, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 409 / 437 :::: Compiler calls: 111074, compilation errors: 110459, runtime errors: 26, failed runs: 576, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 409 / 437 :::: Compiler calls: 111109, compilation errors: 110491, runtime errors: 28, failed runs: 577, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 407 / 437 :::: Compiler calls: 111167, compilation errors: 110541, runtime errors: 33, failed runs: 578, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 407 / 437 :::: Compiler calls: 111167, compilation errors: 110541, runtime errors: 33, failed runs: 579, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 407 / 437 :::: Compiler calls: 111168, compilation errors: 110541, runtime errors: 33, failed runs: 580, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 407 / 437 :::: Compiler calls: 111175, compilation errors: 110547, runtime errors: 33, failed runs: 581, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 405 / 437 :::: Compiler calls: 111263, compilation errors: 110625, runtime errors: 41, failed runs: 582, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 405 / 437 :::: Compiler calls: 111264, compilation errors: 110628, runtime errors: 42, failed runs: 583, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 405 / 437 :::: Compiler calls: 111265, compilation errors: 110628, runtime errors: 42, failed runs: 584, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 405 / 437 :::: Compiler calls: 111265, compilation errors: 110628, runtime errors: 42, failed runs: 585, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 403 / 437 :::: Compiler calls: 111355, compilation errors: 110708, runtime errors: 48, failed runs: 586, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 403 / 437 :::: Compiler calls: 111363, compilation errors: 110713, runtime errors: 50, failed runs: 587, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 401 / 437 :::: Compiler calls: 111457, compilation errors: 110796, runtime errors: 58, failed runs: 588, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 401 / 437 :::: Compiler calls: 111458, compilation errors: 110797, runtime errors: 58, failed runs: 589, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 399 / 437 :::: Compiler calls: 111539, compilation errors: 110872, runtime errors: 62, failed runs: 590, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 397 / 437 :::: Compiler calls: 111640, compilation errors: 110966, runtime errors: 70, failed runs: 591, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 396 / 437 :::: Compiler calls: 111773, compilation errors: 111084, runtime errors: 85, failed runs: 592, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 396 / 437 :::: Compiler calls: 111773, compilation errors: 111085, runtime errors: 85, failed runs: 593, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 396 / 437 :::: Compiler calls: 111773, compilation errors: 111085, runtime errors: 85, failed runs: 594, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 395 / 437 :::: Compiler calls: 111954, compilation errors: 111246, runtime errors: 99, failed runs: 595, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 395 / 437 :::: Compiler calls: 111965, compilation errors: 111256, runtime errors: 99, failed runs: 596, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 394 / 437 :::: Compiler calls: 112089, compilation errors: 111368, runtime errors: 111, failed runs: 597, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 394 / 437 :::: Compiler calls: 112092, compilation errors: 111369, runtime errors: 111, failed runs: 598, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 394 / 437 :::: Compiler calls: 112092, compilation errors: 111370, runtime errors: 111, failed runs: 599, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 394 / 437 :::: Compiler calls: 112097, compilation errors: 111376, runtime errors: 112, failed runs: 600, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 393 / 437 :::: Compiler calls: 112203, compilation errors: 111469, runtime errors: 120, failed runs: 601, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 393 / 437 :::: Compiler calls: 112240, compilation errors: 111502, runtime errors: 122, failed runs: 602, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 392 / 437 :::: Compiler calls: 112326, compilation errors: 111577, runtime errors: 132, failed runs: 603, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 392 / 437 :::: Compiler calls: 112338, compilation errors: 111588, runtime errors: 133, failed runs: 604, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 391 / 437 :::: Compiler calls: 112448, compilation errors: 111686, runtime errors: 143, failed runs: 605, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 391 / 437 :::: Compiler calls: 112474, compilation errors: 111711, runtime errors: 144, failed runs: 606, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 390 / 437 :::: Compiler calls: 112587, compilation errors: 111813, runtime errors: 155, failed runs: 607, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 390 / 437 :::: Compiler calls: 112593, compilation errors: 111815, runtime errors: 155, failed runs: 608, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 390 / 437 :::: Compiler calls: 112593, compilation errors: 111815, runtime errors: 155, failed runs: 609, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 390 / 437 :::: Compiler calls: 112594, compilation errors: 111817, runtime errors: 155, failed runs: 610, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 390 / 437 :::: Compiler calls: 112604, compilation errors: 111827, runtime errors: 155, failed runs: 611, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 389 / 437 :::: Compiler calls: 112728, compilation errors: 111938, runtime errors: 166, failed runs: 612, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 389 / 437 :::: Compiler calls: 112732, compilation errors: 111940, runtime errors: 166, failed runs: 613, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 389 / 437 :::: Compiler calls: 112735, compilation errors: 111942, runtime errors: 166, failed runs: 614, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 389 / 437 :::: Compiler calls: 112739, compilation errors: 111946, runtime errors: 166, failed runs: 615, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 388 / 437 :::: Compiler calls: 112856, compilation errors: 112051, runtime errors: 176, failed runs: 616, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 388 / 437 :::: Compiler calls: 112873, compilation errors: 112069, runtime errors: 176, failed runs: 617, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 387 / 437 :::: Compiler calls: 112996, compilation errors: 112177, runtime errors: 187, failed runs: 618, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 387 / 437 :::: Compiler calls: 113001, compilation errors: 112183, runtime errors: 187, failed runs: 619, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 387 / 437 :::: Compiler calls: 113005, compilation errors: 112186, runtime errors: 187, failed runs: 620, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 386 / 437 :::: Compiler calls: 113138, compilation errors: 112305, runtime errors: 198, failed runs: 621, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 386 / 437 :::: Compiler calls: 113142, compilation errors: 112308, runtime errors: 198, failed runs: 622, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 386 / 437 :::: Compiler calls: 113144, compilation errors: 112310, runtime errors: 198, failed runs: 623, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 385 / 437 :::: Compiler calls: 113292, compilation errors: 112448, runtime errors: 208, failed runs: 624, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 385 / 437 :::: Compiler calls: 113306, compilation errors: 112460, runtime errors: 209, failed runs: 625, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 384 / 437 :::: Compiler calls: 113456, compilation errors: 112595, runtime errors: 221, failed runs: 626, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 383 / 437 :::: Compiler calls: 113611, compilation errors: 112739, runtime errors: 233, failed runs: 627, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 383 / 437 :::: Compiler calls: 113617, compilation errors: 112743, runtime errors: 233, failed runs: 628, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 382 / 437 :::: Compiler calls: 113618, compilation errors: 112745, runtime errors: 234, failed runs: 629, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 382 / 437 :::: Compiler calls: 113810, compilation errors: 112918, runtime errors: 248, failed runs: 630, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 382 / 437 :::: Compiler calls: 113813, compilation errors: 112919, runtime errors: 248, failed runs: 631, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 382 / 437 :::: Compiler calls: 113817, compilation errors: 112924, runtime errors: 248, failed runs: 632, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 382 / 437 :::: Compiler calls: 113823, compilation errors: 112928, runtime errors: 248, failed runs: 633, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 381 / 437 :::: Compiler calls: 113835, compilation errors: 112938, runtime errors: 248, failed runs: 634, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 381 / 437 :::: Compiler calls: 113956, compilation errors: 113049, runtime errors: 258, failed runs: 635, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 379 / 437 :::: Compiler calls: 114092, compilation errors: 113173, runtime errors: 269, failed runs: 636, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 380 / 437 :::: Compiler calls: 114097, compilation errors: 113178, runtime errors: 269, failed runs: 637, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 378 / 437 :::: Compiler calls: 114231, compilation errors: 113302, runtime errors: 279, failed runs: 638, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 377 / 437 :::: Compiler calls: 114420, compilation errors: 113474, runtime errors: 292, failed runs: 639, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 377 / 437 :::: Compiler calls: 114424, compilation errors: 113479, runtime errors: 292, failed runs: 640, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 376 / 437 :::: Compiler calls: 114428, compilation errors: 113483, runtime errors: 292, failed runs: 641, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 377 / 437 :::: Compiler calls: 114435, compilation errors: 113491, runtime errors: 293, failed runs: 642, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 376 / 437 :::: Compiler calls: 114570, compilation errors: 113613, runtime errors: 303, failed runs: 643, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 375 / 437 :::: Compiler calls: 114574, compilation errors: 113614, runtime errors: 303, failed runs: 644, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 376 / 437 :::: Compiler calls: 114582, compilation errors: 113621, runtime errors: 303, failed runs: 645, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 374 / 437 :::: Compiler calls: 114707, compilation errors: 113734, runtime errors: 313, failed runs: 646, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 373 / 437 :::: Compiler calls: 114867, compilation errors: 113882, runtime errors: 324, failed runs: 647, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 372 / 437 :::: Compiler calls: 114872, compilation errors: 113887, runtime errors: 325, failed runs: 648, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 373 / 437 :::: Compiler calls: 114886, compilation errors: 113901, runtime errors: 325, failed runs: 649, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 372 / 437 :::: Compiler calls: 115021, compilation errors: 114021, runtime errors: 336, failed runs: 650, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 371 / 437 :::: Compiler calls: 115176, compilation errors: 114167, runtime errors: 346, failed runs: 651, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 369 / 437 :::: Compiler calls: 115342, compilation errors: 114322, runtime errors: 356, failed runs: 652, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 370 / 437 :::: Compiler calls: 115356, compilation errors: 114335, runtime errors: 356, failed runs: 653, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 368 / 437 :::: Compiler calls: 115508, compilation errors: 114473, runtime errors: 366, failed runs: 654, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 368 / 437 :::: Compiler calls: 115509, compilation errors: 114474, runtime errors: 366, failed runs: 655, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 367 / 437 :::: Compiler calls: 115682, compilation errors: 114634, runtime errors: 378, failed runs: 656, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 367 / 437 :::: Compiler calls: 115683, compilation errors: 114635, runtime errors: 378, failed runs: 657, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 366 / 437 :::: Compiler calls: 115695, compilation errors: 114644, runtime errors: 380, failed runs: 658, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 365 / 437 :::: Compiler calls: 115869, compilation errors: 114804, runtime errors: 391, failed runs: 659, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 366 / 437 :::: Compiler calls: 115873, compilation errors: 114812, runtime errors: 391, failed runs: 660, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 366 / 437 :::: Compiler calls: 115874, compilation errors: 114812, runtime errors: 391, failed runs: 661, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 366 / 437 :::: Compiler calls: 115876, compilation errors: 114813, runtime errors: 391, failed runs: 662, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 365 / 437 :::: Compiler calls: 115876, compilation errors: 114813, runtime errors: 391, failed runs: 663, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 364 / 437 :::: Compiler calls: 116053, compilation errors: 114972, runtime errors: 403, failed runs: 664, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 364 / 437 :::: Compiler calls: 116058, compilation errors: 114976, runtime errors: 404, failed runs: 665, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 364 / 437 :::: Compiler calls: 116069, compilation errors: 114989, runtime errors: 404, failed runs: 666, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 363 / 437 :::: Compiler calls: 116236, compilation errors: 115142, runtime errors: 414, failed runs: 667, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 363 / 437 :::: Compiler calls: 116238, compilation errors: 115142, runtime errors: 414, failed runs: 668, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 362 / 437 :::: Compiler calls: 116239, compilation errors: 115142, runtime errors: 414, failed runs: 669, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 363 / 437 :::: Compiler calls: 116247, compilation errors: 115150, runtime errors: 414, failed runs: 670, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 362 / 437 :::: Compiler calls: 116415, compilation errors: 115306, runtime errors: 425, failed runs: 671, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 362 / 437 :::: Compiler calls: 116421, compilation errors: 115310, runtime errors: 425, failed runs: 672, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 362 / 437 :::: Compiler calls: 116424, compilation errors: 115312, runtime errors: 425, failed runs: 673, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 362 / 437 :::: Compiler calls: 116424, compilation errors: 115314, runtime errors: 425, failed runs: 674, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 361 / 437 :::: Compiler calls: 116602, compilation errors: 115474, runtime errors: 439, failed runs: 675, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 361 / 437 :::: Compiler calls: 116602, compilation errors: 115474, runtime errors: 439, failed runs: 676, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 361 / 437 :::: Compiler calls: 116602, compilation errors: 115474, runtime errors: 439, failed runs: 677, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 361 / 437 :::: Compiler calls: 116607, compilation errors: 115478, runtime errors: 439, failed runs: 678, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 361 / 437 :::: Compiler calls: 116610, compilation errors: 115479, runtime errors: 439, failed runs: 679, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 360 / 437 :::: Compiler calls: 116784, compilation errors: 115642, runtime errors: 449, failed runs: 680, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 360 / 437 :::: Compiler calls: 116787, compilation errors: 115644, runtime errors: 449, failed runs: 681, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 360 / 437 :::: Compiler calls: 116795, compilation errors: 115650, runtime errors: 449, failed runs: 682, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 359 / 437 :::: Compiler calls: 116973, compilation errors: 115818, runtime errors: 460, failed runs: 683, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 359 / 437 :::: Compiler calls: 116973, compilation errors: 115818, runtime errors: 460, failed runs: 684, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 358 / 437 :::: Compiler calls: 117001, compilation errors: 115842, runtime errors: 460, failed runs: 685, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 358 / 437 :::: Compiler calls: 117161, compilation errors: 115988, runtime errors: 473, failed runs: 686, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 358 / 437 :::: Compiler calls: 117162, compilation errors: 115988, runtime errors: 473, failed runs: 687, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 357 / 437 :::: Compiler calls: 117338, compilation errors: 116153, runtime errors: 483, failed runs: 688, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 355 / 437 :::: Compiler calls: 117536, compilation errors: 116340, runtime errors: 494, failed runs: 689, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 356 / 437 :::: Compiler calls: 117545, compilation errors: 116346, runtime errors: 494, failed runs: 690, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 353 / 437 :::: Compiler calls: 117706, compilation errors: 116497, runtime errors: 505, failed runs: 691, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 354 / 437 :::: Compiler calls: 117711, compilation errors: 116500, runtime errors: 505, failed runs: 692, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 354 / 437 :::: Compiler calls: 117713, compilation errors: 116502, runtime errors: 505, failed runs: 693, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 352 / 437 :::: Compiler calls: 117905, compilation errors: 116684, runtime errors: 520, failed runs: 694, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 352 / 437 :::: Compiler calls: 117916, compilation errors: 116687, runtime errors: 521, failed runs: 695, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 352 / 437 :::: Compiler calls: 117918, compilation errors: 116692, runtime errors: 521, failed runs: 696, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 351 / 437 :::: Compiler calls: 118080, compilation errors: 116836, runtime errors: 532, failed runs: 697, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 351 / 437 :::: Compiler calls: 118080, compilation errors: 116839, runtime errors: 532, failed runs: 698, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 350 / 437 :::: Compiler calls: 118088, compilation errors: 116845, runtime errors: 533, failed runs: 699, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 349 / 437 :::: Compiler calls: 118270, compilation errors: 117013, runtime errors: 544, failed runs: 700, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 350 / 437 :::: Compiler calls: 118274, compilation errors: 117019, runtime errors: 544, failed runs: 701, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 349 / 437 :::: Compiler calls: 118284, compilation errors: 117025, runtime errors: 544, failed runs: 702, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 348 / 437 :::: Compiler calls: 118452, compilation errors: 117181, runtime errors: 556, failed runs: 703, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 348 / 437 :::: Compiler calls: 118468, compilation errors: 117194, runtime errors: 557, failed runs: 704, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 347 / 437 :::: Compiler calls: 118644, compilation errors: 117359, runtime errors: 569, failed runs: 705, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 345 / 437 :::: Compiler calls: 118835, compilation errors: 117536, runtime errors: 581, failed runs: 706, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 346 / 437 :::: Compiler calls: 118852, compilation errors: 117549, runtime errors: 583, failed runs: 707, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 344 / 437 :::: Compiler calls: 119026, compilation errors: 117717, runtime errors: 596, failed runs: 708, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 344 / 437 :::: Compiler calls: 119037, compilation errors: 117723, runtime errors: 596, failed runs: 709, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 344 / 437 :::: Compiler calls: 119041, compilation errors: 117725, runtime errors: 596, failed runs: 710, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 342 / 437 :::: Compiler calls: 119215, compilation errors: 117887, runtime errors: 608, failed runs: 711, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 341 / 437 :::: Compiler calls: 119403, compilation errors: 118066, runtime errors: 622, failed runs: 712, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 341 / 437 :::: Compiler calls: 119417, compilation errors: 118070, runtime errors: 622, failed runs: 713, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 340 / 437 :::: Compiler calls: 119590, compilation errors: 118234, runtime errors: 636, failed runs: 714, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 339 / 437 :::: Compiler calls: 119603, compilation errors: 118244, runtime errors: 636, failed runs: 715, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 340 / 437 :::: Compiler calls: 119605, compilation errors: 118244, runtime errors: 636, failed runs: 716, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 339 / 437 :::: Compiler calls: 119776, compilation errors: 118404, runtime errors: 648, failed runs: 717, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 338 / 437 :::: Compiler calls: 119795, compilation errors: 118417, runtime errors: 649, failed runs: 718, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 338 / 437 :::: Compiler calls: 119961, compilation errors: 118574, runtime errors: 662, failed runs: 719, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 337 / 437 :::: Compiler calls: 120167, compilation errors: 118759, runtime errors: 674, failed runs: 720, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 337 / 437 :::: Compiler calls: 120167, compilation errors: 118759, runtime errors: 674, failed runs: 721, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 337 / 437 :::: Compiler calls: 120170, compilation errors: 118761, runtime errors: 676, failed runs: 722, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 337 / 437 :::: Compiler calls: 120177, compilation errors: 118765, runtime errors: 676, failed runs: 723, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 337 / 437 :::: Compiler calls: 120177, compilation errors: 118765, runtime errors: 676, failed runs: 724, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 337 / 437 :::: Compiler calls: 120178, compilation errors: 118767, runtime errors: 676, failed runs: 725, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 336 / 437 :::: Compiler calls: 120189, compilation errors: 118773, runtime errors: 678, failed runs: 726, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 336 / 437 :::: Compiler calls: 120195, compilation errors: 118776, runtime errors: 678, failed runs: 727, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 336 / 437 :::: Compiler calls: 120200, compilation errors: 118780, runtime errors: 678, failed runs: 728, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 336 / 437 :::: Compiler calls: 120203, compilation errors: 118782, runtime errors: 678, failed runs: 729, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 335 / 437 :::: Compiler calls: 120209, compilation errors: 118785, runtime errors: 680, failed runs: 730, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 335 / 437 :::: Compiler calls: 120212, compilation errors: 118787, runtime errors: 680, failed runs: 731, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 334 / 437 :::: Compiler calls: 120238, compilation errors: 118810, runtime errors: 681, failed runs: 732, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 334 / 437 :::: Compiler calls: 120241, compilation errors: 118815, runtime errors: 681, failed runs: 733, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 334 / 437 :::: Compiler calls: 120241, compilation errors: 118815, runtime errors: 681, failed runs: 734, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 334 / 437 :::: Compiler calls: 120242, compilation errors: 118815, runtime errors: 681, failed runs: 735, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 333 / 437 :::: Compiler calls: 120267, compilation errors: 118834, runtime errors: 684, failed runs: 737, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 333 / 437 :::: Compiler calls: 120267, compilation errors: 118834, runtime errors: 684, failed runs: 736, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 333 / 437 :::: Compiler calls: 120284, compilation errors: 118846, runtime errors: 686, failed runs: 738, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 332 / 437 :::: Compiler calls: 120302, compilation errors: 118863, runtime errors: 687, failed runs: 739, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 332 / 437 :::: Compiler calls: 120305, compilation errors: 118863, runtime errors: 689, failed runs: 740, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 331 / 437 :::: Compiler calls: 120334, compilation errors: 118889, runtime errors: 691, failed runs: 741, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 330 / 437 :::: Compiler calls: 120375, compilation errors: 118922, runtime errors: 697, failed runs: 742, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 330 / 437 :::: Compiler calls: 120378, compilation errors: 118924, runtime errors: 698, failed runs: 743, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 329 / 437 :::: Compiler calls: 120425, compilation errors: 118962, runtime errors: 704, failed runs: 744, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 329 / 437 :::: Compiler calls: 120430, compilation errors: 118966, runtime errors: 705, failed runs: 745, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 329 / 437 :::: Compiler calls: 120432, compilation errors: 118967, runtime errors: 705, failed runs: 746, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 329 / 437 :::: Compiler calls: 120434, compilation errors: 118971, runtime errors: 705, failed runs: 747, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 328 / 437 :::: Compiler calls: 120481, compilation errors: 119008, runtime errors: 711, failed runs: 748, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 328 / 437 :::: Compiler calls: 120481, compilation errors: 119009, runtime errors: 711, failed runs: 749, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 328 / 437 :::: Compiler calls: 120485, compilation errors: 119009, runtime errors: 711, failed runs: 750, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 328 / 437 :::: Compiler calls: 120485, compilation errors: 119011, runtime errors: 712, failed runs: 751, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 327 / 437 :::: Compiler calls: 120532, compilation errors: 119048, runtime errors: 718, failed runs: 752, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 327 / 437 :::: Compiler calls: 120534, compilation errors: 119050, runtime errors: 718, failed runs: 753, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 327 / 437 :::: Compiler calls: 120537, compilation errors: 119050, runtime errors: 718, failed runs: 754, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 326 / 437 :::: Compiler calls: 120582, compilation errors: 119087, runtime errors: 725, failed runs: 755, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 325 / 437 :::: Compiler calls: 120635, compilation errors: 119131, runtime errors: 733, failed runs: 756, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 325 / 437 :::: Compiler calls: 120635, compilation errors: 119132, runtime errors: 733, failed runs: 757, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 325 / 437 :::: Compiler calls: 120638, compilation errors: 119133, runtime errors: 733, failed runs: 758, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 325 / 437 :::: Compiler calls: 120639, compilation errors: 119133, runtime errors: 733, failed runs: 759, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 324 / 437 :::: Compiler calls: 120693, compilation errors: 119178, runtime errors: 740, failed runs: 760, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 324 / 437 :::: Compiler calls: 120695, compilation errors: 119180, runtime errors: 740, failed runs: 761, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 324 / 437 :::: Compiler calls: 120696, compilation errors: 119182, runtime errors: 740, failed runs: 762, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 324 / 437 :::: Compiler calls: 120700, compilation errors: 119185, runtime errors: 740, failed runs: 763, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 324 / 437 :::: Compiler calls: 120709, compilation errors: 119192, runtime errors: 740, failed runs: 764, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 323 / 437 :::: Compiler calls: 120748, compilation errors: 119223, runtime errors: 747, failed runs: 765, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 323 / 437 :::: Compiler calls: 120748, compilation errors: 119223, runtime errors: 747, failed runs: 766, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 323 / 437 :::: Compiler calls: 120752, compilation errors: 119226, runtime errors: 747, failed runs: 767, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 323 / 437 :::: Compiler calls: 120759, compilation errors: 119231, runtime errors: 747, failed runs: 768, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 322 / 437 :::: Compiler calls: 120800, compilation errors: 119266, runtime errors: 752, failed runs: 769, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 322 / 437 :::: Compiler calls: 120808, compilation errors: 119273, runtime errors: 754, failed runs: 770, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 322 / 437 :::: Compiler calls: 120808, compilation errors: 119273, runtime errors: 754, failed runs: 771, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 321 / 437 :::: Compiler calls: 120856, compilation errors: 119309, runtime errors: 761, failed runs: 772, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 321 / 437 :::: Compiler calls: 120863, compilation errors: 119317, runtime errors: 761, failed runs: 773, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 321 / 437 :::: Compiler calls: 120871, compilation errors: 119323, runtime errors: 761, failed runs: 774, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 320 / 437 :::: Compiler calls: 120905, compilation errors: 119350, runtime errors: 766, failed runs: 775, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 319 / 437 :::: Compiler calls: 120963, compilation errors: 119396, runtime errors: 776, failed runs: 776, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 319 / 437 :::: Compiler calls: 120969, compilation errors: 119406, runtime errors: 777, failed runs: 777, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 318 / 437 :::: Compiler calls: 121036, compilation errors: 119458, runtime errors: 785, failed runs: 778, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 317 / 437 :::: Compiler calls: 121098, compilation errors: 119517, runtime errors: 792, failed runs: 779, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 317 / 437 :::: Compiler calls: 121120, compilation errors: 119531, runtime errors: 794, failed runs: 780, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 316 / 437 :::: Compiler calls: 121175, compilation errors: 119580, runtime errors: 802, failed runs: 781, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 316 / 437 :::: Compiler calls: 121187, compilation errors: 119590, runtime errors: 803, failed runs: 782, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 315 / 437 :::: Compiler calls: 121254, compilation errors: 119648, runtime errors: 811, failed runs: 783, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 315 / 437 :::: Compiler calls: 121281, compilation errors: 119672, runtime errors: 812, failed runs: 784, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 314 / 437 :::: Compiler calls: 121340, compilation errors: 119720, runtime errors: 821, failed runs: 785, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 314 / 437 :::: Compiler calls: 121345, compilation errors: 119726, runtime errors: 821, failed runs: 786, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 314 / 437 :::: Compiler calls: 121349, compilation errors: 119730, runtime errors: 821, failed runs: 787, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 313 / 437 :::: Compiler calls: 121426, compilation errors: 119796, runtime errors: 830, failed runs: 788, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 313 / 437 :::: Compiler calls: 121432, compilation errors: 119802, runtime errors: 830, failed runs: 789, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 313 / 437 :::: Compiler calls: 121446, compilation errors: 119811, runtime errors: 830, failed runs: 790, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 313 / 437 :::: Compiler calls: 121448, compilation errors: 119815, runtime errors: 831, failed runs: 791, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 312 / 437 :::: Compiler calls: 121525, compilation errors: 119881, runtime errors: 839, failed runs: 792, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 312 / 437 :::: Compiler calls: 121525, compilation errors: 119881, runtime errors: 839, failed runs: 793, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 312 / 437 :::: Compiler calls: 121529, compilation errors: 119881, runtime errors: 839, failed runs: 794, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 312 / 437 :::: Compiler calls: 121535, compilation errors: 119889, runtime errors: 839, failed runs: 795, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 311 / 437 :::: Compiler calls: 121619, compilation errors: 119960, runtime errors: 848, failed runs: 796, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 311 / 437 :::: Compiler calls: 121622, compilation errors: 119963, runtime errors: 848, failed runs: 797, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 311 / 437 :::: Compiler calls: 121626, compilation errors: 119965, runtime errors: 848, failed runs: 798, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 310 / 437 :::: Compiler calls: 121713, compilation errors: 120044, runtime errors: 857, failed runs: 799, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 309 / 437 :::: Compiler calls: 121816, compilation errors: 120136, runtime errors: 866, failed runs: 800, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 309 / 437 :::: Compiler calls: 121820, compilation errors: 120138, runtime errors: 867, failed runs: 801, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 309 / 437 :::: Compiler calls: 121826, compilation errors: 120143, runtime errors: 867, failed runs: 802, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 309 / 437 :::: Compiler calls: 121826, compilation errors: 120145, runtime errors: 867, failed runs: 803, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 308 / 437 :::: Compiler calls: 121924, compilation errors: 120228, runtime errors: 878, failed runs: 804, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 308 / 437 :::: Compiler calls: 121925, compilation errors: 120230, runtime errors: 878, failed runs: 805, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 308 / 437 :::: Compiler calls: 121927, compilation errors: 120232, runtime errors: 878, failed runs: 806, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 308 / 437 :::: Compiler calls: 121932, compilation errors: 120234, runtime errors: 878, failed runs: 807, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 308 / 437 :::: Compiler calls: 121938, compilation errors: 120240, runtime errors: 878, failed runs: 808, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 307 / 437 :::: Compiler calls: 122029, compilation errors: 120319, runtime errors: 887, failed runs: 809, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 307 / 437 :::: Compiler calls: 122033, compilation errors: 120320, runtime errors: 888, failed runs: 810, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 307 / 437 :::: Compiler calls: 122033, compilation errors: 120320, runtime errors: 888, failed runs: 811, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 306 / 437 :::: Compiler calls: 122132, compilation errors: 120407, runtime errors: 898, failed runs: 812, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 306 / 437 :::: Compiler calls: 122135, compilation errors: 120410, runtime errors: 898, failed runs: 813, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 306 / 437 :::: Compiler calls: 122135, compilation errors: 120410, runtime errors: 898, failed runs: 814, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 306 / 437 :::: Compiler calls: 122156, compilation errors: 120428, runtime errors: 900, failed runs: 815, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 305 / 437 :::: Compiler calls: 122244, compilation errors: 120505, runtime errors: 909, failed runs: 816, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 305 / 437 :::: Compiler calls: 122264, compilation errors: 120525, runtime errors: 911, failed runs: 817, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 304 / 437 :::: Compiler calls: 122353, compilation errors: 120598, runtime errors: 922, failed runs: 818, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 304 / 437 :::: Compiler calls: 122353, compilation errors: 120599, runtime errors: 922, failed runs: 819, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 304 / 437 :::: Compiler calls: 122356, compilation errors: 120601, runtime errors: 922, failed runs: 820, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 304 / 437 :::: Compiler calls: 122364, compilation errors: 120609, runtime errors: 922, failed runs: 821, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 303 / 437 :::: Compiler calls: 122467, compilation errors: 120701, runtime errors: 933, failed runs: 822, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 303 / 437 :::: Compiler calls: 122472, compilation errors: 120702, runtime errors: 933, failed runs: 823, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 303 / 437 :::: Compiler calls: 122474, compilation errors: 120702, runtime errors: 933, failed runs: 824, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 302 / 437 :::: Compiler calls: 122583, compilation errors: 120800, runtime errors: 943, failed runs: 825, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 302 / 437 :::: Compiler calls: 122586, compilation errors: 120803, runtime errors: 944, failed runs: 826, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 301 / 437 :::: Compiler calls: 122697, compilation errors: 120901, runtime errors: 955, failed runs: 827, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 301 / 437 :::: Compiler calls: 122698, compilation errors: 120903, runtime errors: 955, failed runs: 828, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 300 / 437 :::: Compiler calls: 122815, compilation errors: 121006, runtime errors: 966, failed runs: 829, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 300 / 437 :::: Compiler calls: 122816, compilation errors: 121007, runtime errors: 967, failed runs: 830, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 300 / 437 :::: Compiler calls: 122820, compilation errors: 121009, runtime errors: 967, failed runs: 831, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 300 / 437 :::: Compiler calls: 122843, compilation errors: 121029, runtime errors: 968, failed runs: 832, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 299 / 437 :::: Compiler calls: 122931, compilation errors: 121107, runtime errors: 979, failed runs: 833, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 299 / 437 :::: Compiler calls: 122938, compilation errors: 121114, runtime errors: 979, failed runs: 834, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 299 / 437 :::: Compiler calls: 122938, compilation errors: 121114, runtime errors: 979, failed runs: 835, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 299 / 437 :::: Compiler calls: 122945, compilation errors: 121116, runtime errors: 980, failed runs: 836, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 298 / 437 :::: Compiler calls: 123050, compilation errors: 121207, runtime errors: 992, failed runs: 837, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 298 / 437 :::: Compiler calls: 123057, compilation errors: 121215, runtime errors: 992, failed runs: 838, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 298 / 437 :::: Compiler calls: 123061, compilation errors: 121219, runtime errors: 992, failed runs: 839, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 298 / 437 :::: Compiler calls: 123061, compilation errors: 121219, runtime errors: 992, failed runs: 840, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 297 / 437 :::: Compiler calls: 123175, compilation errors: 121316, runtime errors: 1004, failed runs: 841, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 297 / 437 :::: Compiler calls: 123176, compilation errors: 121318, runtime errors: 1005, failed runs: 842, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 297 / 437 :::: Compiler calls: 123181, compilation errors: 121320, runtime errors: 1006, failed runs: 843, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 297 / 437 :::: Compiler calls: 123198, compilation errors: 121333, runtime errors: 1006, failed runs: 844, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 296 / 437 :::: Compiler calls: 123312, compilation errors: 121434, runtime errors: 1020, failed runs: 845, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 296 / 437 :::: Compiler calls: 123313, compilation errors: 121434, runtime errors: 1020, failed runs: 846, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 296 / 437 :::: Compiler calls: 123317, compilation errors: 121436, runtime errors: 1020, failed runs: 847, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 296 / 437 :::: Compiler calls: 123321, compilation errors: 121442, runtime errors: 1020, failed runs: 848, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 296 / 437 :::: Compiler calls: 123321, compilation errors: 121442, runtime errors: 1020, failed runs: 849, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 295 / 437 :::: Compiler calls: 123449, compilation errors: 121550, runtime errors: 1035, failed runs: 850, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 295 / 437 :::: Compiler calls: 123453, compilation errors: 121552, runtime errors: 1036, failed runs: 851, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 294 / 437 :::: Compiler calls: 123593, compilation errors: 121678, runtime errors: 1051, failed runs: 852, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 294 / 437 :::: Compiler calls: 123595, compilation errors: 121678, runtime errors: 1051, failed runs: 853, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 294 / 437 :::: Compiler calls: 123597, compilation errors: 121678, runtime errors: 1051, failed runs: 854, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 294 / 437 :::: Compiler calls: 123597, compilation errors: 121678, runtime errors: 1051, failed runs: 855, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 293 / 437 :::: Compiler calls: 123737, compilation errors: 121800, runtime errors: 1066, failed runs: 856, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 293 / 437 :::: Compiler calls: 123738, compilation errors: 121802, runtime errors: 1066, failed runs: 857, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 293 / 437 :::: Compiler calls: 123738, compilation errors: 121802, runtime errors: 1066, failed runs: 858, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 293 / 437 :::: Compiler calls: 123738, compilation errors: 121804, runtime errors: 1067, failed runs: 859, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 292 / 437 :::: Compiler calls: 123879, compilation errors: 121922, runtime errors: 1083, failed runs: 860, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 292 / 437 :::: Compiler calls: 123881, compilation errors: 121923, runtime errors: 1083, failed runs: 861, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 292 / 437 :::: Compiler calls: 123884, compilation errors: 121924, runtime errors: 1084, failed runs: 862, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 292 / 437 :::: Compiler calls: 123889, compilation errors: 121928, runtime errors: 1085, failed runs: 863, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 292 / 437 :::: Compiler calls: 123889, compilation errors: 121929, runtime errors: 1085, failed runs: 864, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 291 / 437 :::: Compiler calls: 124022, compilation errors: 122043, runtime errors: 1099, failed runs: 865, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 291 / 437 :::: Compiler calls: 124022, compilation errors: 122044, runtime errors: 1099, failed runs: 866, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 291 / 437 :::: Compiler calls: 124022, compilation errors: 122044, runtime errors: 1099, failed runs: 867, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 290 / 437 :::: Compiler calls: 124164, compilation errors: 122166, runtime errors: 1115, failed runs: 868, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 290 / 437 :::: Compiler calls: 124164, compilation errors: 122166, runtime errors: 1116, failed runs: 869, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 290 / 437 :::: Compiler calls: 124167, compilation errors: 122167, runtime errors: 1116, failed runs: 870, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 289 / 437 :::: Compiler calls: 124309, compilation errors: 122291, runtime errors: 1132, failed runs: 871, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 289 / 437 :::: Compiler calls: 124312, compilation errors: 122295, runtime errors: 1133, failed runs: 872, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 289 / 437 :::: Compiler calls: 124324, compilation errors: 122304, runtime errors: 1134, failed runs: 873, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 288 / 437 :::: Compiler calls: 124446, compilation errors: 122410, runtime errors: 1148, failed runs: 874, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 287 / 437 :::: Compiler calls: 124606, compilation errors: 122549, runtime errors: 1168, failed runs: 875, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 287 / 437 :::: Compiler calls: 124617, compilation errors: 122560, runtime errors: 1168, failed runs: 876, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 286 / 437 :::: Compiler calls: 124777, compilation errors: 122700, runtime errors: 1187, failed runs: 877, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 285 / 437 :::: Compiler calls: 125063, compilation errors: 122968, runtime errors: 1216, failed runs: 878, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 285 / 437 :::: Compiler calls: 125063, compilation errors: 122968, runtime errors: 1216, failed runs: 879, ok runs: 0
+:::: FAILED :::: level: 4 :::: size: 284 / 437 :::: Compiler calls: 125348, compilation errors: 123220, runtime errors: 1244, failed runs: 880, ok runs: 0
+Level 0-4 took 2m 40s 554ms
+00100011110101010111101000001101111111101100010011011110011110110110100000101001001110111101111111101011111100101111110101111001111100101011111010010000000011111001000101010011010110000100111101111110011011111101110111101100011111110111110110101111101011101101101101111111101111000111110000000011111110011011111011111011111111111111111111011111011011010111101011110011011110101001100111100000000110011101111011110101111111111100111010101
+Fixed 284 active nodes and 0 free nodes guaranteed by them.
+Discarded 153 active fragments. 2230 fragments, including dependent nodes
+############## After level 0-4 there are 2847 / 6317 fragments left :::: Compiler calls: 125632, compilation errors: 123478, runtime errors: 1274, failed runs: 880, ok runs: 0
+############## EXECUTING LVL 0-5 with 306 active fragments ##############
+:::: FAILED :::: level: 5 :::: size: 305 / 306 :::: Compiler calls: 125928, compilation errors: 123760, runtime errors: 1274, failed runs: 881, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 304 / 306 :::: Compiler calls: 126008, compilation errors: 123834, runtime errors: 1277, failed runs: 882, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 303 / 306 :::: Compiler calls: 126093, compilation errors: 123915, runtime errors: 1280, failed runs: 883, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 302 / 306 :::: Compiler calls: 126208, compilation errors: 124025, runtime errors: 1286, failed runs: 884, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 301 / 306 :::: Compiler calls: 126401, compilation errors: 124213, runtime errors: 1291, failed runs: 885, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 300 / 306 :::: Compiler calls: 126613, compilation errors: 124419, runtime errors: 1296, failed runs: 886, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 299 / 306 :::: Compiler calls: 126867, compilation errors: 124669, runtime errors: 1303, failed runs: 887, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 299 / 306 :::: Compiler calls: 126899, compilation errors: 124694, runtime errors: 1304, failed runs: 888, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 298 / 306 :::: Compiler calls: 127064, compilation errors: 124855, runtime errors: 1309, failed runs: 889, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 297 / 306 :::: Compiler calls: 127296, compilation errors: 125078, runtime errors: 1316, failed runs: 890, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 297 / 306 :::: Compiler calls: 127308, compilation errors: 125086, runtime errors: 1317, failed runs: 891, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 296 / 306 :::: Compiler calls: 127527, compilation errors: 125298, runtime errors: 1324, failed runs: 892, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 295 / 306 :::: Compiler calls: 127726, compilation errors: 125494, runtime errors: 1329, failed runs: 893, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 294 / 306 :::: Compiler calls: 127977, compilation errors: 125737, runtime errors: 1335, failed runs: 894, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 293 / 306 :::: Compiler calls: 128221, compilation errors: 125975, runtime errors: 1344, failed runs: 895, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 292 / 306 :::: Compiler calls: 128464, compilation errors: 126213, runtime errors: 1352, failed runs: 896, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 292 / 306 :::: Compiler calls: 128495, compilation errors: 126232, runtime errors: 1353, failed runs: 897, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 291 / 306 :::: Compiler calls: 128691, compilation errors: 126423, runtime errors: 1358, failed runs: 898, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 291 / 306 :::: Compiler calls: 128747, compilation errors: 126476, runtime errors: 1359, failed runs: 899, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 290 / 306 :::: Compiler calls: 128935, compilation errors: 126664, runtime errors: 1367, failed runs: 900, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 290 / 306 :::: Compiler calls: 128935, compilation errors: 126664, runtime errors: 1367, failed runs: 901, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 289 / 306 :::: Compiler calls: 129175, compilation errors: 126894, runtime errors: 1374, failed runs: 902, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 289 / 306 :::: Compiler calls: 129188, compilation errors: 126900, runtime errors: 1375, failed runs: 903, ok runs: 0
+:::: FAILED :::: level: 5 :::: size: 288 / 306 :::: Compiler calls: 129414, compilation errors: 127128, runtime errors: 1382, failed runs: 904, ok runs: 0
+Level 0-5 took 22s 754ms
+111111110111111111111111111111111111111101111111101111111111111111111111111110111111111111111111111111111111111111111111111111111111111111111111111111111111110111111111111111111011101011111111111110111111111111111111101011111111111111101110111101111111111111111111111111111111111101111100111111111110111111
+Fixed 288 active nodes and 0 free nodes guaranteed by them.
+Discarded 18 active fragments. 22 fragments, including dependent nodes
+############## After level 0-5 there are 2825 / 6317 fragments left :::: Compiler calls: 129940, compilation errors: 127632, runtime errors: 1404, failed runs: 904, ok runs: 0
+############## EXECUTING LVL 0-6 with 235 active fragments ##############
+:::: FAILED :::: level: 6 :::: size: 233 / 235 :::: Compiler calls: 130143, compilation errors: 127824, runtime errors: 1404, failed runs: 905, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 233 / 235 :::: Compiler calls: 130171, compilation errors: 127848, runtime errors: 1405, failed runs: 906, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 231 / 235 :::: Compiler calls: 130272, compilation errors: 127946, runtime errors: 1406, failed runs: 907, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 230 / 235 :::: Compiler calls: 130401, compilation errors: 128080, runtime errors: 1408, failed runs: 908, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 230 / 235 :::: Compiler calls: 130409, compilation errors: 128085, runtime errors: 1408, failed runs: 909, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 229 / 235 :::: Compiler calls: 130526, compilation errors: 128201, runtime errors: 1412, failed runs: 910, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 228 / 235 :::: Compiler calls: 130650, compilation errors: 128320, runtime errors: 1413, failed runs: 911, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 227 / 235 :::: Compiler calls: 130824, compilation errors: 128482, runtime errors: 1416, failed runs: 912, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 227 / 235 :::: Compiler calls: 130827, compilation errors: 128485, runtime errors: 1416, failed runs: 913, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 227 / 235 :::: Compiler calls: 130842, compilation errors: 128500, runtime errors: 1417, failed runs: 914, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 226 / 235 :::: Compiler calls: 130880, compilation errors: 128533, runtime errors: 1418, failed runs: 915, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 226 / 235 :::: Compiler calls: 130894, compilation errors: 128548, runtime errors: 1418, failed runs: 916, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 226 / 235 :::: Compiler calls: 130900, compilation errors: 128554, runtime errors: 1418, failed runs: 917, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 225 / 235 :::: Compiler calls: 130946, compilation errors: 128594, runtime errors: 1419, failed runs: 918, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 225 / 235 :::: Compiler calls: 130948, compilation errors: 128598, runtime errors: 1419, failed runs: 919, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 225 / 235 :::: Compiler calls: 130953, compilation errors: 128601, runtime errors: 1420, failed runs: 920, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 224 / 235 :::: Compiler calls: 131004, compilation errors: 128649, runtime errors: 1421, failed runs: 921, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 224 / 235 :::: Compiler calls: 131018, compilation errors: 128663, runtime errors: 1421, failed runs: 922, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 223 / 235 :::: Compiler calls: 131079, compilation errors: 128721, runtime errors: 1424, failed runs: 923, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 223 / 235 :::: Compiler calls: 131136, compilation errors: 128772, runtime errors: 1426, failed runs: 924, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 222 / 235 :::: Compiler calls: 131179, compilation errors: 128811, runtime errors: 1430, failed runs: 925, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 222 / 235 :::: Compiler calls: 131196, compilation errors: 128827, runtime errors: 1432, failed runs: 926, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 222 / 235 :::: Compiler calls: 131201, compilation errors: 128833, runtime errors: 1432, failed runs: 927, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 221 / 235 :::: Compiler calls: 131288, compilation errors: 128910, runtime errors: 1437, failed runs: 928, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 221 / 235 :::: Compiler calls: 131293, compilation errors: 128913, runtime errors: 1438, failed runs: 929, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 220 / 235 :::: Compiler calls: 131458, compilation errors: 129068, runtime errors: 1449, failed runs: 930, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 219 / 235 :::: Compiler calls: 131666, compilation errors: 129264, runtime errors: 1460, failed runs: 931, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 219 / 235 :::: Compiler calls: 131670, compilation errors: 129265, runtime errors: 1460, failed runs: 932, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 218 / 235 :::: Compiler calls: 131870, compilation errors: 129454, runtime errors: 1470, failed runs: 933, ok runs: 0
+:::: FAILED :::: level: 6 :::: size: 217 / 235 :::: Compiler calls: 132091, compilation errors: 129674, runtime errors: 1482, failed runs: 934, ok runs: 0
+Level 0-6 took 12s 427ms
+1111111111111011111111111111111111110111101111111001111111111100110011111101111110111111111111111111111111111111111111111111111111111111111111111111110111111111110111011111111111111111111111011111110111111110111111111101111111111111111
+Fixed 217 active nodes and 0 free nodes guaranteed by them.
+Discarded 18 active fragments. 120 fragments, including dependent nodes
+############## After level 0-6 there are 2705 / 6317 fragments left :::: Compiler calls: 132308, compilation errors: 129880, runtime errors: 1494, failed runs: 934, ok runs: 0
+############## EXECUTING LVL 0-7 with 136 active fragments ##############
+:::: FAILED :::: level: 7 :::: size: 135 / 136 :::: Compiler calls: 132492, compilation errors: 130049, runtime errors: 1494, failed runs: 935, ok runs: 0
+:::: FAILED :::: level: 7 :::: size: 134 / 136 :::: Compiler calls: 132600, compilation errors: 130154, runtime errors: 1496, failed runs: 936, ok runs: 0
+:::: FAILED :::: level: 7 :::: size: 134 / 136 :::: Compiler calls: 132600, compilation errors: 130154, runtime errors: 1496, failed runs: 937, ok runs: 0
+:::: FAILED :::: level: 7 :::: size: 134 / 136 :::: Compiler calls: 132615, compilation errors: 130170, runtime errors: 1496, failed runs: 938, ok runs: 0
+:::: FAILED :::: level: 7 :::: size: 133 / 136 :::: Compiler calls: 132727, compilation errors: 130279, runtime errors: 1497, failed runs: 939, ok runs: 0
+:::: FAILED :::: level: 7 :::: size: 133 / 136 :::: Compiler calls: 132728, compilation errors: 130282, runtime errors: 1497, failed runs: 940, ok runs: 0
+:::: FAILED :::: level: 7 :::: size: 133 / 136 :::: Compiler calls: 132733, compilation errors: 130284, runtime errors: 1497, failed runs: 941, ok runs: 0
+:::: FAILED :::: level: 7 :::: size: 132 / 136 :::: Compiler calls: 132822, compilation errors: 130372, runtime errors: 1498, failed runs: 942, ok runs: 0
+:::: FAILED :::: level: 7 :::: size: 132 / 136 :::: Compiler calls: 132851, compilation errors: 130398, runtime errors: 1498, failed runs: 943, ok runs: 0
+:::: FAILED :::: level: 7 :::: size: 131 / 136 :::: Compiler calls: 132934, compilation errors: 130477, runtime errors: 1499, failed runs: 944, ok runs: 0
+Level 0-7 took 4s 316ms
+1111111111111111111111101111111111111111111111111111111111111111111111010101111101111111111111111111111111111111111111111111111111111111
+Fixed 131 active nodes and 0 free nodes guaranteed by them.
+Discarded 5 active fragments. 7 fragments, including dependent nodes
+############## After level 0-7 there are 2698 / 6317 fragments left :::: Compiler calls: 133191, compilation errors: 130746, runtime errors: 1501, failed runs: 944, ok runs: 0
+############## EXECUTING LVL 0-8 with 90 active fragments ##############
+:::: FAILED :::: level: 8 :::: size: 89 / 90 :::: Compiler calls: 133315, compilation errors: 130859, runtime errors: 1501, failed runs: 945, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 88 / 90 :::: Compiler calls: 133380, compilation errors: 130930, runtime errors: 1501, failed runs: 946, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 88 / 90 :::: Compiler calls: 133409, compilation errors: 130948, runtime errors: 1501, failed runs: 947, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 87 / 90 :::: Compiler calls: 133442, compilation errors: 130993, runtime errors: 1501, failed runs: 948, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 86 / 90 :::: Compiler calls: 133503, compilation errors: 131047, runtime errors: 1501, failed runs: 949, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 86 / 90 :::: Compiler calls: 133516, compilation errors: 131051, runtime errors: 1501, failed runs: 950, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 85 / 90 :::: Compiler calls: 133563, compilation errors: 131106, runtime errors: 1501, failed runs: 951, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 85 / 90 :::: Compiler calls: 133618, compilation errors: 131151, runtime errors: 1502, failed runs: 952, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 84 / 90 :::: Compiler calls: 133622, compilation errors: 131165, runtime errors: 1503, failed runs: 953, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 84 / 90 :::: Compiler calls: 133622, compilation errors: 131165, runtime errors: 1503, failed runs: 954, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 83 / 90 :::: Compiler calls: 133680, compilation errors: 131217, runtime errors: 1503, failed runs: 955, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 83 / 90 :::: Compiler calls: 133694, compilation errors: 131223, runtime errors: 1504, failed runs: 956, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 83 / 90 :::: Compiler calls: 133713, compilation errors: 131243, runtime errors: 1504, failed runs: 957, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 82 / 90 :::: Compiler calls: 133737, compilation errors: 131274, runtime errors: 1505, failed runs: 958, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 81 / 90 :::: Compiler calls: 133793, compilation errors: 131329, runtime errors: 1505, failed runs: 959, ok runs: 0
+:::: FAILED :::: level: 8 :::: size: 80 / 90 :::: Compiler calls: 133848, compilation errors: 131380, runtime errors: 1505, failed runs: 960, ok runs: 0
+Level 0-8 took 2s 786ms
+111111110111111111111111011111111110111111111101111011111111111011101111011111100111111111
+Fixed 80 active nodes and 0 free nodes guaranteed by them.
+Discarded 10 active fragments. 51 fragments, including dependent nodes
+############## After level 0-8 there are 2647 / 6317 fragments left :::: Compiler calls: 133982, compilation errors: 131516, runtime errors: 1506, failed runs: 960, ok runs: 0
+############## EXECUTING LVL 0-9 with 51 active fragments ##############
+:::: FAILED :::: level: 9 :::: size: 49 / 51 :::: Compiler calls: 134044, compilation errors: 131575, runtime errors: 1506, failed runs: 961, ok runs: 0
+:::: FAILED :::: level: 9 :::: size: 49 / 51 :::: Compiler calls: 134051, compilation errors: 131576, runtime errors: 1506, failed runs: 962, ok runs: 0
+:::: FAILED :::: level: 9 :::: size: 47 / 51 :::: Compiler calls: 134075, compilation errors: 131606, runtime errors: 1506, failed runs: 963, ok runs: 0
+:::: FAILED :::: level: 9 :::: size: 46 / 51 :::: Compiler calls: 134152, compilation errors: 131674, runtime errors: 1506, failed runs: 964, ok runs: 0
+:::: FAILED :::: level: 9 :::: size: 46 / 51 :::: Compiler calls: 134177, compilation errors: 131691, runtime errors: 1506, failed runs: 965, ok runs: 0
+:::: FAILED :::: level: 9 :::: size: 45 / 51 :::: Compiler calls: 134198, compilation errors: 131720, runtime errors: 1507, failed runs: 966, ok runs: 0
+:::: FAILED :::: level: 9 :::: size: 44 / 51 :::: Compiler calls: 134243, compilation errors: 131768, runtime errors: 1508, failed runs: 967, ok runs: 0
+Level 0-9 took 1s 802ms
+010010111111111111111111111111111111001111111111011
+Fixed 44 active nodes and 0 free nodes guaranteed by them.
+Discarded 7 active fragments. 21 fragments, including dependent nodes
+############## After level 0-9 there are 2626 / 6317 fragments left :::: Compiler calls: 134287, compilation errors: 131811, runtime errors: 1509, failed runs: 967, ok runs: 0
+############## EXECUTING LVL 0-10 with 20 active fragments ##############
+:::: FAILED :::: level: 10 :::: size: 19 / 20 :::: Compiler calls: 134337, compilation errors: 131851, runtime errors: 1514, failed runs: 968, ok runs: 0
+:::: FAILED :::: level: 10 :::: size: 19 / 20 :::: Compiler calls: 134356, compilation errors: 131859, runtime errors: 1514, failed runs: 969, ok runs: 0
+:::: FAILED :::: level: 10 :::: size: 18 / 20 :::: Compiler calls: 134356, compilation errors: 131868, runtime errors: 1518, failed runs: 970, ok runs: 0
+Level 0-10 took 818ms
+11111111111101011111
+Fixed 18 active nodes and 0 free nodes guaranteed by them.
+Discarded 2 active fragments. 10 fragments, including dependent nodes
+############## After level 0-10 there are 2616 / 6317 fragments left :::: Compiler calls: 134374, compilation errors: 131883, runtime errors: 1521, failed runs: 970, ok runs: 0
+############## EXECUTING LVL 0-11 with 14 active fragments ##############
+Level 0-11 took 196ms
+11111111111111
+Fixed 14 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## After level 0-11 there are 2616 / 6317 fragments left :::: Compiler calls: 134402, compilation errors: 131911, runtime errors: 1521, failed runs: 970, ok runs: 0
+############## EXECUTING LVL 0-12 with 15 active fragments ##############
+:::: FAILED :::: level: 12 :::: size: 14 / 15 :::: Compiler calls: 134431, compilation errors: 131933, runtime errors: 1522, failed runs: 971, ok runs: 0
+:::: FAILED :::: level: 12 :::: size: 14 / 15 :::: Compiler calls: 134437, compilation errors: 131933, runtime errors: 1522, failed runs: 972, ok runs: 0
+:::: FAILED :::: level: 12 :::: size: 14 / 15 :::: Compiler calls: 134445, compilation errors: 131941, runtime errors: 1524, failed runs: 973, ok runs: 0
+:::: FAILED :::: level: 12 :::: size: 13 / 15 :::: Compiler calls: 134445, compilation errors: 131942, runtime errors: 1525, failed runs: 974, ok runs: 0
+:::: FAILED :::: level: 12 :::: size: 13 / 15 :::: Compiler calls: 134448, compilation errors: 131942, runtime errors: 1525, failed runs: 975, ok runs: 0
+:::: FAILED :::: level: 12 :::: size: 12 / 15 :::: Compiler calls: 134458, compilation errors: 131951, runtime errors: 1529, failed runs: 976, ok runs: 0
+Level 0-12 took 768ms
+111001111101111
+Fixed 12 active nodes and 0 free nodes guaranteed by them.
+Discarded 3 active fragments. 10 fragments, including dependent nodes
+############## After level 0-12 there are 2606 / 6317 fragments left :::: Compiler calls: 134470, compilation errors: 131960, runtime errors: 1534, failed runs: 976, ok runs: 0
+############## EXECUTING LVL 0-13 with 15 active fragments ##############
+:::: FAILED :::: level: 13 :::: size: 14 / 15 :::: Compiler calls: 134499, compilation errors: 131987, runtime errors: 1534, failed runs: 977, ok runs: 0
+:::: FAILED :::: level: 13 :::: size: 14 / 15 :::: Compiler calls: 134501, compilation errors: 131987, runtime errors: 1534, failed runs: 978, ok runs: 0
+:::: FAILED :::: level: 13 :::: size: 13 / 15 :::: Compiler calls: 134513, compilation errors: 131997, runtime errors: 1534, failed runs: 979, ok runs: 0
+Level 0-13 took 571ms
+101101111111111
+Fixed 13 active nodes and 0 free nodes guaranteed by them.
+Discarded 2 active fragments. 8 fragments, including dependent nodes
+############## After level 0-13 there are 2598 / 6317 fragments left :::: Compiler calls: 134526, compilation errors: 132013, runtime errors: 1534, failed runs: 979, ok runs: 0
+############## EXECUTING LVL 0-14 with 3 active fragments ##############
+Level 0-14 took 122ms
+111
+Fixed 3 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## After level 0-14 there are 2598 / 6317 fragments left :::: Compiler calls: 134531, compilation errors: 132018, runtime errors: 1534, failed runs: 979, ok runs: 0
+Recreating result in testingoutput folder...
+############## FINISHED NR. 0 in 10m 26s 15ms :::: Reduced to 2598 out of 6317 :::: Compiler calls: 134531, compilation errors: 132018, runtime errors: 1534, failed runs: 979, ok runs: 0 ##############
+############## RUNNING TEST NR. 1 ##############
+############## EXECUTING LVL 1-15 with 19 active fragments ##############
+:::: FAILED :::: level: 15 :::: size: 18 / 19 :::: Compiler calls: 134561, compilation errors: 132047, runtime errors: 1534, failed runs: 980, ok runs: 0
+Level 1-15 took 784ms
+1111111101111111111
+Fixed 18 active nodes and 0 free nodes guaranteed by them.
+Discarded 1 active fragments. 52 fragments, including dependent nodes
+############## After level 1-15 there are 2546 / 6317 fragments left :::: Compiler calls: 134594, compilation errors: 132080, runtime errors: 1534, failed runs: 980, ok runs: 0
+############## EXECUTING LVL 1-16 with 77 active fragments ##############
+:::: FAILED :::: level: 16 :::: size: 75 / 77 :::: Compiler calls: 134656, compilation errors: 132130, runtime errors: 1534, failed runs: 981, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 74 / 77 :::: Compiler calls: 134716, compilation errors: 132186, runtime errors: 1534, failed runs: 982, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 74 / 77 :::: Compiler calls: 134718, compilation errors: 132189, runtime errors: 1534, failed runs: 983, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 73 / 77 :::: Compiler calls: 134754, compilation errors: 132221, runtime errors: 1534, failed runs: 984, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 73 / 77 :::: Compiler calls: 134758, compilation errors: 132226, runtime errors: 1534, failed runs: 985, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 73 / 77 :::: Compiler calls: 134766, compilation errors: 132233, runtime errors: 1534, failed runs: 986, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 72 / 77 :::: Compiler calls: 134794, compilation errors: 132259, runtime errors: 1534, failed runs: 987, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 72 / 77 :::: Compiler calls: 134798, compilation errors: 132265, runtime errors: 1534, failed runs: 988, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 71 / 77 :::: Compiler calls: 134834, compilation errors: 132296, runtime errors: 1534, failed runs: 989, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 69 / 77 :::: Compiler calls: 134893, compilation errors: 132358, runtime errors: 1534, failed runs: 990, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 68 / 77 :::: Compiler calls: 134947, compilation errors: 132408, runtime errors: 1534, failed runs: 991, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 67 / 77 :::: Compiler calls: 135005, compilation errors: 132469, runtime errors: 1534, failed runs: 992, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 66 / 77 :::: Compiler calls: 135060, compilation errors: 132533, runtime errors: 1534, failed runs: 993, ok runs: 0
+:::: FAILED :::: level: 16 :::: size: 65 / 77 :::: Compiler calls: 135180, compilation errors: 132644, runtime errors: 1534, failed runs: 994, ok runs: 0
+Level 1-16 took 10s 27ms
+11111110111111111111010111110111111111111111101111001011001111011111111111110
+Fixed 65 active nodes and 0 free nodes guaranteed by them.
+Discarded 12 active fragments. 50 fragments, including dependent nodes
+############## After level 1-16 there are 2496 / 6317 fragments left :::: Compiler calls: 135245, compilation errors: 132717, runtime errors: 1534, failed runs: 994, ok runs: 0
+############## EXECUTING LVL 1-17 with 388 active fragments ##############
+:::: FAILED :::: level: 17 :::: size: 387 / 388 :::: Compiler calls: 135551, compilation errors: 133008, runtime errors: 1534, failed runs: 995, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 387 / 388 :::: Compiler calls: 135552, compilation errors: 133008, runtime errors: 1534, failed runs: 996, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 387 / 388 :::: Compiler calls: 135570, compilation errors: 133027, runtime errors: 1534, failed runs: 997, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 386 / 388 :::: Compiler calls: 135603, compilation errors: 133057, runtime errors: 1534, failed runs: 998, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 385 / 388 :::: Compiler calls: 135658, compilation errors: 133110, runtime errors: 1534, failed runs: 999, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 385 / 388 :::: Compiler calls: 135659, compilation errors: 133110, runtime errors: 1534, failed runs: 1000, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 385 / 388 :::: Compiler calls: 135661, compilation errors: 133112, runtime errors: 1534, failed runs: 1001, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 385 / 388 :::: Compiler calls: 135661, compilation errors: 133113, runtime errors: 1534, failed runs: 1002, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 385 / 388 :::: Compiler calls: 135678, compilation errors: 133128, runtime errors: 1534, failed runs: 1003, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 384 / 388 :::: Compiler calls: 135720, compilation errors: 133170, runtime errors: 1534, failed runs: 1004, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 384 / 388 :::: Compiler calls: 135724, compilation errors: 133172, runtime errors: 1534, failed runs: 1005, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 384 / 388 :::: Compiler calls: 135728, compilation errors: 133176, runtime errors: 1534, failed runs: 1006, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 384 / 388 :::: Compiler calls: 135733, compilation errors: 133178, runtime errors: 1534, failed runs: 1007, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 383 / 388 :::: Compiler calls: 135777, compilation errors: 133221, runtime errors: 1534, failed runs: 1008, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 383 / 388 :::: Compiler calls: 135793, compilation errors: 133240, runtime errors: 1534, failed runs: 1009, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 382 / 388 :::: Compiler calls: 135832, compilation errors: 133273, runtime errors: 1534, failed runs: 1010, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 382 / 388 :::: Compiler calls: 135835, compilation errors: 133275, runtime errors: 1534, failed runs: 1011, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 382 / 388 :::: Compiler calls: 135836, compilation errors: 133277, runtime errors: 1534, failed runs: 1012, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 381 / 388 :::: Compiler calls: 135892, compilation errors: 133330, runtime errors: 1534, failed runs: 1013, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 381 / 388 :::: Compiler calls: 135892, compilation errors: 133333, runtime errors: 1534, failed runs: 1014, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 381 / 388 :::: Compiler calls: 135914, compilation errors: 133351, runtime errors: 1534, failed runs: 1015, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 379 / 388 :::: Compiler calls: 135949, compilation errors: 133387, runtime errors: 1534, failed runs: 1016, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 380 / 388 :::: Compiler calls: 135953, compilation errors: 133388, runtime errors: 1534, failed runs: 1017, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 379 / 388 :::: Compiler calls: 135985, compilation errors: 133419, runtime errors: 1534, failed runs: 1018, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 378 / 388 :::: Compiler calls: 136016, compilation errors: 133449, runtime errors: 1534, failed runs: 1019, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 376 / 388 :::: Compiler calls: 136086, compilation errors: 133518, runtime errors: 1534, failed runs: 1020, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 375 / 388 :::: Compiler calls: 136143, compilation errors: 133574, runtime errors: 1534, failed runs: 1021, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 375 / 388 :::: Compiler calls: 136163, compilation errors: 133593, runtime errors: 1534, failed runs: 1022, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 374 / 388 :::: Compiler calls: 136207, compilation errors: 133637, runtime errors: 1534, failed runs: 1023, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 373 / 388 :::: Compiler calls: 136269, compilation errors: 133696, runtime errors: 1534, failed runs: 1024, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 371 / 388 :::: Compiler calls: 136373, compilation errors: 133799, runtime errors: 1534, failed runs: 1025, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 370 / 388 :::: Compiler calls: 136447, compilation errors: 133875, runtime errors: 1534, failed runs: 1026, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 370 / 388 :::: Compiler calls: 136461, compilation errors: 133887, runtime errors: 1534, failed runs: 1027, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 369 / 388 :::: Compiler calls: 136532, compilation errors: 133958, runtime errors: 1534, failed runs: 1028, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 368 / 388 :::: Compiler calls: 136659, compilation errors: 134082, runtime errors: 1534, failed runs: 1029, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 368 / 388 :::: Compiler calls: 136662, compilation errors: 134083, runtime errors: 1534, failed runs: 1030, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 368 / 388 :::: Compiler calls: 136677, compilation errors: 134101, runtime errors: 1534, failed runs: 1031, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 367 / 388 :::: Compiler calls: 136776, compilation errors: 134196, runtime errors: 1534, failed runs: 1032, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 367 / 388 :::: Compiler calls: 136777, compilation errors: 134197, runtime errors: 1534, failed runs: 1033, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 367 / 388 :::: Compiler calls: 136785, compilation errors: 134205, runtime errors: 1534, failed runs: 1034, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 366 / 388 :::: Compiler calls: 136871, compilation errors: 134289, runtime errors: 1534, failed runs: 1035, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 366 / 388 :::: Compiler calls: 136897, compilation errors: 134316, runtime errors: 1534, failed runs: 1036, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 365 / 388 :::: Compiler calls: 136970, compilation errors: 134384, runtime errors: 1534, failed runs: 1037, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 365 / 388 :::: Compiler calls: 136985, compilation errors: 134402, runtime errors: 1534, failed runs: 1038, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 364 / 388 :::: Compiler calls: 137078, compilation errors: 134490, runtime errors: 1534, failed runs: 1039, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 364 / 388 :::: Compiler calls: 137080, compilation errors: 134493, runtime errors: 1534, failed runs: 1040, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 363 / 388 :::: Compiler calls: 137186, compilation errors: 134597, runtime errors: 1534, failed runs: 1041, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 362 / 388 :::: Compiler calls: 137294, compilation errors: 134704, runtime errors: 1534, failed runs: 1042, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 361 / 388 :::: Compiler calls: 137411, compilation errors: 134820, runtime errors: 1534, failed runs: 1043, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 361 / 388 :::: Compiler calls: 137424, compilation errors: 134833, runtime errors: 1534, failed runs: 1044, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 360 / 388 :::: Compiler calls: 137525, compilation errors: 134932, runtime errors: 1534, failed runs: 1045, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 360 / 388 :::: Compiler calls: 137538, compilation errors: 134948, runtime errors: 1534, failed runs: 1046, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 359 / 388 :::: Compiler calls: 137626, compilation errors: 135032, runtime errors: 1534, failed runs: 1047, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 358 / 388 :::: Compiler calls: 137744, compilation errors: 135147, runtime errors: 1534, failed runs: 1048, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 358 / 388 :::: Compiler calls: 137746, compilation errors: 135148, runtime errors: 1534, failed runs: 1049, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 357 / 388 :::: Compiler calls: 137844, compilation errors: 135247, runtime errors: 1534, failed runs: 1050, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 357 / 388 :::: Compiler calls: 137871, compilation errors: 135275, runtime errors: 1534, failed runs: 1051, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 356 / 388 :::: Compiler calls: 137944, compilation errors: 135343, runtime errors: 1534, failed runs: 1052, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 355 / 388 :::: Compiler calls: 138050, compilation errors: 135448, runtime errors: 1534, failed runs: 1053, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 354 / 388 :::: Compiler calls: 138162, compilation errors: 135560, runtime errors: 1534, failed runs: 1054, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 353 / 388 :::: Compiler calls: 138272, compilation errors: 135670, runtime errors: 1534, failed runs: 1055, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 353 / 388 :::: Compiler calls: 138277, compilation errors: 135673, runtime errors: 1534, failed runs: 1056, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 353 / 388 :::: Compiler calls: 138281, compilation errors: 135675, runtime errors: 1534, failed runs: 1057, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 352 / 388 :::: Compiler calls: 138370, compilation errors: 135765, runtime errors: 1534, failed runs: 1058, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 351 / 388 :::: Compiler calls: 138482, compilation errors: 135875, runtime errors: 1534, failed runs: 1059, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 351 / 388 :::: Compiler calls: 138519, compilation errors: 135911, runtime errors: 1534, failed runs: 1060, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 350 / 388 :::: Compiler calls: 138582, compilation errors: 135973, runtime errors: 1534, failed runs: 1061, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 349 / 388 :::: Compiler calls: 138686, compilation errors: 136077, runtime errors: 1534, failed runs: 1062, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 349 / 388 :::: Compiler calls: 138689, compilation errors: 136078, runtime errors: 1534, failed runs: 1063, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 349 / 388 :::: Compiler calls: 138718, compilation errors: 136107, runtime errors: 1534, failed runs: 1064, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 348 / 388 :::: Compiler calls: 138781, compilation errors: 136168, runtime errors: 1534, failed runs: 1065, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 347 / 388 :::: Compiler calls: 138883, compilation errors: 136269, runtime errors: 1534, failed runs: 1066, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 346 / 388 :::: Compiler calls: 139000, compilation errors: 136384, runtime errors: 1534, failed runs: 1067, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 346 / 388 :::: Compiler calls: 139000, compilation errors: 136384, runtime errors: 1534, failed runs: 1068, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 346 / 388 :::: Compiler calls: 139001, compilation errors: 136386, runtime errors: 1534, failed runs: 1069, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 345 / 388 :::: Compiler calls: 139009, compilation errors: 136394, runtime errors: 1534, failed runs: 1070, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 345 / 388 :::: Compiler calls: 139105, compilation errors: 136486, runtime errors: 1534, failed runs: 1071, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 345 / 388 :::: Compiler calls: 139107, compilation errors: 136489, runtime errors: 1534, failed runs: 1072, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 345 / 388 :::: Compiler calls: 139136, compilation errors: 136517, runtime errors: 1534, failed runs: 1073, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 344 / 388 :::: Compiler calls: 139209, compilation errors: 136587, runtime errors: 1534, failed runs: 1074, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 343 / 388 :::: Compiler calls: 139322, compilation errors: 136698, runtime errors: 1534, failed runs: 1075, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 342 / 388 :::: Compiler calls: 139323, compilation errors: 136699, runtime errors: 1534, failed runs: 1076, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 343 / 388 :::: Compiler calls: 139324, compilation errors: 136700, runtime errors: 1534, failed runs: 1077, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 343 / 388 :::: Compiler calls: 139339, compilation errors: 136713, runtime errors: 1534, failed runs: 1078, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 342 / 388 :::: Compiler calls: 139416, compilation errors: 136788, runtime errors: 1534, failed runs: 1079, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 341 / 388 :::: Compiler calls: 139530, compilation errors: 136903, runtime errors: 1534, failed runs: 1080, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 340 / 388 :::: Compiler calls: 139536, compilation errors: 136906, runtime errors: 1534, failed runs: 1081, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 341 / 388 :::: Compiler calls: 139540, compilation errors: 136912, runtime errors: 1534, failed runs: 1082, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 340 / 388 :::: Compiler calls: 139631, compilation errors: 136999, runtime errors: 1534, failed runs: 1083, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 339 / 388 :::: Compiler calls: 139742, compilation errors: 137111, runtime errors: 1534, failed runs: 1084, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 339 / 388 :::: Compiler calls: 139748, compilation errors: 137119, runtime errors: 1534, failed runs: 1085, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 338 / 388 :::: Compiler calls: 139861, compilation errors: 137228, runtime errors: 1534, failed runs: 1086, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 338 / 388 :::: Compiler calls: 139870, compilation errors: 137235, runtime errors: 1534, failed runs: 1087, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 337 / 388 :::: Compiler calls: 139987, compilation errors: 137350, runtime errors: 1534, failed runs: 1088, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 336 / 388 :::: Compiler calls: 140113, compilation errors: 137477, runtime errors: 1534, failed runs: 1089, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 335 / 388 :::: Compiler calls: 140214, compilation errors: 137576, runtime errors: 1534, failed runs: 1090, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 334 / 388 :::: Compiler calls: 140388, compilation errors: 137750, runtime errors: 1534, failed runs: 1091, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 334 / 388 :::: Compiler calls: 140391, compilation errors: 137753, runtime errors: 1534, failed runs: 1092, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 334 / 388 :::: Compiler calls: 140406, compilation errors: 137767, runtime errors: 1534, failed runs: 1093, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 333 / 388 :::: Compiler calls: 140540, compilation errors: 137899, runtime errors: 1534, failed runs: 1094, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 332 / 388 :::: Compiler calls: 140722, compilation errors: 138079, runtime errors: 1534, failed runs: 1095, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 332 / 388 :::: Compiler calls: 140722, compilation errors: 138080, runtime errors: 1534, failed runs: 1096, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 332 / 388 :::: Compiler calls: 140723, compilation errors: 138080, runtime errors: 1534, failed runs: 1097, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 332 / 388 :::: Compiler calls: 140723, compilation errors: 138081, runtime errors: 1534, failed runs: 1098, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 331 / 388 :::: Compiler calls: 140881, compilation errors: 138235, runtime errors: 1534, failed runs: 1099, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 330 / 388 :::: Compiler calls: 141063, compilation errors: 138415, runtime errors: 1534, failed runs: 1100, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 330 / 388 :::: Compiler calls: 141063, compilation errors: 138416, runtime errors: 1534, failed runs: 1101, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 330 / 388 :::: Compiler calls: 141068, compilation errors: 138417, runtime errors: 1534, failed runs: 1102, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 329 / 388 :::: Compiler calls: 141242, compilation errors: 138590, runtime errors: 1534, failed runs: 1103, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 329 / 388 :::: Compiler calls: 141244, compilation errors: 138591, runtime errors: 1534, failed runs: 1104, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 329 / 388 :::: Compiler calls: 141244, compilation errors: 138592, runtime errors: 1534, failed runs: 1105, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 329 / 388 :::: Compiler calls: 141248, compilation errors: 138598, runtime errors: 1534, failed runs: 1106, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 329 / 388 :::: Compiler calls: 141268, compilation errors: 138614, runtime errors: 1534, failed runs: 1107, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 328 / 388 :::: Compiler calls: 141408, compilation errors: 138753, runtime errors: 1534, failed runs: 1108, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 327 / 388 :::: Compiler calls: 141582, compilation errors: 138924, runtime errors: 1534, failed runs: 1109, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 327 / 388 :::: Compiler calls: 141597, compilation errors: 138941, runtime errors: 1534, failed runs: 1110, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 326 / 388 :::: Compiler calls: 141749, compilation errors: 139089, runtime errors: 1534, failed runs: 1111, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 326 / 388 :::: Compiler calls: 141763, compilation errors: 139106, runtime errors: 1534, failed runs: 1112, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 325 / 388 :::: Compiler calls: 141935, compilation errors: 139275, runtime errors: 1534, failed runs: 1113, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 325 / 388 :::: Compiler calls: 141935, compilation errors: 139275, runtime errors: 1534, failed runs: 1114, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 325 / 388 :::: Compiler calls: 141951, compilation errors: 139291, runtime errors: 1534, failed runs: 1115, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 324 / 388 :::: Compiler calls: 142131, compilation errors: 139467, runtime errors: 1534, failed runs: 1116, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 323 / 388 :::: Compiler calls: 142307, compilation errors: 139643, runtime errors: 1534, failed runs: 1117, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 323 / 388 :::: Compiler calls: 142309, compilation errors: 139645, runtime errors: 1534, failed runs: 1118, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 321 / 388 :::: Compiler calls: 142505, compilation errors: 139845, runtime errors: 1534, failed runs: 1119, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 322 / 388 :::: Compiler calls: 142505, compilation errors: 139846, runtime errors: 1534, failed runs: 1120, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 320 / 388 :::: Compiler calls: 142687, compilation errors: 140018, runtime errors: 1534, failed runs: 1121, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 320 / 388 :::: Compiler calls: 142713, compilation errors: 140044, runtime errors: 1534, failed runs: 1122, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 319 / 388 :::: Compiler calls: 142870, compilation errors: 140200, runtime errors: 1534, failed runs: 1123, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 319 / 388 :::: Compiler calls: 142917, compilation errors: 140244, runtime errors: 1534, failed runs: 1124, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 318 / 388 :::: Compiler calls: 143064, compilation errors: 140398, runtime errors: 1534, failed runs: 1125, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 318 / 388 :::: Compiler calls: 143085, compilation errors: 140412, runtime errors: 1534, failed runs: 1126, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 317 / 388 :::: Compiler calls: 143251, compilation errors: 140575, runtime errors: 1534, failed runs: 1127, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 317 / 388 :::: Compiler calls: 143257, compilation errors: 140582, runtime errors: 1534, failed runs: 1128, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 316 / 388 :::: Compiler calls: 143441, compilation errors: 140778, runtime errors: 1534, failed runs: 1129, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 315 / 388 :::: Compiler calls: 143659, compilation errors: 140986, runtime errors: 1534, failed runs: 1130, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 315 / 388 :::: Compiler calls: 143666, compilation errors: 140988, runtime errors: 1534, failed runs: 1131, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 314 / 388 :::: Compiler calls: 143701, compilation errors: 141021, runtime errors: 1534, failed runs: 1132, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 313 / 388 :::: Compiler calls: 143735, compilation errors: 141053, runtime errors: 1534, failed runs: 1133, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 312 / 388 :::: Compiler calls: 143794, compilation errors: 141112, runtime errors: 1534, failed runs: 1134, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 311 / 388 :::: Compiler calls: 144080, compilation errors: 141398, runtime errors: 1534, failed runs: 1135, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 310 / 388 :::: Compiler calls: 144395, compilation errors: 141715, runtime errors: 1534, failed runs: 1136, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 310 / 388 :::: Compiler calls: 144411, compilation errors: 141727, runtime errors: 1534, failed runs: 1137, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 309 / 388 :::: Compiler calls: 144705, compilation errors: 142031, runtime errors: 1534, failed runs: 1138, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 309 / 388 :::: Compiler calls: 144705, compilation errors: 142031, runtime errors: 1534, failed runs: 1139, ok runs: 0
+:::: FAILED :::: level: 17 :::: size: 308 / 388 :::: Compiler calls: 145014, compilation errors: 142335, runtime errors: 1534, failed runs: 1140, ok runs: 0
+Level 1-17 took 1m 45s 232ms
+1111111111111110011110111111111111110101111111111111111101101010110100110111010110111111111111001101001111111111111111111111111111111111111000001111111001111011011010011011100101010011110001010101011100101110110111001110101110111111111111111111111111111111111111111111111101011111111111111111111111111111111101010101010101010110111101111011110110111111111111111111111100011111001010111111
+Fixed 308 active nodes and 0 free nodes guaranteed by them.
+Discarded 80 active fragments. 623 fragments, including dependent nodes
+############## After level 1-17 there are 1873 / 6317 fragments left :::: Compiler calls: 145322, compilation errors: 142648, runtime errors: 1534, failed runs: 1140, ok runs: 0
+############## EXECUTING LVL 1-18 with 626 active fragments ##############
+:::: FAILED :::: level: 18 :::: size: 625 / 626 :::: Compiler calls: 146139, compilation errors: 143453, runtime errors: 1534, failed runs: 1141, ok runs: 0
+:::: FAILED :::: level: 18 :::: size: 624 / 626 :::: Compiler calls: 146593, compilation errors: 143907, runtime errors: 1534, failed runs: 1142, ok runs: 0
+:::: FAILED :::: level: 18 :::: size: 623 / 626 :::: Compiler calls: 147039, compilation errors: 144348, runtime errors: 1534, failed runs: 1143, ok runs: 0
+:::: FAILED :::: level: 18 :::: size: 622 / 626 :::: Compiler calls: 147527, compilation errors: 144837, runtime errors: 1534, failed runs: 1144, ok runs: 0
+Level 1-18 took 8s 145ms
+11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111011111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111101111111111111111111111111111111111111111111111111110111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111110111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+Fixed 622 active nodes and 0 free nodes guaranteed by them.
+Discarded 4 active fragments. 4 fragments, including dependent nodes
+############## After level 1-18 there are 1869 / 6317 fragments left :::: Compiler calls: 148661, compilation errors: 145983, runtime errors: 1534, failed runs: 1144, ok runs: 0
+############## EXECUTING LVL 1-19 with 190 active fragments ##############
+:::: FAILED :::: level: 19 :::: size: 189 / 190 :::: Compiler calls: 148886, compilation errors: 146188, runtime errors: 1543, failed runs: 1145, ok runs: 0
+:::: FAILED :::: level: 19 :::: size: 189 / 190 :::: Compiler calls: 148899, compilation errors: 146196, runtime errors: 1544, failed runs: 1146, ok runs: 0
+Level 1-19 took 5s 21ms
+1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111110111111111111111111111111111111111111111111111111111111111111111111111111111111111
+Fixed 189 active nodes and 0 free nodes guaranteed by them.
+Discarded 1 active fragments. 4 fragments, including dependent nodes
+############## After level 1-19 there are 1865 / 6317 fragments left :::: Compiler calls: 149207, compilation errors: 146479, runtime errors: 1582, failed runs: 1146, ok runs: 0
+############## EXECUTING LVL 1-20 with 216 active fragments ##############
+Level 1-20 took 1s 879ms
+111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+Fixed 216 active nodes and 0 free nodes guaranteed by them.
+Discarded 0 active fragments. 0 fragments, including dependent nodes
+############## After level 1-20 there are 1865 / 6317 fragments left :::: Compiler calls: 149677, compilation errors: 146936, runtime errors: 1595, failed runs: 1146, ok runs: 0
+############## EXECUTING LVL 1-21 with 179 active fragments ##############
