@@ -28,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -236,11 +238,15 @@ public abstract class ATestExecutor implements ITestExecutor {
 			testingMethod.setAccessible(true);
 
 			try {
-				testingMethod.invoke(unitTest);
+				Method finalTestingMethod = testingMethod;
+				ExecutorService executor = Executors.newSingleThreadExecutor();
+				executor.submit(() -> finalTestingMethod.invoke(unitTest)).get(2, TimeUnit.MINUTES);
 				m_okRuns.incrementAndGet();
 				return ETestResult.OK;
 			} catch (Exception ex) {
-				if (ex.getCause().toString() != null && ex.getCause().toString().contains(getOptions().getExpectedResult())) {
+				if (ex.getCause() != null &&
+						(ex.getCause().toString() != null && ex.getCause().toString().contains(getOptions().getExpectedResult())
+								|| ex.getCause().getCause() != null && ex.getCause().getCause().toString() != null && ex.getCause().getCause().toString().contains(getOptions().getExpectedResult()))) {
 					m_failedRuns.incrementAndGet();
 					return ETestResult.FAILED;
 				} else {
