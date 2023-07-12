@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CalculatorExample/CalculatorExample.iml" filepath="$PROJECT_DIR$/CalculatorExample/CalculatorExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/FibonacciExample/FibonacciExample.iml" filepath="$PROJECT_DIR$/FibonacciExample/FibonacciExample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LoopExample/LoopExample.iml" filepath="$PROJECT_DIR$/LoopExample/LoopExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/SimpleExample/SimpleExample.iml" filepath="$PROJECT_DIR$/SimpleExample/SimpleExample.iml" />
     </modules>
   </component>
