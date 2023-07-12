@@ -1,0 +1,149 @@
+Using executor HDDrecTestExecutor with executor options:
+{
+	m_modulePath='/home/lukasbosshart/workspace/defects4j/bugs/gson_6_b/',
+	m_sourceFolderPath='gson/src/main/java/',
+	m_unitTestFolderPath='gson/src/test/java/',
+	m_unitTestMethod='com.google.gson.regression.JsonAdapterNullSafeTest#testNullSafeBugSerialize',
+	m_expectedResult='java.lang.NullPointerException',
+	m_compilationType=IN_MEMORY,
+	m_logLevel=INFO,
+	m_logCompilationErrors=false,
+	m_logRuntimeErrors=false,
+	m_multipleRuns=true,
+	m_numberOfThreads=16,
+	m_preSliceCode=false,
+	m_graphAlgorithmFragmentLimit=0,
+	m_graphAlgorithmEscalatingFragmentLimit=false,
+}
+Formatting code in source folder
+Level: 0 :::: fragments: 63
+Level: 1 :::: fragments: 605
+Level: 2 :::: fragments: 3837
+Level: 3 :::: fragments: 4322
+Level: 4 :::: fragments: 3207
+Level: 5 :::: fragments: 3756
+Level: 6 :::: fragments: 4093
+Level: 7 :::: fragments: 3350
+Level: 8 :::: fragments: 2757
+Level: 9 :::: fragments: 2447
+Level: 10 :::: fragments: 1767
+Level: 11 :::: fragments: 1264
+Level: 12 :::: fragments: 837
+Level: 13 :::: fragments: 471
+Level: 14 :::: fragments: 306
+Level: 15 :::: fragments: 195
+Level: 16 :::: fragments: 124
+Level: 17 :::: fragments: 70
+Level: 18 :::: fragments: 46
+Level: 19 :::: fragments: 27
+Level: 20 :::: fragments: 23
+Level: 21 :::: fragments: 11
+Level: 22 :::: fragments: 6
+Total :::: fragments: 33584 out of 33584 originally
+############## RUNNING TEST NR. 0 ##############
+############## EXECUTING LVL 0-0 ##############
+:::: FAILED :::: level: 0-0 / 22 :::: size: 63 / 63 :::: Compiler calls: 2, compilation errors: 1, runtime errors: 0, failed runs: 1, ok runs: 0
+Level 0-0 took 23s 862ms
+111111111111111111111111111111111111111111111111111111111111111
+############## After level 0-0 there are 33584 / 33584 fragments left :::: Compiler calls: 127, compilation errors: 126, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-1 ##############
+Level 0-1 took 4s 401ms
+111111111111
+############## After level 0-1 there are 33584 / 33584 fragments left :::: Compiler calls: 153, compilation errors: 152, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-2 ##############
+Level 0-2 took 17ms
+1
+############## After level 0-2 there are 33584 / 33584 fragments left :::: Compiler calls: 153, compilation errors: 152, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-3 ##############
+Level 0-3 took 3s 758ms
+1111111111
+############## After level 0-3 there are 33584 / 33584 fragments left :::: Compiler calls: 177, compilation errors: 176, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-4 ##############
+Level 0-4 took 1s 526ms
+111
+############## After level 0-4 there are 33584 / 33584 fragments left :::: Compiler calls: 182, compilation errors: 181, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-5 ##############
+Level 0-5 took 1s 528ms
+1111
+############## After level 0-5 there are 33584 / 33584 fragments left :::: Compiler calls: 188, compilation errors: 187, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-6 ##############
+Level 0-6 took 788ms
+11
+############## After level 0-6 there are 33584 / 33584 fragments left :::: Compiler calls: 190, compilation errors: 189, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-7 ##############
+Level 0-7 took 4s 101ms
+111111111111
+############## After level 0-7 there are 33584 / 33584 fragments left :::: Compiler calls: 216, compilation errors: 215, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-8 ##############
+Level 0-8 took 4s 415ms
+11111111111111
+############## After level 0-8 there are 33584 / 33584 fragments left :::: Compiler calls: 244, compilation errors: 243, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-9 ##############
+Level 0-9 took 3s 810ms
+1111111111
+############## After level 0-9 there are 33584 / 33584 fragments left :::: Compiler calls: 268, compilation errors: 267, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-10 ##############
+Level 0-10 took 4s 174ms
+111111111111111
+############## After level 0-10 there are 33584 / 33584 fragments left :::: Compiler calls: 297, compilation errors: 296, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-11 ##############
+Level 0-11 took 7s 65ms
+11111111111111111
+############## After level 0-11 there are 33584 / 33584 fragments left :::: Compiler calls: 344, compilation errors: 343, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-12 ##############
+Level 0-12 took 7s 163ms
+1111111111111111111111
+############## After level 0-12 there are 33584 / 33584 fragments left :::: Compiler calls: 396, compilation errors: 395, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-13 ##############
+Level 0-13 took 4s 363ms
+1111111111111111
+############## After level 0-13 there are 33584 / 33584 fragments left :::: Compiler calls: 426, compilation errors: 425, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-14 ##############
+Level 0-14 took 3s 777ms
+111111111111
+############## After level 0-14 there are 33584 / 33584 fragments left :::: Compiler calls: 452, compilation errors: 451, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-15 ##############
+Level 0-15 took 2s 380ms
+11111111
+############## After level 0-15 there are 33584 / 33584 fragments left :::: Compiler calls: 466, compilation errors: 465, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-16 ##############
+Level 0-16 took 7s 799ms
+11111111111111111111111111
+############## After level 0-16 there are 33584 / 33584 fragments left :::: Compiler calls: 522, compilation errors: 521, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-17 ##############
+Level 0-17 took 4s 250ms
+1111111111111111
+############## After level 0-17 there are 33584 / 33584 fragments left :::: Compiler calls: 552, compilation errors: 551, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-18 ##############
+Level 0-18 took 4s 158ms
+11111111111111
+############## After level 0-18 there are 33584 / 33584 fragments left :::: Compiler calls: 580, compilation errors: 579, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-19 ##############
+Level 0-19 took 3s 893ms
+11111111111111
+############## After level 0-19 there are 33584 / 33584 fragments left :::: Compiler calls: 608, compilation errors: 607, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-20 ##############
+Level 0-20 took 13s 928ms
+11111111111111111111111111111111111111111
+############## After level 0-20 there are 33584 / 33584 fragments left :::: Compiler calls: 711, compilation errors: 710, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-21 ##############
+Level 0-21 took 2s 634ms
+11111
+############## After level 0-21 there are 33584 / 33584 fragments left :::: Compiler calls: 722, compilation errors: 721, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-22 ##############
+Level 0-22 took 5s 18ms
+111111111111111
+############## After level 0-22 there are 33584 / 33584 fragments left :::: Compiler calls: 751, compilation errors: 750, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-23 ##############
+Level 0-23 took 7s 457ms
+1111111111111111111
+############## After level 0-23 there are 33584 / 33584 fragments left :::: Compiler calls: 800, compilation errors: 799, runtime errors: 0, failed runs: 1, ok runs: 0
+############## EXECUTING LVL 0-24 ##############
+Execution was manually cancelled. Track stats and recreate intermediate result in testingoutput folder...
+java.util.concurrent.CancellationException: Cancelled by user
+	at generator.AbstractMWEGenerator.runDDMin(AbstractMWEGenerator.java:112)
+	at generator.HDDrecMWEGenerator.runGenerator(HDDrecMWEGenerator.java:49)
+	at Main.main(Main.java:112)
+
+TOTAL EXECUTION TIME: 2m 9s 403ms.
+TOTAL OUTPUT SIZE: 11047552 bytes
