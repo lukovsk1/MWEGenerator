@@ -86,9 +86,14 @@ public class StatsTracker {
 		XSSFCell averageRunSize = getCell(25, 4);
 		averageRunSize.setCellFormula("AVERAGE(B32:B" + m_ddminRowNumber + ")");
 
-		// Evaluate all formulas in the workbook
+		// Evaluate all formulas in sheet
 		XSSFFormulaEvaluator formulaEvaluator = m_workbook.getCreationHelper().createFormulaEvaluator();
-		formulaEvaluator.evaluateAll();
+		formulaEvaluator.evaluateFormulaCell(runNumberCell);
+		formulaEvaluator.evaluateFormulaCell(averageRunSize);
+		formulaEvaluator.evaluateFormulaCell(getCell(21, 4));
+		formulaEvaluator.evaluateFormulaCell(getCell(22, 4));
+		formulaEvaluator.evaluateFormulaCell(getCell(23, 4));
+		formulaEvaluator.evaluateFormulaCell(getCell(24, 4));
 	}
 
 	private void updateCharts() {
