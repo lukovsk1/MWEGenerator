@@ -87,3 +87,10 @@
     - Evaluation metrics as own section distinct from setup
 - Threats to validity:
     - Effect of formatter on algorithm
+
+### 19.07.2023
+
+- Richtige Eklärung?
+- Abgabetermin?
+- Modus/Länge der Präsentation?
+- 
