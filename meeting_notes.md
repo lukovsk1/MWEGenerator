@@ -90,7 +90,16 @@
 
 ### 19.07.2023
 
-- Richtige Eklärung?
+- Richtige Eklärung.
 - Abgabetermin?
-- Modus/Länge der Präsentation?
-- 
+- Modus/Länge der Präsentation? -> 0.5h Präsentation + Q&A
+- RQ 1-3
+- RQs am Ende der subsection explizit beantworten (summary der antwort)
+- Repo nach github verschieben. Link in bibtex.
+- Bilder verbreitern
+- Zuletzt: darstellung
+- Future work: graph in datenbank halte und pflegen zwischen runs
+- Future work: messungen auf bereinigten artefakten (ohne kommentare)
+- 5.6.1 -> Quality statt implementation (etwas umschreiben)
+- Threat to validity: quality of output? ist das überhaupt brauchbar für entwickler?
+- Future work: gibt es unterschiede zwischen GDD und HDD
