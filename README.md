@@ -81,6 +81,9 @@ Example: defects4j lang_5
   4
 ```
 
+The [run configuration folder](.idea/runConfigurations) already contains a number of configuration for different
+defects4j bugs.
+
 The algorithm will first check if the defined unittest will indeed result in the expected exception.
 If this does not work, you will see the message "Initial testing conditions are not met." in the console.
 
@@ -167,3 +170,14 @@ Steps:
   - Install version [4.4.19 of neo4j](https://neo4j.com/docs/operations-manual/4.4/installation/linux/)
   - Manually query the database with `cypher-shell`
 
+## Logging and stats tracking
+
+For each algorithm run, a log is written both to the console and the [logs folder](logs).
+The file in the logs-folder is time-stamped and will be prefixed by _ if the run did not successfully finish.
+
+Also, a number of tracked statistics about the run are written to an excel workbook in the [stats folder](stats).
+If the last part of the module path of the bug matches an existing workbook, the results will be written as a new sheet
+to this file.
+If no matching file exists, the results are written to [Statistics.xlsx](stats/Statistics.xlsx).
+To create a new workbook, copy the [template file](stats/testcase_template.xlsx).
+The stats will only be written at the end of a successful run (this includes runs that reach the algorithm timeout).
