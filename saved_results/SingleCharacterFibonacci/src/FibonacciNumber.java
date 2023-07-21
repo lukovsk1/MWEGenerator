@@ -1,1 +1,0 @@
-class FibonacciNumber{private FibonacciNumber(){}public static int getFibonacciNumber(int n){if(n<0){new ArithmeticException();}if(n==0){return 0;}if(n==1){return 1;}return getFibonacciNumber(n)+getFibonacciNumber(n);}}

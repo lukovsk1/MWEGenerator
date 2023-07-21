@@ -33,6 +33,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.jar.JarFile;
 
+// TODO: pre-slicing the code is not fully functional at the moment
 public final class SlicerUtility {
     private SlicerUtility() {
     }
