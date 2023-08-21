@@ -43,12 +43,5 @@ public class GDDrecTestExecutor extends GDDTestExecutor {
         m_queue.addAll(fragments.stream()
                 .map(ICodeFragment::getFragmentNumber)
                 .collect(Collectors.toSet()));
-        if (m_activeParentNode != null) {
-            // if active node still has free dependent nodes, requeue it
-            if (m_graphDB.checkForFreeDependentNodes(m_activeParentNode) > 0) {
-                m_queue.add(m_activeParentNode);
-            }
-            m_activeParentNode = null;
-        }
     }
 }
